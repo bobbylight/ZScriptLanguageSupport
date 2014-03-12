@@ -1,0 +1,225 @@
+ZScriptLanguageSupport Readme
+-----------------------------
+Version 0.3
+12dec2012
+
+-----------------------------
+Contents
+-----------------------------
+I.    Overview
+II.   Features
+III.  Project Layout
+IV.   Building
+V.    Using this Library in your own project
+VI.   License
+VII.  To-Do
+VIII. Contact
+IX.   Thanks
+
+
+-----------------------------
+I. Overview
+-----------------------------
+This is a beta version of ZScript Language Support for RSyntaxTextArea.  It
+provides syntax highlighting, code completion, and code folding for ZScript.
+
+Also included is an RText plugin, providing all of the above features, as well
+as other stuff, including:
+
+   * A dialog to search and download scripts directly from PureZC's script
+     database, right in the UI.
+   * more to come!
+   
+ZScript is the scripting language for Zelda Classic, a game engine that allows
+the development of custom 2D Zelda fan games.  For more information, see:
+
+   http://www.zeldaclassic.com/
+   http://www.purezc.com/
+
+Since this is somewhat of a niche language, it is not included in the
+RSTALanguageSupport parent project, but rather is a self-contained project
+that depends on it.  It takes full advantage of RSyntaxTextArea's code
+completion and parsing API's, and serves as an excellent example of integrating
+RSTA into an application with a custom or DSL.
+
+
+-----------------------------
+II. Features
+-----------------------------
+Please don't rely on this file being up to date; rather, keep an eye on the
+project's home page:
+
+http://fifesoft.com/zscript/
+
+This project enables the following features in RSyntaxTextArea:
+
+1. Code completion for core functions, std.zh & string.zh functions and
+   constants, and entities in the script file being edited.  Completion is
+   context sensitive, so suggestions are offered based on the caret location
+   in the source file and the preceding text.  For example, Typing "Link->"
+   will yield members of the "Link" global constant, whereas typing "foo" and
+   Ctrl+Space will yield all variables and functions in scope that begin with
+   the prefix "foo" (ignoring case).
+2. Inline documentation displayed for code completion choices, based off of
+   the contents of zscript.txt, std.txt and string.txt.
+3. Squiggle underlining of syntax errors.  This currently does not catch
+   everything that ZQuest does.  This is based off of a custom parser and will
+   improve over time.
+4. Go To Member popup, activated via Ctrl+Shift+O (Cmd+Shift+O on OS X).  This
+   popup lets you type and quickly get to any member (function, variable, or
+   script) in the editor.
+5. Source tree support.  Adds a tree view outlining the script file's
+   structure, based off of RSTALanguageSupport's tree API.
+6. The RText plugin provides a popup dialog allowing you to search, sort, and
+   filter the scripts in PureZC's script database, to easily find if someone
+   has graciously scripted slick new functionality for you.
+
+From the Ant build script, you can build either a demo application, or a plugin
+for RText (http://fifesoft.com/rtext).  The former gives a single editor, and
+the ability to save and load files.  This gives an easy way to try out the
+features of the library.  The latter allows you to edit ZScript files in a
+powerful, mature programmer's text editor.
+
+
+-----------------------------
+III. Project Layout
+-----------------------------
+This project assumes it is checked out along-side its sister projects listed
+below in the "Building" section.  Without these projects it will not build
+properly.
+
+ZScriptLanguageSupport/
+   src/
+      org/fife/rsta/zscript/         Classes implementing RSTA's completion APIs
+      org/fife/rsta/zscript/ast/     AST & parsing code for ZScript
+      org/fife/rsta/zscript/demo/    Demo application code
+      org/fife/rsta/zscript/img/     Icons used by the library
+      org/fife/rsta/zscript/rtext/   An RText plugin for this library
+      org/fife/rsta/zscript/tree/    ZScript source tree classes
+   res/
+      data/                          Data files used for code completion
+   ant-classes/                      Generated when built via Ant
+   dist/                             Generated when built via Ant
+   dist-mac/                         Generated when built via Ant
+   lib/                              RText libraries; used to build the RText
+                                     plugin
+   rtext-dist/                       Generated when built via Ant
+
+
+-----------------------------
+IV. Building
+-----------------------------
+You can grab the source from the following Subversion repository:
+
+   http://svn.fifesoft.com/svn/RSyntaxTextArea/
+
+If you're a Java developer, it's super-easy to grab the source and start
+hacking. This library is built on several other RSyntaxTextArea-related
+projects; you'll need to check out the trunk of the following projects, all
+from the repository above:
+
+  * RSyntaxTextArea        - The actual editor component
+  * AutoComplete           - Code completion add-on for RSyntaxTextArea
+  * RSTAUI                 - Find, Replace, Go to Line dialogs
+  * RSTALanguageSupport    - Framework for advanced code completion and parsing
+                             of programming languages
+  * ZScriptLanguageSupport - ZScript-specific stuff
+
+There are also versions of everything but ZScriptLanguageSupport in Maven, but
+they're a revision or two old (as of 29jul2012). Thus it's best to get the
+bleeding edge from SVN.
+
+Once checked out, to build the demo artifacts you need to run the Ant build
+scripts for RSyntaxTextArea, AutoComplete, RSTALanguageSupport, and
+ZScriptLanguageSupport, in that order.  
+
+If you don't already have it, you can download Apache Ant here:
+http://ant.apache.org.  The default target in each project's build script
+builds that library:
+
+   cd RSyntaxTextArea
+   ant
+   cd ../AutoComplete
+   ant
+   cd ../RSTAUI
+   ant
+   cd ../RSTALanguageSupport
+   ant
+   cd ../ZScriptLanguageSupport
+   ant
+
+To maintain maximum compatibility, these projects are all currently built with
+Java 1.4.  Most likely, you will be building with a newer JDK.  If so, because
+of a binary incompatibility in the JDK introduced in Java 5, you'll need to
+make one change to org.fife.ui.rsyntaxtextarea.XmlParser.java.  In the "Handler"
+inner class, the resolveEntity() method needs to be modified to throw
+IOExceptions when built with Java 5 or greater.  The RSyntaxTextArea build step
+will fail if you do not make this change.
+
+Assuming you checked out into an IDE such as Eclipse, NetBeans, or IntelliJ,
+you don't have to build the demo to run it; simply
+run org.fife.rsta.zscript.demo.DemoApp in the ZScriptLanguageSupport project.
+
+To build the RText plugin instead of the demo application, follow the steps
+outlined above, only run the "make-rtext-plugin" target in the
+ZScriptLanguageSupport Ant build script.
+
+
+-----------------------------
+V. Using this Library in your own project
+-----------------------------
+To Do
+
+
+-----------------------------
+VI. License
+-----------------------------
+As with all RSyntaxTextArea-related projects, this library is licensed as
+modified BSD.  See the included ZScriptLanguageSupport.License.txt file.
+
+If you use this library in your own projects, please let me know!  I like to
+know that my work is useful for others.  However, if you have features that you
+believe would be beneficial to everyone, I request you consider contributing
+them to this project, so the library itself improves.
+
+
+-----------------------------
+VII. To-Do
+-----------------------------
+This project will focus on providing the best code completion possible.  Actual
+editor features (loading, saving, etc.) will be added to the demo application,
+so it is usable as a basic, stand-alone editor by itself.  More complex editor
+features will be inherited by the RText plugin, since RText should provide all
+such features by itself.
+
+In no particular order:
+
+1. Improve parser
+     - Try to identify all errors found by ZQuest
+     - Make error recovery as robust as possible
+2. Project support
+     - Parse imported files
+3. Find better technique for grepping documentation
+4. ZQuest integration?
+     - Perhaps ZQuest could launch demo app (if available) as script editor,
+       we pass back script contents.
+
+
+-----------------------------
+VIII. Contact
+-----------------------------
+Bugs and Feature requests can be sent directly to me (robert /at/ fifesoft), or
+posted in this thread on PureZC:
+
+   http://www.purezc.com/forums/index.php?showtopic=55636&st=15
+
+The forums for RSyntaxTextArea in general live here:
+
+   http://forum.fifesoft.com
+
+
+-----------------------------
+IX. Thanks
+-----------------------------
+Icons in this package (such as lightbulb.png) come from Eclipse and are
+licensed under the EPL (http://www.eclipse.org/legal/epl-v10.html).
