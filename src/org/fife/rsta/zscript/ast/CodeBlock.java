@@ -30,17 +30,17 @@ public class CodeBlock extends AbstractNode implements VariableContainer,
 		StatementParent {
 
 	private CodeBlockParent parent;
-	private List childBlockParentStatements;
-	private List vars;
-	private List statements;
+	private List<AbstractCodeBlockStatementNode> childBlockParentStatements;
+	private List<VariableDecNode> vars;
+	private List<StatementNode> statements;
 
 
 	public CodeBlock(CodeBlockParent parent, Position start) {
 		super(CODE_BLOCK, start);
 		this.parent = parent;
-		childBlockParentStatements = new ArrayList();
-		vars = new ArrayList();
-		statements = new ArrayList();
+		childBlockParentStatements = new ArrayList<AbstractCodeBlockStatementNode>();
+		vars = new ArrayList<VariableDecNode>();
+		statements = new ArrayList<StatementNode>();
 	}
 
 
@@ -94,7 +94,7 @@ public class CodeBlock extends AbstractNode implements VariableContainer,
 				AbstractCodeBlockStatementNode acbsn =
 						(AbstractCodeBlockStatementNode)statement;
 				if (acbsn.hasCodeBlock()) {
-					childBlockParentStatements.add(statement);
+					childBlockParentStatements.add(acbsn);
 				}
 			}
 		}
@@ -107,7 +107,7 @@ public class CodeBlock extends AbstractNode implements VariableContainer,
 
 
 	public CodeBlockParent getChildCodeBlockParentStatement(int index) {
-		return (CodeBlockParent)childBlockParentStatements.get(index);
+		return childBlockParentStatements.get(index);
 	}
 
 
@@ -155,7 +155,7 @@ public class CodeBlock extends AbstractNode implements VariableContainer,
 
 
 	public StatementNode getStatement(int index) {
-		return (StatementNode)statements.get(index);
+		return statements.get(index);
 	}
 
 
@@ -170,7 +170,7 @@ public class CodeBlock extends AbstractNode implements VariableContainer,
 
 
 	public VariableDecNode getVariableDec(int index) {
-		return (VariableDecNode)vars.get(index);
+		return vars.get(index);
 	}
 
 

@@ -65,10 +65,10 @@ public class ZScriptParser extends AbstractParser {
 		ZScriptParseResult zspr = parser2.parse();
 		DefaultParseResult result = new DefaultParseResult(this);
 		ast = zspr.getAst();
-		List notices = zspr.getNotices();
-		for (int i=0; i<notices.size(); i++) {
-			//System.out.println(">>> " + notices.get(i));
-			result.addNotice((ParserNotice)notices.get(i));
+		List<ParserNotice> notices = zspr.getNotices();
+		for (ParserNotice notice : notices) {
+			//System.out.println(">>> " + notice);
+			result.addNotice(notice);
 		}
 		support.firePropertyChange(PROPERTY_AST, old, ast);
 //System.out.println("----------");

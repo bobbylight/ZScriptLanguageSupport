@@ -6,7 +6,6 @@
  */
 package org.fife.rsta.zscript;
 
-import java.util.Iterator;
 import java.util.List;
 
 import org.fife.rsta.ac.ShorthandCompletionCache;
@@ -85,9 +84,9 @@ public class ZScriptCompletionProvider extends LanguageAwareCompletionProvider {
 		//reset comment completions too
 		DefaultCompletionProvider dcp = (DefaultCompletionProvider)
 				getCommentCompletionProvider();
-		List commentCompletions = cache.getCommentCompletions();
-		for (Iterator i=commentCompletions.iterator(); i.hasNext(); ) {
-			dcp.addCompletion((Completion)i.next());
+		List<Completion> commentCompletions = cache.getCommentCompletions();
+		for (Completion completion : commentCompletions) {
+			dcp.addCompletion(completion);
 		}
 
 	}

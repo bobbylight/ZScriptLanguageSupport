@@ -24,13 +24,13 @@ import org.fife.rsta.zscript.IconFactory.IconData;
  */
 public class FunctionDecNode extends MemberNode implements CodeBlockParent {
 
-	private List args;
+	private List<VariableDecNode> args;
 	private CodeBlock codeBlock;
 
 
 	public FunctionDecNode(Position start) {
 		super(FUNCTION_DEC, start);
-		args = new ArrayList();
+		args = new ArrayList<VariableDecNode>();
 	}
 
 
@@ -58,7 +58,7 @@ public class FunctionDecNode extends MemberNode implements CodeBlockParent {
 
 
 	public VariableDecNode getArgument(int index) {
-		return (VariableDecNode)args.get(index);
+		return args.get(index);
 	}
 
 
@@ -78,7 +78,7 @@ public class FunctionDecNode extends MemberNode implements CodeBlockParent {
 	}
 
 
-	public List getArguments() {
+	public List<VariableDecNode> getArguments() {
 		return args;
 	}
 

@@ -11,29 +11,31 @@ import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.Container;
 import java.awt.Dimension;
+import java.awt.Graphics2D;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.image.BufferedImage;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Vector;
 
 import javax.swing.BorderFactory;
-import javax.swing.Box;
-import javax.swing.BoxLayout;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JSplitPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.JViewport;
 import javax.swing.ListSelectionModel;
 import javax.swing.SpringLayout;
+import javax.swing.SwingUtilities;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import javax.swing.event.HyperlinkEvent;
@@ -49,6 +51,7 @@ import org.fife.rsta.ui.EscapableDialog;
 import org.fife.rsta.ui.ResizableFrameContentPane;
 import org.fife.rsta.ui.UIUtil;
 import org.fife.rtext.RText;
+import org.fife.ui.CleanSplitPaneUI;
 import org.fife.ui.FileExplorerTableModel;
 import org.fife.ui.GUIWorkerThread;
 import org.fife.ui.Hyperlink;
@@ -68,7 +71,7 @@ import org.fife.ui.rtextarea.RTextScrollPane;
 class ScriptSearchDialog extends EscapableDialog {
 
 	//private RText rtext;
-	private Box filterPanel;
+	private Container filterPanel;
 	private JTextField filterField;
 	private JTable table;
 	private FilterableTableModel model;
@@ -115,7 +118,12 @@ class ScriptSearchDialog extends EscapableDialog {
 		setContentPane(cp);
 		setTitle(Messages.getString("ScriptSearchDialog.Title"));
 		setResizable(true);
-		pack();
+		Dimension size = getPreferredSize();
+		if (size.width<1024) {
+			size.width = 1024;
+		}
+		setSize(size);
+		//pack();
 		setLocationRelativeTo(rtext);
 
 	}
@@ -170,7 +178,7 @@ class ScriptSearchDialog extends EscapableDialog {
 		UIUtil.makeSpringCompactGrid(panel, 2, 2, 5, 5, 5, 5);
 
 		JPanel temp = new JPanel(new BorderLayout());
-		temp.add(panel);
+		temp.add(panel, BorderLayout.NORTH);
 		return temp;
 
 	}
@@ -197,19 +205,23 @@ class ScriptSearchDialog extends EscapableDialog {
 			}
 		};
 		table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		table.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 		org.fife.ui.UIUtil.possiblyFixGridColor(table);
 
 		FileExplorerTableModel fetm = new FileExplorerTableModel(model,
 				table.getTableHeader());
+		fetm.setColumnComparator(String.class, String.CASE_INSENSITIVE_ORDER);
 		fetm.setSortingStatus(0, FileExplorerTableModel.ASCENDING);
 		table.setModel(fetm);
 
 		TableColumnModel tcm = table.getColumnModel();
+		tcm.getColumn(0).setPreferredWidth(130);
+		tcm.getColumn(0).setWidth(130);
 		tcm.getColumn(1).setPreferredWidth(90); // Slightly larger than images
 		tcm.getColumn(1).setWidth(90);
 		tcm.getColumn(1).setCellRenderer(new RatingCellRenderer());
-		tcm.getColumn(2).setPreferredWidth(130);
-		tcm.getColumn(2).setWidth(130);
+		tcm.getColumn(2).setPreferredWidth(90);
+		tcm.getColumn(2).setWidth(90);
 
 		return table;
 
@@ -224,27 +236,25 @@ class ScriptSearchDialog extends EscapableDialog {
 	 */
 	private Container createTopPanel() {
 
-		Box box = new Box(BoxLayout.LINE_AXIS);
+		JPanel box = new JPanel(new BorderLayout());
 		box.setBorder(BorderFactory.createEmptyBorder(0, 0, 15, 0));
 
 		SelectableLabel desc = new SelectableLabel(Messages.getString("ScriptSearchDialog.Desc"));
 		desc.addHyperlinkListener(listener);
-		box.add(desc);
-		box.add(Box.createHorizontalGlue());
+		box.add(desc, BorderLayout.LINE_START);
 
-		filterPanel = new Box(BoxLayout.LINE_AXIS);
+		filterPanel = new JPanel(new BorderLayout(5, 0));
 		filterField = new JTextField(25);
 		// OS X-specific property (requires Java 5+).  Causes the text field
 		// to be painted in OS X's "Search field" style.
 		filterField.putClientProperty("JTextField.variant", "search");
 		filterField.getDocument().addDocumentListener(listener);
 		JLabel labelFilter = createLabel("Filter", filterField);
-		filterPanel.add(labelFilter);
-		filterPanel.add(Box.createHorizontalStrut(5));
-		filterPanel.add(filterField);
+		filterPanel.add(labelFilter, BorderLayout.LINE_START);
+		filterPanel.add(filterField, BorderLayout.LINE_END);
 		JPanel temp = new JPanel(new BorderLayout());
 		temp.add(filterPanel, BorderLayout.NORTH);
-		box.add(temp);
+		box.add(temp, BorderLayout.LINE_END);
 
 		setChildrenEnabled(filterPanel, false);
 		return box;
@@ -338,19 +348,24 @@ class ScriptSearchDialog extends EscapableDialog {
 	}
 
 
-	private void scriptListLoaded(List scripts) {
+	private void scriptListLoaded(List<ScriptInfo> scripts) {
 
-		JPanel cp = new JPanel(new BorderLayout());
+		JSplitPane cp = new JSplitPane();
+		cp.setUI(new CleanSplitPaneUI());
 
-		Vector colNames = new Vector();
+		Vector<String> colNames = new Vector<String>();
 		colNames.add(Messages.getString("ScriptSearchDialog.TableColumn.Script"));
 		colNames.add(Messages.getString("ScriptSearchDialog.TableColumn.Rating"));
 		colNames.add(Messages.getString("ScriptSearchDialog.TableColumn.Author"));
+		colNames.add(Messages.getString("ScriptSearchDialog.TableColumn.Tags"));
+		colNames.add(Messages.getString("ScriptSearchDialog.TableColumn.StartedDate"));
 
 		model = new FilterableTableModel(colNames, 0) {
 			@Override
-			public Class getColumnClass(int colIndex) {
+			public Class<?> getColumnClass(int colIndex) {
 				switch (colIndex) {
+					case 0:
+						return ScriptInfo.class;
 					case 1:
 						return Integer.class;
 					default:
@@ -360,13 +375,15 @@ class ScriptSearchDialog extends EscapableDialog {
 		};
 		model.addFilterColumn(0);
 		model.addFilterColumn(2);
-		for (Iterator i=scripts.iterator(); i.hasNext(); ) {
-			ScriptInfo script = (ScriptInfo)i.next();
-			Vector row = new Vector();
+		model.addFilterColumn(3);
+		model.addFilterColumn(4);
+		for (ScriptInfo script : scripts) {
+			Vector<Object> row = new Vector<Object>();
 			row.add(script);
-			// TODO: Integer.valueOf(int) or whatever when move to Java 5+
-			row.add(new Integer(script.getRating()));
+			row.add(Integer.valueOf(script.getRating()));
 			row.add(script.getAuthor());
+			row.add(ZScriptUIUtils.prettyPrint(script.getSearchTags()));
+			row.add(script.getDateCreated());
 			model.addRow(row);
 		}
 
@@ -375,7 +392,7 @@ class ScriptSearchDialog extends EscapableDialog {
 		RScrollPane sp = new RScrollPane(table);
 		JPanel temp = new JPanel(new BorderLayout());
 		temp.add(sp);
-		cp.add(temp, BorderLayout.LINE_START);
+		cp.setLeftComponent(temp);
 		if (getComponentOrientation().isLeftToRight()) {
 			temp.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 10));
 		}
@@ -383,20 +400,26 @@ class ScriptSearchDialog extends EscapableDialog {
 			temp.setBorder(BorderFactory.createEmptyBorder(0, 10, 0, 0));
 		}
 
-		Box descPanel = Box.createVerticalBox();
-		descPanel.add(createScriptDetailsPanel());
-		descPanel.add(Box.createVerticalStrut(5));
-		scriptTextArea = new RSyntaxTextArea(30, 80);
+		JPanel descPanel = new JPanel(new BorderLayout(0, 5));
+		descPanel.add(createScriptDetailsPanel(), BorderLayout.NORTH);
+		scriptTextArea = new RSyntaxTextArea();//30, 80);
 		scriptTextArea.setSyntaxEditingStyle(Plugin.SYNTAX_STYLE_ZSCRIPT);
 		scriptTextArea.setCodeFoldingEnabled(true);
 		scriptTextArea.setEditable(false);
+		//scriptTextArea.setUseSelectedTextColor(true);
 		descPanel.add(new RTextScrollPane(scriptTextArea));
-		descPanel.add(Box.createVerticalGlue());
-		cp.add(descPanel);
+		cp.setRightComponent(descPanel);
 
 		replaceMainContentWith(cp);
 		setChildrenEnabled(filterPanel, true);
-		pack();
+		Dimension size = getPreferredSize();
+		if (size.width<1024) {
+			size.width = 1024;
+		}
+		setSize(size);
+		//pack();
+
+		new ScriptRatingFetcher(scripts).start();
 
 	}
 
@@ -507,6 +530,8 @@ class ScriptSearchDialog extends EscapableDialog {
 	private class Listener implements ActionListener, DocumentListener,
 			ListSelectionListener, HyperlinkListener {
 
+		private int lastSelectedIndex = -1;
+
 		public void actionPerformed(ActionEvent e) {
 
 			String command = e.getActionCommand();
@@ -529,6 +554,12 @@ class ScriptSearchDialog extends EscapableDialog {
 		public void hyperlinkUpdate(HyperlinkEvent e) {
 			if (e.getEventType()==HyperlinkEvent.EventType.ACTIVATED) {
 				URL url = e.getURL();
+				if (url==null) {
+					String msg = Messages.getString("SearchScriptDialog.Error.NotImplemented");
+					String title = Messages.getString("Error.DialogTitle");
+					JOptionPane.showMessageDialog(ScriptSearchDialog.this, msg,
+							title, JOptionPane.ERROR_MESSAGE);
+				}
 				UIUtil.browse(url.toString());
 			}
 		}
@@ -548,7 +579,10 @@ class ScriptSearchDialog extends EscapableDialog {
 				int index = table.getSelectedRow();
 				ScriptInfo selected = index==-1 ? null :
 					(ScriptInfo)table.getValueAt(index, 0);
-				refreshScriptInfo(selected);
+				if (selected!=null && index!=lastSelectedIndex) {
+					lastSelectedIndex = index;
+					refreshScriptInfo(selected);
+				}
 			}
 		}
 
@@ -580,11 +614,27 @@ class ScriptSearchDialog extends EscapableDialog {
 	    }
 
 		private void loadIcons() {
+
+			Icon star = new ImageIcon(getClass().getResource("star.png"));
+			Icon starOff = new ImageIcon(getClass().getResource("star_off.png"));
+
+			int width = 16*5 + 2*4;
+			int height = 16;
 			icons = new Icon[6];
 			for (int i=0; i<icons.length; i++) {
-				URL url = getClass().getResource("rating" + i + ".png");
-				icons[i] = new ImageIcon(url);
+				BufferedImage img = new BufferedImage(width, height,
+						BufferedImage.TYPE_INT_ARGB);
+				Graphics2D g = img.createGraphics();
+				for (int j=0; j<i; j++) {
+					star.paintIcon(null, g, j*(16+2), 0);
+				}
+				for (int j=i; j<icons.length; j++) {
+					starOff.paintIcon(null, g, j*(16+2), 0);
+				}
+				g.dispose();
+				icons[i] = new ImageIcon(img);
 			}
+
 		}
 
 	}
@@ -618,7 +668,11 @@ class ScriptSearchDialog extends EscapableDialog {
 			if (result instanceof Throwable) {
 				displayError((Throwable)result);
 			}
-			scriptListLoaded((List)result);
+			else {
+				@SuppressWarnings("unchecked")
+				List<ScriptInfo> result2 = (List<ScriptInfo>)result;
+				scriptListLoaded(result2);
+			}
 		}
 
 	}
@@ -644,6 +698,53 @@ class ScriptSearchDialog extends EscapableDialog {
 		@Override
 		public void finished() {
 			scriptContentLoaded(scriptToLoad);
+		}
+
+	}
+
+
+	private class ScriptRatingFetcher extends Thread {
+
+		private List<ScriptInfo> scripts;
+
+		private ScriptRatingFetcher(List<ScriptInfo> scripts) {
+			this.scripts = scripts;
+		}
+
+		@Override
+		public void run() {
+			for (ScriptInfo script : scripts) {
+				int rating = ScriptScraper.fetchRating(script);
+				if (rating>-1) {
+					updateRating(script, rating);
+					try {
+						Thread.sleep(100);
+					} catch (InterruptedException ie) {
+						ie.printStackTrace();
+					}
+				}
+			}
+		}
+
+		private void updateRating(final ScriptInfo script, final int rating) {
+			//System.out.println(script + ": " + rating);
+			SwingUtilities.invokeLater(new Runnable() {
+				public void run() {
+					script.setRating(rating);
+					for (int row=0; row<model.getRowCount(); row++) {
+						ScriptInfo s2 = (ScriptInfo)model.getValueAt(row, 0);
+						if (s2.equals(script)) {
+							// Note JTable drops its selection when
+							// DefaultTableModel.setValueAt() is called
+							int selection = table.getSelectedRow();
+							model.setValueAt(rating, row, 1);
+							table.getSelectionModel().setSelectionInterval(
+									selection, selection);
+							break;
+						}
+					}
+				}
+			});
 		}
 
 	}

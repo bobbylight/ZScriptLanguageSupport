@@ -6,7 +6,6 @@
  */
 package org.fife.rsta.zscript;
 
-import java.util.Iterator;
 import java.util.List;
 
 import org.fife.rsta.zscript.ast.VariableDecNode;
@@ -42,9 +41,8 @@ public class ZScriptUtils {
 		// TODO: Check for '(' token and check for matching function first?
 
 		// Find matching variable declaration in "deepest" scope.
-		List varList = grabber.getVariableList();
-		for (Iterator i=varList.iterator(); i.hasNext(); ) {
-			VariableDecNode vdn = (VariableDecNode)i.next();
+		List<VariableDecNode> varList = grabber.getVariableList();
+		for (VariableDecNode vdn : varList) {
 			if (varName.equals(vdn.getName())) {
 				varDec = vdn;
 				break;

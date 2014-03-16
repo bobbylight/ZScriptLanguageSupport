@@ -6,7 +6,6 @@
  */
 package org.fife.rsta.zscript.ast;
 
-import java.util.Iterator;
 import java.util.List;
 
 
@@ -22,9 +21,8 @@ public class ZScriptAst {
 
 
 	public BodiedNode getDeepestBodiedNodeContaining(int offs) {
-		List members = root.getAllMembers();
-		for (Iterator i=members.iterator(); i.hasNext(); ) {
-			MemberNode member = (MemberNode)i.next();
+		List<MemberNode> members = root.getAllMembers();
+		for (MemberNode member : members) {
 			if (member instanceof BodiedNode) {
 				BodiedNode bn = (BodiedNode)member;
 				if (bn.bodyContainsOffset(offs)) {

@@ -7,6 +7,8 @@
  */
 package org.fife.rsta.zscript.rtext;
 
+import java.util.Set;
+
 
 /**
  * Information about a script on PureZC.
@@ -14,7 +16,7 @@ package org.fife.rsta.zscript.rtext;
  * @author Robert Futrell
  * @version 1.0
  */
-class ScriptInfo implements Comparable {
+class ScriptInfo implements Comparable<ScriptInfo> {
 
 	private ScriptScraper parent;
 	private String id;
@@ -22,6 +24,8 @@ class ScriptInfo implements Comparable {
 	private String author;
 	private int authorId;
 	private int rating;
+	private String dateCreated;
+	private Set<String> searchTags;
 	private String content;
 
 
@@ -30,21 +34,20 @@ class ScriptInfo implements Comparable {
 	}
 
 
-	public int compareTo(Object o) {
-		if (o instanceof ScriptInfo) {
-			ScriptInfo script2 = (ScriptInfo)o;
+	public int compareTo(ScriptInfo script2) {
+		if (script2!=null) {
 			// Note that id is probably a more logical thing to compare, but
 			// script (forum topic) names are always unique also, and that's
 			// what we want to sort on in the table in the UI, so...
-			return getName().compareTo(script2.getName());
+			return getName().compareToIgnoreCase(script2.getName());
 		}
-		return -1;
+		return 1;
 	}
 
 
 	@Override
 	public boolean equals(Object o) {
-		return compareTo(o)==0;
+		return (o instanceof ScriptInfo) && compareTo((ScriptInfo)o)==0;
 	}
 
 
@@ -83,8 +86,18 @@ class ScriptInfo implements Comparable {
 	}
 
 
+	public String getDateCreated() {
+		return dateCreated;
+	}
+
+
 	public String getId() {
 		return id;
+	}
+
+
+	public Set<String> getSearchTags() {
+		return searchTags;
 	}
 
 
@@ -110,6 +123,11 @@ class ScriptInfo implements Comparable {
 	}
 
 
+	public void setDateCreated(String dateCreated) {
+		this.dateCreated = dateCreated;
+	}
+
+
 	public void setRating(int rating) {
 		this.rating = rating;
 	}
@@ -125,6 +143,11 @@ class ScriptInfo implements Comparable {
 	}
 
 
+	public void setSearchTags(Set<String> searchTags) {
+		this.searchTags = searchTags;
+	}
+
+
 	/**
 	 * Returns the name of this script, so that the cell renderer and filter
 	 * behave properly.
@@ -133,7 +156,36 @@ class ScriptInfo implements Comparable {
 	 */
 	@Override
 	public String toString() {
-		return getName();
+		return toString(false);
+	}
+
+
+	public String toString(boolean detailed) {
+
+		if (!detailed) {
+			return getName();
+		}
+
+		StringBuilder sb = new StringBuilder("[ScriptInfo: ").
+			append("name=").append(getName()).
+			append(", id=").append(getId()).
+			append(", author=").append(getAuthor());
+
+		if (searchTags!=null && !searchTags.isEmpty()) {
+			sb.append(", tags=");
+			int i = 0;
+			for (String searchTag : searchTags) {
+				sb.append(searchTag);
+				if (i<searchTags.size()-1) {
+					sb.append(",");
+				}
+				i++;
+			}
+		}
+
+		sb.append("]");
+		return sb.toString();
+
 	}
 
 

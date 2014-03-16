@@ -27,11 +27,10 @@ public class ZScriptFunctionCompletion extends FunctionCompletion {
 
 		this(provider, node.getName(), node.getType());
 
-		List args = node.getArguments();
-		if (args.size()>0) {
-			List params = new ArrayList(args.size());
-			for (int i=0; i<args.size(); i++) {
-				VariableDecNode arg = (VariableDecNode)args.get(i);
+		List<VariableDecNode> args = node.getArguments();
+		if (!args.isEmpty()) {
+			List<Parameter> params = new ArrayList<Parameter>(args.size());
+			for (VariableDecNode arg : args) {
 				params.add(new Parameter(arg.getType(), arg.getName()));
 			}
 			setParams(params);

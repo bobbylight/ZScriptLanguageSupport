@@ -18,12 +18,12 @@ public class ZScriptParseResult {
 
 	private Parser parser;
 	private ZScriptAst ast;
-	private List notices;
+	private List<ParserNotice> notices;
 
 
 	public ZScriptParseResult(Parser parser) {
 		this.parser = parser;
-		notices = new ArrayList();
+		notices = new ArrayList<ParserNotice>();
 	}
 
 
@@ -45,7 +45,7 @@ public class ZScriptParseResult {
 	}
 
 
-	public List getNotices() {
+	public List<ParserNotice> getNotices() {
 		return notices;
 	}
 

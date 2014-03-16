@@ -308,7 +308,11 @@ public class AstFactory implements TokenTypes {
 
 			t = scanner.yylexNonNull(SEPARATOR_RPAREN, SEPARATOR_COMMA, "')' or ',' expected");
 			if (t.getType()==SEPARATOR_COMMA) {
+				Token comma = t;
 				t = scanner.yylexNonNull("Unexpected end of file");
+				if (t.isType(SEPARATOR_RPAREN)) {
+					result.addNotice(comma, "Unnecessary comma");
+				}
 			}
 
 		}

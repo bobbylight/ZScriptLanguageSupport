@@ -290,13 +290,13 @@ public class ZScriptOutlineTree extends AbstractSourceTree {
 
 		private ZScriptTreeNode treeRoot;
 		private ZScriptTreeNode importRoot;
-		private Stack functionContainers;
-		private Stack variableContainers;
+		private Stack<ZScriptTreeNode> functionContainers;
+		private Stack<ZScriptTreeNode> variableContainers;
 
 		public NodeGenerator(ZScriptTreeNode treeRoot) {
 			this.treeRoot = treeRoot;
-			functionContainers = new Stack();
-			variableContainers = new Stack();
+			functionContainers = new Stack<ZScriptTreeNode>();
+			variableContainers = new Stack<ZScriptTreeNode>();
 		}
 
 		public void generate(ZScriptAst ast) {
@@ -304,11 +304,11 @@ public class ZScriptOutlineTree extends AbstractSourceTree {
 		}
 
 		public ZScriptTreeNode getFunctionContainer() {
-			return (ZScriptTreeNode)functionContainers.peek();
+			return functionContainers.peek();
 		}
 
 		public ZScriptTreeNode getVariableContainer() {
-			return (ZScriptTreeNode)variableContainers.peek();
+			return variableContainers.peek();
 		}
 
 		public void postVisit(CodeBlock block) {}
@@ -338,8 +338,8 @@ public class ZScriptOutlineTree extends AbstractSourceTree {
 
 		public void postVisit(WhileNode whileNode) {}
 
-		private void popAndVerify(String type, Stack stack, Object top) {
-			ZScriptTreeNode node = (ZScriptTreeNode)stack.pop();
+		private void popAndVerify(String type, Stack<ZScriptTreeNode> stack, Object top) {
+			ZScriptTreeNode node = stack.pop();
 			if (node.getNode()!=top) {
 				throw new InternalError(type + " stack: " + top + " not on top!");
 			}

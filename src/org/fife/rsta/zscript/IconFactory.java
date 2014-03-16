@@ -35,14 +35,14 @@ public class IconFactory {
 	public static final String ERROR_ICON				= "errorIcon";
 	public static final String WARNING_ICON				= "warningIcon";
 
-	private Map iconMap;
+	private Map<String, Icon> iconMap;
 
 	private static final IconFactory INSTANCE = new IconFactory();
 
 
 	private IconFactory() {
 
-		iconMap = new HashMap();
+		iconMap = new HashMap<String, Icon>();
 		iconMap.put(SOURCE_FILE_ICON, loadIcon("jcu_obj.gif"));
 		iconMap.put(IMPORT_ROOT_ICON, loadIcon("impc_obj.gif"));
 		iconMap.put(IMPORT_ICON, loadIcon("imp_obj.gif"));
@@ -65,7 +65,7 @@ public class IconFactory {
 
 
 	public Icon getIcon(String key) {
-		return (Icon)iconMap.get(key);
+		return iconMap.get(key);
 	}
 
 

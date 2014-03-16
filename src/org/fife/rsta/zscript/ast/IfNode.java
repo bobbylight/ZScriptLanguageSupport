@@ -14,7 +14,7 @@ import org.fife.rsta.zscript.IconFactory.IconData;
  */
 public class IfNode extends AbstractCodeBlockStatementNode {
 
-	private List elseNodes;
+	private List<ElseNode> elseNodes;
 
 
 	public IfNode(Position start) {
@@ -46,14 +46,14 @@ public class IfNode extends AbstractCodeBlockStatementNode {
 
 	public void addElse(ElseNode elseNode) {
 		if (elseNodes==null) {
-			elseNodes = new ArrayList();
+			elseNodes = new ArrayList<ElseNode>();
 		}
 		elseNodes.add(elseNode);
 	}
 
 
 	public ElseNode getElseNode(int index) {
-		return (ElseNode)elseNodes.get(index);
+		return elseNodes.get(index);
 	}
 
 

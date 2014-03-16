@@ -102,7 +102,7 @@ class ZScriptLinkGenerator implements LinkGenerator {
 					// Common case - user had it all on one line, e.g.
 					// "Link->PressA"
 					if (prev2!=null) {
-						System.out.println("Common case!");
+						//System.out.println("Common case!");
 						return prev2;
 					}
 
@@ -152,7 +152,7 @@ if (isGlobalVariable(parent.getLexeme())) {
 	searchFor = "namespace " + parent.getLexeme();
 }
 else if ("lweapon".equalsIgnoreCase(searchFor) || "eweapon".equalsIgnoreCase(searchFor)) {
-	searchFor = null;//"Weapon Functions and Variables";
+	//searchFor = null;//"Weapon Functions and Variables";
 }
 return new OpenBuiltInStuffLinkGeneratorResult(textArea, main.getOffset(), searchFor);
 	}

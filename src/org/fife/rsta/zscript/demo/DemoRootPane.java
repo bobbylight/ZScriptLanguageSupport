@@ -199,6 +199,10 @@ public class DemoRootPane extends JRootPane implements SyntaxConstants,
 		cbItem = new JCheckBoxMenuItem(new TabLinesAction());
 		menu.add(cbItem);
 		mb.add(menu);
+		menu.addSeparator();
+		cbItem = new JCheckBoxMenuItem(new AutoActivationAction());
+		cbItem.setSelected(true);
+		menu.add(cbItem);
 
 		menu = new JMenu("Help");
 		menu.setMnemonic('H');
@@ -538,6 +542,21 @@ public class DemoRootPane extends JRootPane implements SyntaxConstants,
 				version += " build " + buildDate;
 			}
 			return version;
+		}
+
+	}
+
+
+	private class AutoActivationAction extends AbstractAction {
+
+		public AutoActivationAction() {
+			putValue(NAME, "Automatically show completions after typing \"->\"");
+		}
+
+		public void actionPerformed(ActionEvent e) {
+			LanguageSupport ls = LanguageSupportFactory.get().getSupportFor("text/zscript");
+			ZScriptLanguageSupport zsls = (ZScriptLanguageSupport)ls;
+			zsls.setAutoActivationEnabled(!zsls.isAutoActivationEnabled());
 		}
 
 	}

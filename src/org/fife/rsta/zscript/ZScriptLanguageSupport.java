@@ -48,7 +48,7 @@ public class ZScriptLanguageSupport extends AbstractLanguageSupport {
 	/**
 	 * Maps parsers to <code>Info</code> instances about them.
 	 */
-	private Map parserToInfoMap;
+	private Map<ZScriptParser, Info> parserToInfoMap;
 
 	private DocDisplayer docDisplayer;
 
@@ -58,7 +58,7 @@ public class ZScriptLanguageSupport extends AbstractLanguageSupport {
 		setShowDescWindow(true);
 		setAutoActivationEnabled(true);
 		setAutoActivationDelay(0);
-		parserToInfoMap = new HashMap();
+		parserToInfoMap = new HashMap<ZScriptParser, Info>();
 	}
 
 
@@ -181,7 +181,7 @@ public class ZScriptLanguageSupport extends AbstractLanguageSupport {
 		uninstallImpl(textArea);
 
 		ZScriptParser parser = getParser(textArea);
-		Info info = (Info)parserToInfoMap.remove(parser);
+		Info info = parserToInfoMap.remove(parser);
 		if (info!=null) { // Should always be true
 			parser.removePropertyChangeListener(
 					ZScriptParser.PROPERTY_AST, info);

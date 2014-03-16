@@ -122,9 +122,9 @@ public class AstPrinter implements ZScriptAstVisitor {
 
 		StringBuffer sb = new StringBuffer(functionDec.getType());
 		sb.append(' ').append(functionDec.getName()).append('(');
-		List args = functionDec.getArguments();
+		List<VariableDecNode> args = functionDec.getArguments();
 		for (int i=0; i<args.size(); i++) {
-			VariableDecNode arg = (VariableDecNode)args.get(i);
+			VariableDecNode arg = args.get(i);
 			sb.append(arg.getType()).append(' ').append(arg.getName());
 			if (i<args.size()-1) {
 				sb.append(", ");

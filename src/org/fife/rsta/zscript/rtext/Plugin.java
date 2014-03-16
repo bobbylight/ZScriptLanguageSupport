@@ -53,7 +53,7 @@ public class Plugin extends GUIPlugin {
 	 */
 	public static final String SYNTAX_STYLE_ZSCRIPT = "text/zscript";
 
-	private static final String PLUGIN_VERSION = "2.0.5.1";
+	private static final String PLUGIN_VERSION = "2.5.2";
 
 	private static final String ICON = "/org/fife/rsta/zscript/img/link.png";
 	private static final String VIEW_ZSCRIPT_DOCKED_WIDNOW_ACTION =

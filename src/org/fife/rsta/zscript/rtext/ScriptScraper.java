@@ -14,9 +14,9 @@ import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
+import java.util.Set;
+import java.util.TreeSet;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -29,37 +29,11 @@ import java.util.regex.Pattern;
  */
 class ScriptScraper {
 
-	public static final String SITE = "http://www.purezc.com/";
+	public static final String SITE = "http://www.purezc.net/";
 	public static final String FORUM = SITE + "forums/index.php?showforum=179";
 
-	private Map<String, String> replacementMap;
-
-	private static final Pattern HTML_BR = Pattern.compile("<[bB][rR]\\s*/?>");
-	private static final Pattern HTML_COMMENT = Pattern.compile("<!--.*?-->", Pattern.DOTALL);
-	private static final Pattern HTML_ESCAPE = Pattern.compile("&([^;]+);");
-
-
-	public ScriptScraper() {
-		replacementMap = createReplacementMap();
-	}
-
-
-	/**
-	 * Returns a map from common HTML escapes to their characters.
-	 *
-	 * @return The map.
-	 */
-	private Map<String, String> createReplacementMap() {
-		Map<String, String> map = new HashMap<String, String>();
-		map.put("nbsp", " ");
-		map.put("amp",  "&");
-		map.put("lt",   "<");
-		map.put("gt",   ">");
-		map.put("quot", "\"");
-		map.put("euro", "\u20ac");
-		map.put("copy", "\u00a9");
-		return map;
-	}
+//	private static final Pattern HTML_BR = Pattern.compile("<[bB][rR]\\s*/?>");
+//	private static final Pattern HTML_COMMENT = Pattern.compile("<!--.*?-->", Pattern.DOTALL);
 
 
 	/**
@@ -104,7 +78,7 @@ class ScriptScraper {
 
 
 	private int getPageCount(String content) {
-		Pattern pageCountP = Pattern.compile(">(\\d+) Pages\\s*<img");
+		Pattern pageCountP = Pattern.compile("<a href='#'>Page 1 of (\\d+)\\s*<!--");
 		Matcher m = pageCountP.matcher(content);
 		if (m.find()) {
 			return Integer.parseInt(m.group(1));
@@ -116,7 +90,7 @@ class ScriptScraper {
 	private int getPinnedPostCount(String content) {
 		int count = 0;
 		int index = 0;
-		final String lookFor = "<strong>Pinned: </strong>";
+		final String lookFor = "'>Pinned</span>";
 		while ((index=content.indexOf(lookFor, index))>-1) {
 			count++;
 			index += lookFor.length();
@@ -147,58 +121,87 @@ class ScriptScraper {
 	public List<ScriptInfo> getScripts() throws IOException {
 
 		List<ScriptInfo> scripts = new ArrayList<ScriptInfo>();
+		boolean loggedIn = false; // TODO
 
 		String content = getPageContent(FORUM);
 		int pageCount = getPageCount(content);
 		int pinnedPostCount = getPinnedPostCount(content);
-		content = content.substring(content.indexOf("Forum Topics"));
+		content = content.substring(content.indexOf("<!-- BEGIN TOPICS -->"));
 
 		Pattern ratingP = Pattern.compile(SITE + "Images/rating(\\d)\\.png");
-		Pattern titleP = Pattern.compile("This topic was started: [^>]+>([^<]+)</a></span>");
-		Pattern authorP = Pattern.compile("showuser=(\\d+)'>([^<]+)</a></td>");
+		Pattern nameP = Pattern.compile("<span itemprop=\"name\">([^<]+)</span>");
+		Pattern dateCreatedP = Pattern.compile("dateCreated\">([^<]+)</span>");
+		Pattern authorP = null;
+		if (loggedIn) {
+			// If logged in, we can get the user name and ID to link to their profile page
+			authorP = Pattern.compile("showuser=(\\d+)' title='View Profile'><span itemprop=\"name\">([^<]+)</span>");
+		}
+		else {
+			authorP = Pattern.compile("Started by[\\s\\r\\n]+([^\\s\\r\\n].+[^\\s\\r\\n])[\\s\\r\\n]+, <span");
+		}
+		Pattern searchTagsP = Pattern.compile("search_tags=([^&]+)&amp;search_app=forums");
 
-		Pattern p = Pattern.compile("Begin Topic Entry (\\d+) \\-\\->(.+)<!\\-\\- End Topic Entry \\1", Pattern.DOTALL);
-
+		Pattern p = Pattern.compile("data-tid=\"(\\d+)\">(.+?)<!\\-\\-<tr itemscope itemtype=", Pattern.DOTALL);
 		int page = 0;
+
 		// Pinned posts are all on the first page, and count towards the total
 		// number of posts on a page.
-		int itemsPerPage = pinnedPostCount;
 		while (page < pageCount) {
 
 			Matcher m = p.matcher(content);
+
+			// Skip the pinned topics on the first page
+			if (page==0) {
+				for (int i=0; i<pinnedPostCount; i++) {
+					m.find();
+				}
+			}
 
 			while (m.find()) {
 
 				String id = m.group(1);
 				String temp = m.group(2);
-				Matcher titleM = titleP.matcher(temp);
-				String title = titleM.find() ? titleM.group(1) : "No title found!";
+				Matcher dateCreatedM = dateCreatedP.matcher(temp);
+				String dateCreated = dateCreatedM.find() ? dateCreatedM.group(1) : "";
 				String author = null;
 				int authorId = 0;
 				Matcher authorM = authorP.matcher(temp);
 				if (authorM.find()) {
-					authorId = Integer.parseInt(authorM.group(1));
-					author = authorM.group(2);
+					if (loggedIn) {
+						authorId = Integer.parseInt(authorM.group(1));
+						author = authorM.group(2);
+					}
+					else {
+						author = authorM.group(1);
+					}
 				}
 				Matcher ratingM = ratingP.matcher(temp);
 				int rating = ratingM.find() ? Integer.parseInt(ratingM.group(1)) : -1;
+				Matcher nameM = nameP.matcher(temp);
+				String name = nameM.find() ? nameM.group(1) :
+					Messages.getString("ScriptSearchDialog.Unknown");
+				name = ZScriptUIUtils.replaceEntities(name);
+
+				Set<String> searchTags = new TreeSet<String>();
+				Matcher searchTagM = searchTagsP.matcher(temp);
+				while (searchTagM.find()) {
+					searchTags.add(searchTagM.group(1));
+				}
 
 				ScriptInfo info = new ScriptInfo(this);
 				info.setAuthor(authorId, author);
 				info.setId(id);
-				info.setName(title);
+				info.setName(name);
+				info.setDateCreated(dateCreated);
 				info.setRating(rating);
+				info.setSearchTags(searchTags);
 				scripts.add(info);
-
-				if (page==0) {
-					itemsPerPage++;
-				}
 
 			}
 
 			page++;
 			if (page<pageCount) {
-				String url = FORUM + "&st=" + (itemsPerPage*page);
+				String url = FORUM + "&page=" + (page+1);
 				//System.out.println("DEBUG: " + url + ": Fetching page " + (page+1) + " of " + pageCount);
 				content = getPageContent(url);
 			}
@@ -233,56 +236,61 @@ class ScriptScraper {
 			return;
 		}
 
-		final String startString = "<div class='codemain'>";
-		int start = content.indexOf(startString);
-		if (start==-1) {
-			info.setContent("startString not found: " + startString);
+		String pattern = "<pre class=['\"]prettyprint(?:\\s+(?:lang\\-auto\\s+)?linenums:0)?['\"]>([^<]+)</pre>";
+		Pattern p = Pattern.compile(pattern, Pattern.DOTALL);
+		Matcher m = p.matcher(content);
+		if (!m.find()) {
+			info.setContent("// " + Messages.getString("SearchScriptDialog.SourceNotFound") + 
+					"\n// (Content regex not found: " + pattern + ")");
 			return;
 		}
 
-		final String endString = "</div>";
-		int end = content.indexOf(endString, start);
-		String script = content.substring(start+startString.length(), end);
+		String script = m.group(1);
 
 		// Regexes for manipulating HTML, argh!!
 
 		// Replace escapes with the actual chars
-		Matcher m = HTML_ESCAPE.matcher(script);
-		StringBuffer sb = new StringBuffer();
-		while (m.find()) {
-			String escape = m.group(1);
-			String replacement = null;
-			if (escape.charAt(0)=='#') {
-				try {
-					int value = Integer.parseInt(escape.substring(1));
-					replacement = Character.toString((char)value);
-				} catch (NumberFormatException nfe) {
-					replacement = m.group(0);
-				}
-			}
-			else {
-				replacement = (String)replacementMap.get(escape);
-				if (replacement==null) { // ???
-					replacement = m.group(0);
-				}
-			}
-			// PureZC escapes backslashes as &#092;
-			replacement = replacement.replaceAll("\\\\", "\\\\\\\\");
-			m.appendReplacement(sb, replacement);
+		script = ZScriptUIUtils.replaceEntities(script);
+
+//		// Replace line breaks with newlines
+//		m = HTML_BR.matcher(script);
+//		script = m.replaceAll("\n");
+//
+//		// Remove HTML comments
+//		m = HTML_COMMENT.matcher(script);
+//		script = m.replaceAll("");
+
+		info.setContent(script.trim());
+
+	}
+
+
+	public static final int fetchRating(ScriptInfo script) {
+
+		String address = script.getScriptAddress();
+		String content = null;
+		try {
+			content = getPageContent(address);
+		} catch (IOException ioe) {
+			ioe.printStackTrace();
+			return -1;
 		}
-		m.appendTail(sb);
-		script = sb.toString();
 
-		// Replace line breaks with newlines
-		m = HTML_BR.matcher(script);
-		script = m.replaceAll("\n");
+		Pattern p = Pattern.compile("<meta itemprop=['\"]ratingValue['\"] content=['\"](\\d+)['\"]\\s*/>");
+		Matcher m = p.matcher(content);
+		return m.find() ? Integer.parseInt(m.group(1)) : -1;
 
-		// Remove HTML comments
-		m = HTML_COMMENT.matcher(script);
-		script = m.replaceAll("");
+	}
 
-		info.setContent(script);
 
+	/**
+	 * For testing purposes.
+	 */
+	public static void main(String[] args) throws IOException {
+		List<ScriptInfo> scripts = new ScriptScraper().getScripts();
+		for (ScriptInfo script : scripts) {
+			System.out.println(script.toString(true));
+		}
 	}
 
 

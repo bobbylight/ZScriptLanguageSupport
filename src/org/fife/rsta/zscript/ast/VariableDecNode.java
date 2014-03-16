@@ -32,7 +32,7 @@ import org.fife.rsta.zscript.IconFactory.IconData;
  * @version 1.0
  *
  */
-public class VariableDecNode extends MemberNode implements StatementNode, Comparable {
+public class VariableDecNode extends MemberNode implements StatementNode {
 
 	private CodeBlock parentBlock;
 	private boolean constant;

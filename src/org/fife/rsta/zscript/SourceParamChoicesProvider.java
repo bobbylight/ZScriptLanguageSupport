@@ -8,7 +8,6 @@ package org.fife.rsta.zscript;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import javax.swing.text.JTextComponent;
@@ -37,7 +36,7 @@ public class SourceParamChoicesProvider implements ParameterChoicesProvider {
 
 	private CompletionProvider provider;
 
-	private static final Map constantValueMap;
+	private static final Map<String, List<Completion>> constantValueMap;
 
 
 	public SourceParamChoicesProvider(CompletionProvider provider) {
@@ -45,7 +44,7 @@ public class SourceParamChoicesProvider implements ParameterChoicesProvider {
 	}
 
 
-	public List getParameterChoices(JTextComponent tc, Parameter param) {
+	public List<Completion> getParameterChoices(JTextComponent tc, Parameter param) {
 
 		String type = param.getType();
 		if (type==null) { // e.g. a template
@@ -66,20 +65,19 @@ public class SourceParamChoicesProvider implements ParameterChoicesProvider {
 		}
 		RootNode root = ast.getRootNode();
 
-		List choices = new ArrayList();
+		List<Completion> choices = new ArrayList<Completion>();
 
 		int dot = textArea.getCaretPosition();
 		VariablesInScopeGrabber grabber = new VariablesInScopeGrabber(dot);
 		root.accept(grabber);
-		List vars = grabber.getVariableList();
-		for (Iterator i=vars.iterator(); i.hasNext(); ) {
-			VariableDecNode varDec = (VariableDecNode)i.next();
+		List<VariableDecNode> vars = grabber.getVariableList();
+		for (VariableDecNode varDec : vars) {
 			if (type.equals(varDec.getType())) {
 				choices.add(new ZScriptVariableCompletion(provider, varDec));
 			}
 		}
 
-		List constants = (List)constantValueMap.get(type);
+		List<Completion> constants = constantValueMap.get(type);
 		if (constants!=null) {
 			choices.addAll(constants);
 		}
@@ -107,15 +105,15 @@ public class SourceParamChoicesProvider implements ParameterChoicesProvider {
 	 */
 	static {
 
-		constantValueMap = new HashMap();
+		constantValueMap = new HashMap<String, List<Completion>>();
 
-		List completions = new ArrayList();
+		List<Completion> completions = new ArrayList<Completion>();
 		Completion ZERO = createConstantCompletion("0");
 		completions.add(ZERO);
 		constantValueMap.put("int", completions);
 		constantValueMap.put("float", completions);
 
-		completions = new ArrayList();
+		completions = new ArrayList<Completion>();
 		completions.add(createConstantCompletion("false")); 
 		completions.add(createConstantCompletion("true"));
 		constantValueMap.put("bool", completions);

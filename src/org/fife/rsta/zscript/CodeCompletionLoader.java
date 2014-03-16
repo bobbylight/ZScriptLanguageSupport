@@ -60,11 +60,11 @@ public class CodeCompletionLoader {
 								CompletionProvider p) throws IOException {
 
 		String sig = getNextSignature(r);
-		List params = null;
+		List<Parameter> params = null;
 		int lparen = sig.indexOf('(');
 		int rparen = sig.indexOf(')');
 		if (rparen>lparen+1) {
-			params = new ArrayList();
+			params = new ArrayList<Parameter>();
 			String[] args = sig.substring(lparen+1, sig.indexOf(')')).split(",\\s+");
 			for (int i=0; i<args.length; i++) {
 				int lastSpace = args[i].lastIndexOf(' ');
@@ -108,11 +108,11 @@ public class CodeCompletionLoader {
 					throws IOException {
 
 		String sig = getNextSignature(r);
-		List params = null;
+		List<Parameter> params = null;
 		int lparen = sig.indexOf('(');
 		int rparen = sig.indexOf(')');
 		if (rparen > lparen + 1) {
-			params = new ArrayList();
+			params = new ArrayList<Parameter>();
 			String[] args = sig.substring(lparen + 1, sig.indexOf(')')).
 					trim().split(",\\s+");
 			for (int i = 0; i < args.length; i++) {
@@ -196,7 +196,7 @@ if (lastSpace==-1) {
 		try {
 
 			// Global functions
-			TreeSet globalFunctions = new TreeSet();
+			TreeSet<FunctionCompletion> globalFunctions = new TreeSet<FunctionCompletion>();
 			do {
 				line = r.readLine();
 			} while (!line.startsWith("--- Global Functions"));
@@ -209,7 +209,7 @@ if (lastSpace==-1) {
 			p.setGlobalFunctions(globalFunctions);
 
 			// FFC stuff
-			TreeSet members = new TreeSet();
+			TreeSet<Completion> members = new TreeSet<Completion>();
 			do {
 				Completion c = getMethodOrPropertyCompletion(r, p, "ffc");
 				members.add(c);
@@ -217,7 +217,7 @@ if (lastSpace==-1) {
 			p.setGlobalVariableMembers("ffc", members);
 
 			// Link stuff
-			members = new TreeSet();
+			members = new TreeSet<Completion>();
 			do {
 				Completion c = getMethodOrPropertyCompletion(r, p, "Link");
 				members.add(c);
@@ -225,7 +225,7 @@ if (lastSpace==-1) {
 			p.setGlobalVariableMembers("Link", members);
 
 			// Screen stuff
-			members = new TreeSet();
+			members = new TreeSet<Completion>();
 			do {
 				Completion c = getMethodOrPropertyCompletion(r, p, "Screen");
 				members.add(c);
@@ -233,7 +233,7 @@ if (lastSpace==-1) {
 			p.setGlobalVariableMembers("Screen", members);
 
 			// Item stuff
-			members = new TreeSet();
+			members = new TreeSet<Completion>();
 			do {
 				Completion c = getMethodOrPropertyCompletion(r, p, "item");
 				members.add(c);
@@ -241,7 +241,7 @@ if (lastSpace==-1) {
 			p.setGlobalVariableMembers("item", members);
 
 			// Weapon stuff (lweapon and eweapon)
-			members = new TreeSet();
+			members = new TreeSet<Completion>();
 			do {
 				Completion c = getMethodOrPropertyCompletion(r, p, "*weapon");
 				members.add(c);
@@ -251,7 +251,7 @@ if (lastSpace==-1) {
 
 			// Itemdata stuff
 			// TODO: Add this stuff right!
-			members = new TreeSet();
+			members = new TreeSet<Completion>();
 			do {
 				Completion c = getMethodOrPropertyCompletion(r, p, "Itemdata");
 				members.add(c);
@@ -259,7 +259,7 @@ if (lastSpace==-1) {
 			//p.setGlobalVariableMembers("Itemdata", members);
 
 			// Game stuff
-			members = new TreeSet();
+			members = new TreeSet<Completion>();
 			do {
 				Completion c = getMethodOrPropertyCompletion(r, p, "Game");
 				members.add(c);
@@ -267,7 +267,7 @@ if (lastSpace==-1) {
 			p.setGlobalVariableMembers("Game", members);
 
 			// Npc stuff
-			members = new TreeSet();
+			members = new TreeSet<Completion>();
 			do {
 				Completion c = getMethodOrPropertyCompletion(r, p, "npc");
 				members.add(c);
@@ -289,7 +289,7 @@ if (lastSpace==-1) {
 		BufferedReader r = new BufferedReader(new InputStreamReader(in));
 		String line = null;
 
-		TreeSet contents = new TreeSet();
+		TreeSet<Completion> contents = new TreeSet<Completion>();
 
 		try {
 

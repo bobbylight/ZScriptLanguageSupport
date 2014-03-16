@@ -18,16 +18,16 @@ import java.util.List;
  */
 public class VariablesInScopeGrabber implements ZScriptAstVisitor {
 
-	private List varList;
-	private List functionList;
+	private List<VariableDecNode> varList;
+	private List<FunctionDecNode> functionList;
 	private int offs;
 	
 	private static final boolean DEBUG = false;
 
 
 	public VariablesInScopeGrabber(int offs) {
-		varList = new ArrayList();
-		functionList = new ArrayList();
+		varList = new ArrayList<VariableDecNode>();
+		functionList = new ArrayList<FunctionDecNode>();
 		this.offs = offs;
 	}
 
@@ -64,12 +64,12 @@ public class VariablesInScopeGrabber implements ZScriptAstVisitor {
 	}
 
 
-	public List getFunctionList() {
+	public List<FunctionDecNode> getFunctionList() {
 		return functionList;
 	}
 
 
-	public List getVariableList() {
+	public List<VariableDecNode> getVariableList() {
 		return varList;
 	}
 

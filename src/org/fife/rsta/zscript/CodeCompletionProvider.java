@@ -8,12 +8,9 @@ package org.fife.rsta.zscript;
 
 import java.awt.Point;
 import java.io.IOException;
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.SortedSet;
@@ -30,8 +27,10 @@ import org.fife.rsta.zscript.ast.VariableDecNode;
 import org.fife.rsta.zscript.ast.VariablesInScopeGrabber;
 import org.fife.rsta.zscript.ast.ZScriptAst;
 import org.fife.ui.autocomplete.AbstractCompletionProvider;
+import org.fife.ui.autocomplete.BasicCompletion;
 import org.fife.ui.autocomplete.Completion;
 import org.fife.ui.autocomplete.FunctionCompletion;
+import org.fife.ui.autocomplete.ParameterizedCompletion;
 import org.fife.ui.autocomplete.Util;
 import org.fife.ui.autocomplete.VariableCompletion;
 import org.fife.ui.rsyntaxtextarea.RSyntaxDocument;
@@ -49,29 +48,31 @@ import org.fife.ui.rsyntaxtextarea.Token;
 public class CodeCompletionProvider extends AbstractCompletionProvider {
 
 	private ZScriptAst ast;
-	private ArrayList globalFunctions;
-	private Map globalVariableMembers;
-	private Map zhFileToContents;
+	private ArrayList<FunctionCompletion> globalFunctions;
+	private Map<String, List<Completion>> globalVariableMembers;
+	private Map<String, List<Completion>> zhFileToContents;
 	private ShorthandCompletionCache shorthandCache;
 
-	private CaseInsensitiveComparator comparator = new CaseInsensitiveComparator();
+	private CompletionComparator completionComparator = new CompletionComparator();
 
 	/**
 	 * Characters that cannot be part of an identifier.
 	 */
 	private static final String SEQUENCE_POINT_CHARS = "();+-{} \t";
 
+	private static final char[] ARROW = { '-', '>' };
+
 
 	public CodeCompletionProvider(ZScriptCompletionProvider parent) {
 		//this.parent = parent;
-		globalVariableMembers = new HashMap();
+		globalVariableMembers = new HashMap<String, List<Completion>>();
 		try {
 			CodeCompletionLoader.load(this);
 		} catch (IOException ioe) {
 			ioe.printStackTrace(); // Never happens
 		}
 
-		zhFileToContents = new HashMap();
+		zhFileToContents = new HashMap<String, List<Completion>>();
 		try {
 			CodeCompletionLoader.loadZhFileDescription(this, "std.zh");
 			CodeCompletionLoader.loadZhFileDescription(this, "string.zh");
@@ -85,13 +86,14 @@ public class CodeCompletionProvider extends AbstractCompletionProvider {
 	}
 
 
-	private void addGlobalFunctionCompletions(String alreadyEntered, List list) {
+	private void addGlobalFunctionCompletions(String alreadyEntered,
+			List<Completion> list) {
 		addMembersImpl(globalFunctions, alreadyEntered, list);
 		if (ast!=null) {
 			RootNode root = ast.getRootNode();
 			for (int i=0; i<root.getImportCount(); i++) {
 				String zhFile = root.getImport(i).getImport();
-				List completions = (List)zhFileToContents.get(zhFile);
+				List<Completion> completions = zhFileToContents.get(zhFile);
 				if (completions!=null) {
 					addMembersImpl(completions, alreadyEntered, list);
 				}
@@ -100,17 +102,20 @@ public class CodeCompletionProvider extends AbstractCompletionProvider {
 	}
 
 
-	private void addGlobalMemberCompletions(String member, String alreadyEntered, List retVal) {
-		List members = (List)globalVariableMembers.get(member);
+	private void addGlobalMemberCompletions(String member, String alreadyEntered,
+			List<Completion> retVal) {
+		List<Completion> members = globalVariableMembers.get(member);
 		if (members!=null) {
 			addMembersImpl(members, alreadyEntered, retVal);
 		}
 	}
 
 
-	private void addMembersImpl(List members, String alreadyEntered, List list) {
+	private void addMembersImpl(List<? extends Completion> members,
+			String alreadyEntered, List<Completion> list) {
 
-		int index = Collections.binarySearch(members, alreadyEntered, super.comparator);
+		BasicCompletion alreadyEnteredC = new BasicCompletion(null, alreadyEntered);
+		int index = Collections.binarySearch(members, alreadyEnteredC, completionComparator);
 		if (index<0) { // No exact match
 			index = -index - 1;
 		}
@@ -120,15 +125,15 @@ public class CodeCompletionProvider extends AbstractCompletionProvider {
 			// of one of those overloads, but we must return all of them,
 			// so search backward until we find the first one.
 			int pos = index - 1;
-			while (pos>0 &&
-					super.comparator.compare(members.get(pos), alreadyEntered)==0) {
+			while (pos>0 && completionComparator.compare(
+							members.get(pos), alreadyEnteredC)==0) {
 				list.add(members.get(pos));
 				pos--;
 			}
 		}
 
 		while (index<members.size()) {
-			Completion c = (Completion)members.get(index);
+			Completion c = members.get(index);
 			if (Util.startsWithIgnoreCase(c.getInputText(), alreadyEntered)) {
 				list.add(c);
 				index++;
@@ -141,15 +146,17 @@ public class CodeCompletionProvider extends AbstractCompletionProvider {
 	}
 
 
-	private void addShorthandCompletions(String alreadyEntered, List list) {
-		List shorthands = shorthandCache.getShorthandCompletions();
+	private void addShorthandCompletions(String alreadyEntered,
+			List<Completion> list) {
+		List<Completion> shorthands = shorthandCache.getShorthandCompletions();
 		// Not really members, but this method works...
 		addMembersImpl(shorthands, alreadyEntered, list);
 	}
 
 
-	private void addVariableCompletions(String alreadyEntered, int dot, List list) {
-		SortedSet varCompletions = getVariableCompletions(alreadyEntered, dot);
+	private void addVariableCompletions(String alreadyEntered, int dot,
+			List<Completion> list) {
+		SortedSet<Completion> varCompletions = getVariableCompletions(alreadyEntered, dot);
 		if (varCompletions!=null) {
 			list.addAll(varCompletions);
 		}
@@ -203,7 +210,8 @@ OUTER:
 	}
 
 
-	private void getCompletionsArrowed(JTextComponent comp, String text, List retVal) {
+	private void getCompletionsArrowed(JTextComponent comp, String text,
+			List<Completion> retVal) {
 
 		String[] sections = text.split("\\->");
 		String first = sections[0];
@@ -228,8 +236,8 @@ OUTER:
 		if (possibleBracket>-1) {
 			first = first.substring(0, possibleBracket);
 		}
-		SortedSet vars = getVariableCompletions(first, comp.getCaretPosition());
-		List completionsForType = Collections.EMPTY_LIST;
+		SortedSet<Completion> vars = getVariableCompletions(first, comp.getCaretPosition());
+		List<Completion> completionsForType = Collections.emptyList();
 		if (!vars.isEmpty()) {
 			// If > 1, then might have one var name that's also a prefix for
 			// another var's name, such as "foo" and "foobar"
@@ -251,12 +259,14 @@ OUTER:
 		}
 		else {
 			String last = sections[sections.length-1];
-			SortedSet varCompletions = new TreeSet(comparator);
+			SortedSet<Completion> varCompletions = new TreeSet<Completion>(completionComparator);
 			varCompletions.addAll(completionsForType);
 
 			// Get only those that match what's typed
 			if (varCompletions.size()>0) {
-				varCompletions = varCompletions.subSet(last, last+'{');
+				Completion start = new BasicCompletion(null, last);
+				Completion end = new BasicCompletion(null, last + '{');
+				varCompletions = varCompletions.subSet(start, end);
 			}
 
 			retVal.addAll(varCompletions);
@@ -265,7 +275,7 @@ OUTER:
 	}
 
 
-	public List getCompletionsAt(JTextComponent tc, Point p) {
+	public List<Completion> getCompletionsAt(JTextComponent tc, Point p) {
 
 		int offset = tc.viewToModel(p);
 		if (offset<0 || offset>=tc.getDocument().getLength()) {
@@ -274,7 +284,7 @@ OUTER:
 return null;
 		}
 
-		List completionsAt = new ArrayList();
+		List<Completion> completionsAt = new ArrayList<Completion>();
 
 		RSyntaxTextArea rsta = (RSyntaxTextArea)tc;
 		int line = 0;
@@ -292,7 +302,7 @@ return null;
 				case Token.FUNCTION:
 				case Token.VARIABLE:
 					Token source = getSourceToken(token, offset);
-					List sourceList = null;
+					List<? extends Completion> sourceList = null;
 					if (source==null) {
 						sourceList = globalFunctions;
 					}
@@ -315,9 +325,10 @@ return null;
 									getVariableDeclaration(source.getLexeme(), rsta, ast, offset);
 							if (varDec!=null) {
 								String type = varDec.getType();
-								List completions = getCompletionsForType(type);
+								List<Completion> completions = getCompletionsForType(type);
 								String property = t.getLexeme();
-								int index = Collections.binarySearch(completions, property, comparator);
+								BasicCompletion c = new BasicCompletion(null, property);
+								int index = Collections.binarySearch(completions, c, completionComparator);
 								if (index>-1) {
 									completionsAt.add(completions.get(index));
 								}
@@ -339,55 +350,57 @@ return null;
 		return completionsAt;
 
 	}
-private Completion getMatchingCompletion(List sourceList, String name) {
-	Comparator c = new Comparator() {
-		public int compare(Object o1, Object o2) {
-			Completion c = (Completion)o1;
-			String name1 = c.getInputText();
-			if (name1.endsWith("[]")) {
-				name1 = name1.substring(0, name1.length()-2);
+
+
+	private Completion getMatchingCompletion(List<? extends Completion> sourceList, String name) {
+		CompletionComparator comparator = new CompletionComparator(new CompletionComparator.CompletionStringer() {
+			public String getCompareValue(Completion c) {
+				String name = c.getInputText();
+				if (name.endsWith("[]")) {
+					name = name.substring(0, name.length()-2);
+				}
+				return name;
 			}
-			String name2 = (String)o2;
-			return name1.compareToIgnoreCase(name2);
-		}
-	};
-	int index = Collections.binarySearch(sourceList, name, c);
-	return index>=0 ? ((Completion)sourceList.get(index)) : null;
-}
-private static final char[] ARROW = { '-', '>' };
-private Token getSourceToken(Token tokenList, int offset) {
-	Token source = null;
-	Token t = tokenList;
-	while (!t.containsPosition(offset)) {
-		if (t.is(Token.OPERATOR, ARROW)) {
-			Token next = t.getNextToken();
-			if (next!=null && next.containsPosition(offset)) {
-				return source;
-			}
-			source = null;
-		}
-		source = t;
-		t = t.getNextToken();
+		});
+		BasicCompletion bc = new BasicCompletion(null, name);
+		int index = Collections.binarySearch(sourceList, bc, comparator);
+		return index>=0 ? ((Completion)sourceList.get(index)) : null;
 	}
-	return null;
-}
 
 
-	private List getCompletionsForType(String type) {
-		List completions = (List)globalVariableMembers.get(type);
+	private Token getSourceToken(Token tokenList, int offset) {
+		Token source = null;
+		Token t = tokenList;
+		while (!t.containsPosition(offset)) {
+			if (t.is(Token.OPERATOR, ARROW)) {
+				Token next = t.getNextToken();
+				if (next!=null && next.containsPosition(offset)) {
+					return source;
+				}
+				source = null;
+			}
+			source = t;
+			t = t.getNextToken();
+		}
+		return null;
+	}
+
+
+	private List<Completion> getCompletionsForType(String type) {
+		List<Completion> completions = globalVariableMembers.get(type);
 		if (completions==null) {
-			completions = Collections.EMPTY_LIST;
+			completions = Collections.emptyList();
 		}
 		return completions;
 	}
 
 
 	@Override
-	protected List getCompletionsImpl(JTextComponent comp) {
+	protected List<Completion> getCompletionsImpl(JTextComponent comp) {
 
 		//List completions = super.getCompletionsImpl(comp);
 
-		List retVal = new ArrayList();
+		List<Completion> retVal = new ArrayList<Completion>();
 		String text = getAlreadyEnteredText(comp);
 
 		if (text!=null) {
@@ -407,18 +420,20 @@ private Token getSourceToken(Token tokenList, int offset) {
 		Collections.sort(retVal);
 
 		// Only return stuff that starts with what the user has entered.
-		int start = Collections.binarySearch(retVal, text, comparator);
+		Completion startComp = new BasicCompletion(null, text);
+		int start = Collections.binarySearch(retVal, startComp, completionComparator);
 		if (start<0) {
 			start = -(start+1);
 		}
 		else {
 			// There might be multiple entries with the same input text.
-			while (start>0 && comparator.compare(retVal.get(start-1), text)==0) {
+			while (start>0 && completionComparator.compare(retVal.get(start-1), startComp)==0) {
 				start--;
 			}
 		}
 
-		int end = Collections.binarySearch(retVal, text+'{', comparator);
+		Completion endComp = new BasicCompletion(null, text + '{');
+		int end = Collections.binarySearch(retVal, endComp, completionComparator);
 		end = -(end+1);
 
 		return retVal.subList(start, end);
@@ -426,7 +441,7 @@ private Token getSourceToken(Token tokenList, int offset) {
 	}
 
 
-	public List getParameterizedCompletions(JTextComponent tc) {
+	public List<ParameterizedCompletion> getParameterizedCompletions(JTextComponent tc) {
 		return null;
 	}
 
@@ -456,34 +471,34 @@ private Token getSourceToken(Token tokenList, int offset) {
 	 * @return The completions for variables, or <code>null</code> if there
 	 *         were none.
 	 */
-	private SortedSet getVariableCompletions(String text, int dot) {
+	private SortedSet<Completion> getVariableCompletions(String text, int dot) {
 
 		if (text==null) {
 			return null;
 		}
 
-		SortedSet varCompletions = new TreeSet(comparator);
+		SortedSet<Completion> varCompletions = new TreeSet<Completion>(completionComparator);
 
 		// Go through all code blocks in scope and look for variables
 		// declared before the caret.
 		VariablesInScopeGrabber varGrabber = new VariablesInScopeGrabber(dot);
 		ast.getRootNode().accept(varGrabber);
-		List varList = varGrabber.getVariableList();
-		for (Iterator i=varList.iterator(); i.hasNext(); ) {
-			VariableDecNode varDec = (VariableDecNode)i.next();
+		List<VariableDecNode> varList = varGrabber.getVariableList();
+		for (VariableDecNode varDec : varList) {
 			VariableCompletion vc = new ZScriptVariableCompletion(this, varDec);
 			varCompletions.add(vc);
 		}
-		List funcList = varGrabber.getFunctionList();
-		for (Iterator i=funcList.iterator(); i.hasNext(); ) {
-			FunctionDecNode funcDec = (FunctionDecNode)i.next();
+		List<FunctionDecNode> funcList = varGrabber.getFunctionList();
+		for (FunctionDecNode funcDec : funcList) {
 			FunctionCompletion fc = new ZScriptFunctionCompletion(this, funcDec);
 			varCompletions.add(fc);
 		}
 
 		// Get only those that match what's typed
 		if (varCompletions.size()>0) {
-			varCompletions = varCompletions.subSet(text, text+'{');
+			Completion start = new BasicCompletion(null, text);
+			Completion end = new BasicCompletion(null, text + '{');
+			varCompletions = varCompletions.subSet(start, end);
 		}
 
 		return varCompletions;
@@ -503,8 +518,8 @@ private Token getSourceToken(Token tokenList, int offset) {
 	}
 
 
-	public void putZhFileContents(String zhFileName, SortedSet contents) {
-		zhFileToContents.put(zhFileName, new ArrayList(contents));
+	public void putZhFileContents(String zhFileName, SortedSet<Completion> contents) {
+		zhFileToContents.put(zhFileName, new ArrayList<Completion>(contents));
 	}
 
 
@@ -513,13 +528,13 @@ private Token getSourceToken(Token tokenList, int offset) {
 	}
 
 
-	void setGlobalFunctions(SortedSet globalFunctions) {
-		this.globalFunctions = new ArrayList(globalFunctions);
+	void setGlobalFunctions(SortedSet<FunctionCompletion> globalFunctions) {
+		this.globalFunctions = new ArrayList<FunctionCompletion>(globalFunctions);
 	}
 
 
-	void setGlobalVariableMembers(String global, SortedSet members) {
-		globalVariableMembers.put(global, new ArrayList(members));
+	void setGlobalVariableMembers(String global, SortedSet<Completion> members) {
+		globalVariableMembers.put(global, new ArrayList<Completion>(members));
 	}
 
 
@@ -528,26 +543,8 @@ private Token getSourceToken(Token tokenList, int offset) {
 	}
 
 
-public List getGlobalVariableMembers(String global) {
-	return (List)globalVariableMembers.get(global);
+public List<Completion> getGlobalVariableMembers(String global) {
+	return globalVariableMembers.get(global);
 }
-
-	/**
-	 * A comparator that compares the input text of a {@link Completion}
-	 * against a String lexicographically, ignoring case.
-	 */
-	private static class CaseInsensitiveComparator implements Comparator,
-														Serializable {
-
-		public int compare(Object o1, Object o2) {
-			String s1 = o1 instanceof String ? (String)o1 :
-							((Completion)o1).getInputText();
-			String s2 = o2 instanceof String ? (String)o2 :
-							((Completion)o2).getInputText();
-			return String.CASE_INSENSITIVE_ORDER.compare(s1, s2);
-		}
-
-	}
-
 
 }

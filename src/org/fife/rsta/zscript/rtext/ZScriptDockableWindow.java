@@ -10,7 +10,6 @@ package org.fife.rsta.zscript.rtext;
 import java.awt.BorderLayout;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
-import java.util.Iterator;
 import java.util.List;
 import javax.swing.Icon;
 import javax.swing.JTable;
@@ -84,7 +83,7 @@ public class ZScriptDockableWindow extends AbstractParserNoticeWindow
 			mainView.addPropertyChangeListener(AbstractMainView.TEXT_AREA_REMOVED_PROPERTY, this);
 			for (int i=0; i<mainView.getNumDocuments(); i++) {
 				RTextEditorPane textArea = mainView.getRTextEditorPaneAt(i);
-				List notices = textArea.getParserNotices();
+				List<ParserNotice> notices = textArea.getParserNotices();
 				model.update(textArea, notices);
 				textArea.addPropertyChangeListener(
 							RSyntaxTextArea.PARSER_NOTICES_PROPERTY, this);
@@ -103,7 +102,7 @@ public class ZScriptDockableWindow extends AbstractParserNoticeWindow
 
 		if (RSyntaxTextArea.PARSER_NOTICES_PROPERTY.equals(prop)) {
 			RTextEditorPane source = (RTextEditorPane)e.getSource();
-			List notices = source.getParserNotices();//(List)e.getNewValue();
+			List<ParserNotice> notices = source.getParserNotices();//e.getNewValue();
 			model.update(source, notices);
 		}
 
@@ -174,14 +173,13 @@ public class ZScriptDockableWindow extends AbstractParserNoticeWindow
 		}
 
 		@Override
-		protected void addNoticesImpl(RTextEditorPane textArea, List notices) {
-			for (Iterator i=notices.iterator(); i.hasNext(); ) {
-				ParserNotice notice = (ParserNotice)i.next();
+		protected void addNoticesImpl(RTextEditorPane textArea,
+				List<ParserNotice> notices) {
+			for (ParserNotice notice : notices) {
 				// Unfortunately, ZScriptParsers aren't shared.
 				if (notice.getParser() instanceof ZScriptParser) {
 					Object[] data = {	getIconFor(notice), textArea,
-							// Integer.intValue(notice.getValue()+1) // TODO: 1.5
-							new Integer(notice.getLine()+1),
+							Integer.valueOf(notice.getLine()+1),
 							notice.getMessage() };
 					addRow(data);
 				}
