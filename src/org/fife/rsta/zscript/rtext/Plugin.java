@@ -24,8 +24,10 @@ import javax.swing.event.PopupMenuListener;
 
 import org.fife.rsta.ac.LanguageSupportFactory;
 import org.fife.rsta.zscript.ZScriptLanguageSupport;
+import org.fife.rtext.AbstractMainView;
 import org.fife.rtext.FileTypeIconManager;
 import org.fife.rtext.RText;
+import org.fife.rtext.RTextEditorPane;
 import org.fife.rtext.RTextMenuBar;
 import org.fife.rtext.RTextUtilities;
 import org.fife.rtext.SyntaxFilters;
@@ -229,7 +231,19 @@ public class Plugin extends GUIPlugin {
 		});
 
 		addZScriptSubMenu(mb);
-		
+
+		// Since plugins are loaded on a delay, we must manualy check for
+		// ZScript files already opened.
+		AbstractMainView view = rtext.getMainView();
+		for (int i=0; i<view.getNumDocuments(); i++) {
+			RTextEditorPane textArea = view.getRTextEditorPaneAt(i);
+			String fileName = textArea.getFileName();
+			String style = filters.getSyntaxStyleForFile(fileName, false);
+			if (SYNTAX_STYLE_ZSCRIPT.equals(style)) {
+				textArea.setSyntaxEditingStyle(style);
+			}
+		}
+
 	}
 
 
