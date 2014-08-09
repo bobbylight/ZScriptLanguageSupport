@@ -41,7 +41,8 @@ import org.fife.ui.rsyntaxtextarea.RSyntaxTextArea;
  * LanguageSupport for ZScript.
  *
  * @author Robert Futrell
- * @vesrion 1.0
+ * @version 1.0
+ * @see ZScriptOutlineTree
  */
 public class ZScriptLanguageSupport extends AbstractLanguageSupport {
 

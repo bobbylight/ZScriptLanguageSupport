@@ -32,7 +32,7 @@
 
 
 	<!-- Set global properties for this build. -->
-	<property name="version"          value="2.5.2"/>
+	<property name="version"          value="2.5.4"/>
 	<property name="source-dir"       location="src"/>
 	<property name="class-dir"        location="ant-classes"/>
 	<property name="dist-dir"         location="dist"/>
@@ -47,9 +47,9 @@
 
 	<!-- Compiles the classes.  -->
 	<path id="project.class.path">
-		<pathelement location="../RSyntaxTextArea/dist/rsyntaxtextarea.jar"/>
-		<pathelement location="../AutoComplete/dist/autocomplete.jar"/>
-		<pathelement location="../RSTAUI/dist/rstaui.jar"/>
+		<pathelement location="../RSyntaxTextArea/build/libs/RSyntaxTextArea-${version}.jar"/>
+		<pathelement location="../AutoComplete/build/libs/AutoComplete-${version}.jar"/>
+		<pathelement location="../RSTAUI/build/libs/RSTAUI-2.5.4.jar"/>
 		<pathelement location="../RSTALanguageSupport/dist/language_support.jar"/>
 		<pathelement location="lib/fife.common.jar"/>
 		<pathelement location="lib/RText.jar"/>
@@ -80,34 +80,20 @@
 			</fileset>
 			
 			<!-- RSyntaxTextArea stuff. -->
-			<fileset dir="../RSyntaxTextArea/ant-classes">
-				<exclude name="org/fife/ui/rsyntaxtextarea/AbstractTokenMaker.class"/>
-				<exclude name="org/fife/ui/rsyntaxtextarea/modes/**"/>
-			</fileset>
-			<fileset dir="../RSyntaxTextArea/i18n">
+			<fileset dir="../RSyntaxTextArea/build/classes/main"/>
+			<fileset dir="../RSyntaxTextArea/build/resources/main">
 				<exclude name="**/*_*.properties"/> <!-- Only English in demo. -->
 			</fileset>
-			<fileset file="../RSyntaxTextArea/src/theme.dtd"/>
-			<fileset dir="../RSyntaxTextArea/themes"/>
-			<fileset dir="../RSyntaxTextArea/ant-classes">
-				<include name="org/fife/ui/rsyntaxtextarea/modes/PlainTextTokenMaker.class"/>
-			</fileset>
 			
-			<!-- AutoComlete stuff. -->
-			<fileset dir="../AutoComplete/ant-classes"/>
-			<fileset dir="../AutoComplete/src">
-				<include name="**/*.png"/>
-			</fileset>
-			<fileset dir="../AutoComplete/i18n">
+			<!-- AutoComplete stuff. -->
+			<fileset dir="../AutoComplete/build/classes/main"/>
+			<fileset dir="../AutoComplete/build/resources/main">
 				<exclude name="**/*_*.properties"/> <!-- Only English in demo. -->
 			</fileset>
 			
 			<!-- RSTAUI stuff. -->
-			<fileset dir="../RSTAUI/ant-classes"/>
-			<fileset dir="../RSTAUI/src">
-				<include name="**/*.png"/>
-			</fileset>
-			<fileset dir="../RSTAUI/i18n">
+			<fileset dir="../RSTAUI/build/classes/main"/>
+			<fileset dir="../RSTAUI/build/resources/main">
 				<exclude name="**/*_*.properties"/> <!-- Only English in demo. -->
 			</fileset>
 			

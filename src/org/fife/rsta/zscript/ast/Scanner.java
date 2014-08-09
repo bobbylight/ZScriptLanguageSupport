@@ -260,9 +260,6 @@ private void pushOntoStack(Token t) {
 	 * useful, for example, to eat until the next semicolon.
 	 *
 	 * @param tokenType The type of token to eat through.
-	 * @return Whether the last token should be eaten.  Does nothing if the
-	 *         end of stream is reached before finding a token of the specified
-	 *         type.
 	 * @throws IOException If an IO error occurs.
 	 */
 	public void eatThroughNext(int tokenType, boolean eatLast) throws IOException {
@@ -343,12 +340,9 @@ private void pushOntoStack(Token t) {
 
 
 	/**
-	 * Eats all tokens up to (and including) the next token of one of the
-	 * specified types.  This is useful, for example, to eat until the next
-	 * equal sign or semicolon.
+	 * Eats all tokens through the next closing paren.  This method keeps track
+	 * of nested parens and does the "right thing."
 	 *
-	 * @param tokenType1 The type of token to eat through.
-	 * @param tokenType2 Another type of token to eat through.
 	 * @return The last token read.  This will either be one of the two token
 	 *         types passed in, or <code>null</code> if the end of the stream
 	 *         is reached.

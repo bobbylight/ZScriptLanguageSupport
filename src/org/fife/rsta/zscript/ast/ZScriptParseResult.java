@@ -33,11 +33,11 @@ public class ZScriptParseResult {
 
 
 	public void addNotice(Token t, String msg) {
-		addNotice(t, msg, ParserNotice.ERROR);
+		addNotice(t, msg, ParserNotice.Level.ERROR);
 	}
 
 
-	public void addNotice(Token t, String msg, int level) {
+	public void addNotice(Token t, String msg, ParserNotice.Level level) {
 		DefaultParserNotice notice = new DefaultParserNotice(parser, msg,
 				t.getLine(), t.getOffset(), t.getLength());
 		notice.setLevel(level);

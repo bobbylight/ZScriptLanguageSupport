@@ -17,6 +17,7 @@ import java.beans.PropertyChangeListener;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.URL;
 import java.security.AccessControlException;
@@ -25,6 +26,7 @@ import java.util.List;
 import javax.swing.AbstractAction;
 import javax.swing.Action;
 import javax.swing.ActionMap;
+import javax.swing.ButtonGroup;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.InputMap;
@@ -35,6 +37,7 @@ import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JRadioButtonMenuItem;
 import javax.swing.JRootPane;
 import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
@@ -63,6 +66,7 @@ import org.fife.ui.rsyntaxtextarea.FileLocation;
 import org.fife.ui.rsyntaxtextarea.RSyntaxTextArea;
 import org.fife.ui.rsyntaxtextarea.SyntaxConstants;
 import org.fife.ui.rsyntaxtextarea.TextEditorPane;
+import org.fife.ui.rsyntaxtextarea.Theme;
 import org.fife.ui.rsyntaxtextarea.TokenMakerFactory;
 import org.fife.ui.rsyntaxtextarea.folding.CurlyFoldParser;
 import org.fife.ui.rsyntaxtextarea.folding.FoldParserManager;
@@ -159,6 +163,15 @@ public class DemoRootPane extends JRootPane implements SyntaxConstants,
 	}
 
 
+	private void addThemeItem(String name, String themeXml, ButtonGroup bg,
+			JMenu menu) {
+		JRadioButtonMenuItem item = new JRadioButtonMenuItem(
+				new ThemeAction(name, themeXml));
+		bg.add(item);
+		menu.add(item);
+	}
+
+
 	private void createFileChooser() {
 		chooser = new FileChooser();
 		chooser.setFileFilter(new ZScriptFileFilter());
@@ -203,6 +216,16 @@ public class DemoRootPane extends JRootPane implements SyntaxConstants,
 		cbItem = new JCheckBoxMenuItem(new AutoActivationAction());
 		cbItem.setSelected(true);
 		menu.add(cbItem);
+
+		ButtonGroup bg = new ButtonGroup();
+		menu = new JMenu("Themes");
+		addThemeItem("Default", "default.xml", bg, menu);
+		addThemeItem("Default (System Selection)", "default-alt.xml", bg, menu);
+		addThemeItem("Dark", "dark.xml", bg, menu);
+		addThemeItem("Eclipse", "eclipse.xml", bg, menu);
+		addThemeItem("IDEA", "idea.xml", bg, menu);
+		addThemeItem("Visual Studio", "vs.xml", bg, menu);
+		mb.add(menu);
 
 		menu = new JMenu("Help");
 		menu.setMnemonic('H');
@@ -384,7 +407,7 @@ public class DemoRootPane extends JRootPane implements SyntaxConstants,
 		ZScriptParser parser = zsls.getParser(textArea);
 		for (ParserNotice notice : notices) {
 			if (notice.getParser()==parser) {
-				boolean error = notice.getLevel()==ParserNotice.ERROR;
+				boolean error = notice.getLevel()==ParserNotice.Level.ERROR;
 				String iconName = error ? IconFactory.ERROR_ICON : IconFactory.WARNING_ICON;
 				Icon icon = IconFactory.get().getIcon(iconName);
 				int line = notice.getLine();
@@ -780,6 +803,29 @@ public class DemoRootPane extends JRootPane implements SyntaxConstants,
 		public void actionPerformed(ActionEvent e) {
 			selected = !selected;
 			textArea.setPaintTabLines(selected);
+		}
+
+	}
+
+
+	private class ThemeAction extends AbstractAction {
+
+		private String xml;
+
+		public ThemeAction(String name, String xml) {
+			putValue(NAME, name);
+			this.xml = xml;
+		}
+
+		public void actionPerformed(ActionEvent e) {
+			InputStream in = getClass().getResourceAsStream(
+					"/org/fife/ui/rsyntaxtextarea/themes/" + xml);
+			try {
+				Theme theme = Theme.load(in);
+				theme.apply(textArea);
+			} catch (IOException ioe) {
+				ioe.printStackTrace();
+			}
 		}
 
 	}

@@ -10,7 +10,9 @@ package org.fife.rsta.zscript.rtext;
 import java.awt.BorderLayout;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import javax.swing.Icon;
 import javax.swing.JTable;
 
@@ -40,7 +42,7 @@ public class ZScriptDockableWindow extends AbstractParserNoticeWindow
 	private JTable table;
 	private ZScriptErrorTableModel model;
 	private boolean installed;
-	private Icon[] noticeIcons;
+	private Map<ParserNotice.Level, Icon> noticeIcons;
 
 
 	public ZScriptDockableWindow(RText app, Plugin plugin) {
@@ -61,10 +63,10 @@ public class ZScriptDockableWindow extends AbstractParserNoticeWindow
 
 		applyComponentOrientation(app.getComponentOrientation());
 
-		noticeIcons = new Icon[3];
-		noticeIcons[ParserNotice.INFO] = getIcon();
-		noticeIcons[ParserNotice.WARNING] = IconFactory.get().getIcon(IconFactory.WARNING_ICON);
-		noticeIcons[ParserNotice.ERROR] = IconFactory.get().getIcon(IconFactory.ERROR_ICON);
+		noticeIcons = new HashMap<ParserNotice.Level, Icon>();
+		noticeIcons.put(ParserNotice.Level.INFO, getIcon());
+		noticeIcons.put(ParserNotice.Level.WARNING, IconFactory.get().getIcon(IconFactory.WARNING_ICON));
+		noticeIcons.put(ParserNotice.Level.ERROR, IconFactory.get().getIcon(IconFactory.ERROR_ICON));
 
 	}
 
@@ -187,7 +189,7 @@ public class ZScriptDockableWindow extends AbstractParserNoticeWindow
 		}
 
 		private Icon getIconFor(ParserNotice notice) {
-			return noticeIcons[notice.getLevel()];
+			return noticeIcons.get(notice.getLevel());
 		}
 
 	}

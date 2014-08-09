@@ -69,7 +69,8 @@ This project enables the following features in RSyntaxTextArea:
    popup lets you type and quickly get to any member (function, variable, or
    script) in the editor.
 5. Source tree support.  Adds a tree view outlining the script file's
-   structure, based off of RSTALanguageSupport's tree API.
+   structure, based off of RSTALanguageSupport's tree API.  This tree view
+   updates on the fly while edits are made in an editor.
 6. The RText plugin provides a popup dialog (via Ctrl+Shift+Z) allowing you to
    search, sort, and filter the scripts in PureZC's script database, to easily
    find if someone has graciously scripted slick new functionality for you.

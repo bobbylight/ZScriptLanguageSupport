@@ -115,8 +115,16 @@ public class AstFactory implements TokenTypes {
 		DoWhileNode doWhile = new DoWhileNode(scanner.createOffset(doToken.getOffset()));
 		block.addStatement(doWhile);
 
-		Token next = scanner.yylexNonNull(SEPARATOR_LBRACE, "'{' expected");
-		parseCodeBlock(doWhile, next);
+		// ZScript is cool with a single statement as do/while body; e.g.
+		// do foo(); while bar();
+
+		Token next = scanner.yylexNonNull("'{' or statement expected after 'do'");
+		if (next.isType(SEPARATOR_LBRACE)) {
+			parseCodeBlock(doWhile, next);
+		}
+		else {
+			scanner.eatThroughNextSkippingBlocks(SEPARATOR_SEMICOLON);
+		}
 
 		scanner.yylexNonNull(KEYWORD_WHILE, "'while' expected");
 		scanner.yylexNonNull(SEPARATOR_LPAREN, "'(' expected");
@@ -337,7 +345,7 @@ public class AstFactory implements TokenTypes {
 			case SEPARATOR_SEMICOLON:
 				parseVariable(parent, basicType, name, false);
 				result.addNotice(name, "Script variables are deprecated.  Use file scope instead.",
-						ParserNotice.WARNING);
+						ParserNotice.Level.WARNING);
 				break;
 			default:
 				break;
@@ -651,7 +659,7 @@ public class AstFactory implements TokenTypes {
 			String msg = "Variable declaration shadows prior variable " +
 					shadowedVarInfo.getType() + " " + shadowedVarInfo.getName();
 					// + " on line " + shadowed.getLine();
-			result.addNotice(name, msg, ParserNotice.WARNING);
+			result.addNotice(name, msg, ParserNotice.Level.WARNING);
 		}
 
 		Token next = scanner.yylexNonNull("Unexpected end of input");
