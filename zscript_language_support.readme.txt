@@ -1,7 +1,7 @@
 ZScriptLanguageSupport Readme
 -----------------------------
-Version 0.4
-16mar2014
+Version 0.4.1
+09aug2014
 
 -----------------------------
 Contents
