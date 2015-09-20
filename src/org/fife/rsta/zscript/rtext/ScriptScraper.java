@@ -30,7 +30,7 @@ import java.util.regex.Pattern;
 class ScriptScraper {
 
 	public static final String SITE = "http://www.purezc.net/";
-	public static final String FORUM = SITE + "forums/index.php?showforum=179";
+	public static final String FORUM = SITE + "index.php?page=scripts";
 
 //	private static final Pattern HTML_BR = Pattern.compile("<[bB][rR]\\s*/?>");
 //	private static final Pattern HTML_COMMENT = Pattern.compile("<!--.*?-->", Pattern.DOTALL);

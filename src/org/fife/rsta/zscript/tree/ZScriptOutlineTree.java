@@ -36,7 +36,9 @@ import org.fife.rsta.zscript.ast.WhileNode;
 import org.fife.rsta.zscript.ast.ZScriptAst;
 import org.fife.rsta.zscript.ast.ImportNode;
 import org.fife.rsta.zscript.ast.ZScriptAstVisitor;
+import org.fife.ui.rsyntaxtextarea.DocumentRange;
 import org.fife.ui.rsyntaxtextarea.RSyntaxTextArea;
+import org.fife.ui.rsyntaxtextarea.RSyntaxUtilities;
 
 
 /**
@@ -165,7 +167,8 @@ public class ZScriptOutlineTree extends AbstractSourceTree {
 			AbstractNode astNode = (AbstractNode)obj;
 			int start = astNode.getStartOffset();
 			int end = astNode.getEndOffset();
-			textArea.select(start, end);
+			DocumentRange range = new DocumentRange(start, end);
+			RSyntaxUtilities.selectAndPossiblyCenter(textArea, range, true);
 		}
 	}
 
