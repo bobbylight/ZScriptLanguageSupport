@@ -1,0 +1,110 @@
+<!doctype html>
+<html>
+
+<head>
+   <meta charset="UTF-8"/>
+   <title>ZScript Language Support</title>
+   <link rel="stylesheet" href="styles.css"/>
+   <script type='text/javascript' src='js/jquery/jquery-1.7.1.js'></script>
+   <script type='text/javascript' src='js/fifesoft.js'></script>
+   <!-- Fancy thumbnail handling -->
+   <script type="text/javascript">useGallery = true;</script>
+   <script type="text/javascript" src="js/highslide/highslide-with-gallery.packed.js"></script>
+   <script type="text/javascript" src="js/highslide/highslide.config.js" charset="utf-8"></script>
+   <link rel="stylesheet" type="text/css" href="js/highslide/highslide.css" />
+</head>
+
+<body>
+
+   <div id="mainContainer">
+
+   <div id="mainContent">
+   
+   <div id="contentHeader">ZScript Editor Beta</div>
+
+      <p>
+      An editor component with syntax highlighting and code completion for ZScript.
+     Supports all variables, functions, and syntax as of ZC 2.50 Final.
+     <em>Last updated 08/09/2014)</em>
+      </p>
+      <p>
+      The <b>Windows and OS X Demos</b> are relatively small (&lt; 1MB) and are for
+      quick and dirty testing out of the editor.
+      </p>
+      <p>
+      The <b>Full Editor</b> is a full programmer's text editor, with a plugin
+      enabling all of the features seen in the demo.  It's for folks who want to get
+      the most out of the editor.
+      </p>
+      <ul>
+         <li>Be sure to click on the "Source Browser" tab in the left-hand pane to
+         use the source browser tree.  It shows an outline view of the source code
+         in the active editor, whether it's ZScript or not.
+         <li>The "ZScript Notices" docked window at the bottom will populate with
+         any compiler errors found in all open ZScript files.
+         <li>ZScript-specific options can be configured in the Options Dialog:
+         <em>Edit -&gt; Options</em>, then in the tree view on the left, select
+         <em>Text Area -&gt; Language Support -&gt; ZScript</em>.
+      </ul>
+      
+      <h3>Try it out:</h3>
+      <ul>
+         <li><a href="zscript_demo_win32.zip">Windows Demo</a> (09aug2014)
+         <li><a href="ZScriptEditorDemo.dmg">OS X Demo</a> (17mar2014)
+         <li><a href="RText_with_zscript_plugin.zip">Full Editor Windows</a> <em>(14 MB)</em> (17mar2014)
+         <li><a href="RText_with_zscript_plugin_osx.dmg">Full Editor OS X</a> <em>(16 MB)</em> (17mar2014)
+         <li><a href="https://github.com/bobbylight/ZScriptLanguageSupport">Source code</a> (doc for compiling currently out of date)
+      </ul>
+      
+      <h3>Handy ZScript-specific Features:</h3>
+      <ul>
+         <li>Press Ctrl+Space to manually display completion popups.
+         <li>Completion popups automatically display after "-&gt;" tokens.
+         <li>Completion should be context sensitive.
+         <li>Ctrl+Shift+O pops up "Go to Member" window (Cmd+Shift+O on OS X).
+         <li>When completing a function or variable's member method (eweapon, Link, Game, etc.), variables are suggested for each parameter to complete.
+         <li>Ctrl+Shift+Z displays a dialog allowing you to filter, sort, and search
+            through scripts in PureZC's script database (Full editor-only).
+         <li>Report any erroneous errors or other parser problems in the <a href="http://www.purezc.net/forums/index.php?showtopic=55636">PureZC forum thread</a>!
+      </ul>
+   
+      <h3>Slideshow!</h3>
+      <div class="highslide-gallery" style="text-align: center">
+         <a id="thumb1" href="img/zscript_editor.png" class="highslide" 
+               title="The Demo Application" 
+               onclick="return hs.expand(this, config1 )">
+            <img src="img/zscript_editor_thumb.png"  alt=""/>
+         </a>
+         <div class="hidden-container">
+            <a href="img/zscript_go_to_member.png" class="highslide" 
+                  title="Go to Member - Easily navigate around your script" 
+                  onclick="return hs.expand(this, config1 )">
+               <img src="img/zscript_go_to_member_thumb.png"  alt=""/>
+            </a>
+            <a href="img/zscript_hover_doc.png" class="highslide" 
+                  title="Hovering the mouse over a global field or method shows the doc for it in a tool tip"
+                  onclick="return hs.expand(this, config1 )">
+               <img src="img/zscript_hover_doc_thumb.png"  alt=""/>
+            </a>
+            <a href="img/zscript_rtext_integration.png" class="highslide" 
+                  title="The RText plugin gives a full-featured editing environment" 
+                  onclick="return hs.expand(this, config1 )">
+               <img src="img/zscript_rtext_integration_thumb.png"  alt=""/>
+            </a>
+            <a href="img/purezc_script_browser.png" class="highslide" 
+                  title="Ctrl+Shift+Z to search through scripts on PureZC" 
+                  onclick="return hs.expand(this, config1 )">
+               <img src="img/purezc_script_browser_thumb.png"  alt=""/>
+            </a>
+         </div>
+      </div>
+   
+   </div>
+   <div id="footer">Copyright &copy; 2015 Fifesoft &bull;
+   Valid <a href="http://validator.w3.org/check?uri=referer">HTML 5</a> &bull;
+   Web Design Sucks</div>
+   </div>
+   
+</body>
+
+</html>

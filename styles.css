@@ -1,0 +1,83 @@
+body {
+   font-size: 0.8em;
+   font-family: tahoma, Geneva, Arial, Helvetica, sans-serif;
+   background: #d7d7d7;
+}
+
+a {
+	color: #6060cc;
+	font-weight: bold;
+}
+
+a:visited {
+	color: #2020bb;
+	font-weight: bold;
+}
+
+img {
+	border-width: 0px;
+}
+
+img.header {
+	border-width: 0px;
+}
+
+h3 {
+   margin-bottom: 0;
+   margin-top: 2rem;
+}
+
+pre {
+   font-family: "Consolas", "Menlo", "Monaco", "Courier New", Courier, monospace;
+   font-size: 12px;
+   background-color:#fcfcfc;
+   border:1px solid #000000;
+   padding:10px;
+   margin:20px auto;
+}
+
+#mainContainer {
+   margin: 0px auto;
+   padding: 20px 0px 0px 0px;
+   width: 800px;
+   background: #ffffff;
+   border: 1px solid #cccccc;
+   border-radius: 5px;
+   -moz-border-radius: 5px;
+   box-shadow: 3px 3px 4px #a0a0a0;
+}
+
+#contentHeader {
+	font-size: 24px;
+	font-weight: bold;
+	color: #000000;/*4444FF;*/
+   border-bottom: 1px solid lightgray;
+	margin-bottom: 1em;
+}
+
+#mainContent {
+   padding: 0px 23px 10px 20px; /* Larger on right for drop shadow. */
+}
+
+#footer {
+   border-top: 1px solid #cccccc;
+   text-align: center;
+   padding: 3px 10px 3px 10px;
+   background: #eeeeff;
+   font-size: 10px;
+   /* Need rounded edge CSS on footer too for Webkit. */
+   border-radius: 5px;
+   border-top-left-radius: 0px;
+   border-top-right-radius: 0px;
+   -moz-border-radius: 5px;
+   -moz-border-radius-topleft: 0px;
+   -moz-border-radius-topright: 0px;
+}
+
+#footer a {
+   text-decoration: none;
+}
+
+.highslide-gallery {
+   margin-top: 2rem;
+}
