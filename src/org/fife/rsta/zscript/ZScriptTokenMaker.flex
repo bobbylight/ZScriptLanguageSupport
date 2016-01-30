@@ -234,7 +234,6 @@ StringLiteral				= ([\"]((((("?")*)({Escape}|{OctEscape}|{HexEscape}|{Trigraph})
 UnclosedStringLiteral		= ([\"]([\\].|[^\\\"])*[^\"]?)
 ErrorStringLiteral			= ({UnclosedStringLiteral}[\"])
 
-LineTerminator		= \n
 Whitespace		= [ \t\f]
 
 LineCommentBegin	= "//"
@@ -457,6 +456,7 @@ LinkVariable			= ("Action" |
 	"if" |
 	"do" |
 	"return" |
+	"this" |
 	"void" |
 	"while"					{ addToken(Token.RESERVED_WORD); }
 
@@ -471,6 +471,7 @@ LinkVariable			= ("Action" |
 	"float" |
 	"int" |
 	"item" |
+	"itemdata" |
 	"npc" |
 	"lweapon" 				{ addToken(Token.DATA_TYPE); }
 

@@ -8,6 +8,8 @@ package org.fife.rsta.zscript.ast;
 
 import java.util.List;
 
+import org.fife.rsta.zscript.EnclosingScriptNodeGrabber;
+
 
 /**
  * Abstract syntax tree for ZScript.
@@ -36,6 +38,21 @@ public class ZScriptAst {
 
 	public RootNode getRootNode() {
 		return root;
+	}
+
+
+	/**
+	 * Returns the deepest enclosing script node for a given offset.
+	 *
+	 * @param offs The offset.
+	 * @return The deepest enclosing script node.  This will be
+	 *         <code>null</code> if the offset is not in a script node.
+	 */
+	public ScriptNode getScriptNodeContaining(int offs) {
+		EnclosingScriptNodeGrabber scriptNodeGrabber =
+				new EnclosingScriptNodeGrabber(offs);
+		root.accept(scriptNodeGrabber);
+		return scriptNodeGrabber.getEnclosingScriptNode();
 	}
 
 

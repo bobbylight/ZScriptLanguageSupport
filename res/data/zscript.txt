@@ -1374,6 +1374,10 @@ float Misc[]
 
 --- Itemdata Functions and Variables ---
 
+float InitD[]
+ * The original values of the item's 8 D input values are they are stored in the
+ * .qst file, regardles of whether they have been modified by ZScript.
+
 void GetName(int buffer[])
  * Loads the item this itemdata is attributed to's name into 'buffer'
 
@@ -1444,10 +1448,6 @@ int UseSound
 
 
 --- Game Functions and Variables ---
-
-float InitD[]
- * The original values of the item's 8 D input values are they are stored in the
- * .qst file, regardles of whether they have been modified by ZScript.
 
 int GetCurScreen()
  * Retrieves the number of the current screen within the current map.

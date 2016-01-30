@@ -250,13 +250,12 @@ if (lastSpace==-1) {
 			p.setGlobalVariableMembers("eweapon", members);
 
 			// Itemdata stuff
-			// TODO: Add this stuff right!
 			members = new TreeSet<Completion>();
 			do {
 				Completion c = getMethodOrPropertyCompletion(r, p, "Itemdata");
 				members.add(c);
 			} while (!startingNewSection(r));
-			//p.setGlobalVariableMembers("Itemdata", members);
+			p.setGlobalVariableMembers("itemdata", members);
 
 			// Game stuff
 			members = new TreeSet<Completion>();

@@ -7,6 +7,7 @@
 package org.fife.rsta.zscript.ast;
 
 import java.io.IOException;
+
 import javax.swing.text.Position;
 
 import org.fife.io.DocumentReader;
@@ -14,6 +15,7 @@ import org.fife.rsta.zscript.CodeCompletionProvider;
 import org.fife.ui.rsyntaxtextarea.RSyntaxDocument;
 import org.fife.ui.rsyntaxtextarea.parser.Parser;
 import org.fife.ui.rsyntaxtextarea.parser.ParserNotice;
+import org.fife.ui.rsyntaxtextarea.parser.ParserNotice.Level;
 
 
 /**
@@ -360,17 +362,26 @@ public class AstFactory implements TokenTypes {
 		Token name = scanner.yylexNonNull(IDENTIFIER, KEYWORD_SCRIPT, "Function name, variable name, or 'script' expected");
 
 		if (name.getType()==KEYWORD_SCRIPT) {
+
 			if (constantToken!=null) {
 				result.addNotice(constantToken, "Scripts cannot have modifier 'const'");
 			}
+
+			ScriptType scriptType = ScriptType.forTokenType(basicType.getType());
+			if (scriptType == null) {
+				result.addNotice(basicType, "Invalid script type", Level.ERROR);
+			}
+
 			name = scanner.yylexNonNull(IDENTIFIER, "Script name expected");
-			ScriptNode script = new ScriptNode(scanner.createOffset(name.getOffset()));
+			ScriptNode script = new ScriptNode(scriptType,
+					scanner.createOffset(name.getOffset()));
 			script.setName(name.getLexeme());
 			script.setType(basicType.getLexeme());
 			script.setEndOffset(scanner.createOffset(script.getStartOffset()+name.getLength()));
 			root.addScript(script);
 			parseScript(root, script);
 			return;
+
 		}
 
 		int nextTokenType = scanner.yyPeekCheckType();
@@ -456,7 +467,8 @@ public class AstFactory implements TokenTypes {
 				case KEYWORD_GLOBAL:
 					scanner.yylexNonNull(KEYWORD_SCRIPT, "'script' expected");
 					Token name = scanner.yylexNonNull(IDENTIFIER, "Script name expected");
-					ScriptNode script = new ScriptNode(scanner.createOffset(name.getOffset()));
+					ScriptNode script = new ScriptNode(ScriptType.GLOBAL,
+							scanner.createOffset(name.getOffset()));
 					script.setName(name.getLexeme());
 					script.setEndOffset(scanner.createOffset(script.getStartOffset()+name.getLength()+1));
 					script.setType("global");
@@ -479,7 +491,11 @@ public class AstFactory implements TokenTypes {
 					// Fall through
 
 				default:
-					if (token.isBasicType()) {
+					// The yyPeekCheckType() condition will only be hit in error
+					// conditions, e.g. "xxx script DoWork {", but is needed
+					// for better error detection/recovery.
+					if (token.isBasicType() ||
+							scanner.yyPeekCheckType() == TokenTypes.KEYWORD_SCRIPT) {
 						parseFunctionVariableOrScript(root, token, constantToken);
 					}
 					break;

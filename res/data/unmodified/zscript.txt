@@ -1711,6 +1711,12 @@ typedef weapon eweapon;
 class itemdata
 {
 	/**
+	* The original values of the item's 8 D input values are they are stored in the
+	* .qst file, regardles of whether they have been modified by ZScript.
+	*/
+	float InitD[];
+
+	/**
 	* Loads the item this itemdata is attributed to's name into 'buffer'
 	*/
 	void GetName(int buffer[]);
@@ -1805,12 +1811,6 @@ class itemdata
 
 namespace Game
 {
-
-	/**
-	* The original values of the item's 8 D input values are they are stored in the
-	* .qst file, regardles of whether they have been modified by ZScript.
-	*/
-	float InitD[];
 
 	/**
 	* Retrieves the number of the current screen within the current map.

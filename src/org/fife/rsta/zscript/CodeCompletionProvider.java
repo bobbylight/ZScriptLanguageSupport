@@ -15,6 +15,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.SortedSet;
 import java.util.TreeSet;
+
 import javax.swing.text.BadLocationException;
 import javax.swing.text.Element;
 import javax.swing.text.JTextComponent;
@@ -23,6 +24,7 @@ import javax.swing.text.Segment;
 import org.fife.rsta.ac.ShorthandCompletionCache;
 import org.fife.rsta.zscript.ast.FunctionDecNode;
 import org.fife.rsta.zscript.ast.RootNode;
+import org.fife.rsta.zscript.ast.ScriptNode;
 import org.fife.rsta.zscript.ast.VariableDecNode;
 import org.fife.rsta.zscript.ast.VariablesInScopeGrabber;
 import org.fife.rsta.zscript.ast.ZScriptAst;
@@ -231,12 +233,23 @@ OUTER:
 			}
 		}
 
+		// "item" scripts display itemdata fields for "this->"
+		int dot = comp.getCaretPosition();
+		if ("this".equals(first)) {
+			ScriptNode script = ast.getScriptNodeContaining(dot);
+			if (script != null) {
+				text = sections.length==2 ? sections[1] : "";
+				addGlobalMemberCompletions("itemdata", text, retVal);
+				return;
+			}
+		}
+
 		// Must be a variable (lweapon, eweapon, etc.)
 		int possibleBracket = first.indexOf('[');
 		if (possibleBracket>-1) {
 			first = first.substring(0, possibleBracket);
 		}
-		SortedSet<Completion> vars = getVariableCompletions(first, comp.getCaretPosition());
+		SortedSet<Completion> vars = getVariableCompletions(first, dot);
 		List<Completion> completionsForType = Collections.emptyList();
 		if (!vars.isEmpty()) {
 			// If > 1, then might have one var name that's also a prefix for

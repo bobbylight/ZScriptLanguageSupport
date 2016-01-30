@@ -43,7 +43,7 @@ package org.fife.rsta.zscript.ast;
 
 
 	private Token createToken(int type, boolean invalid) {
-		return new TokenImpl(type, yytext(), yyline, yycolumn, yychar, invalid);
+		return new Token(type, yytext(), yyline, yycolumn, yychar, invalid);
 	}
 
 
@@ -231,6 +231,7 @@ NullLiteral							= ("null")
 	"float"					{ return createToken(DATA_TYPE_FLOAT); }
 	"int"					{ return createToken(DATA_TYPE_INT); }
 	"item"					{ return createToken(DATA_TYPE_ITEM); }
+	"itemdata"				{ return createToken(DATA_TYPE_ITEMDATA); }
 	"npc"					{ return createToken(DATA_TYPE_NPC); }
 	"lweapon"				{ return createToken(DATA_TYPE_LWEAPON); }
 

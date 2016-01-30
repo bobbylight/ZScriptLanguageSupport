@@ -23,6 +23,7 @@ import org.fife.rsta.zscript.IconFactory.IconData;
  */
 public class ScriptNode extends MemberNode implements MemberContainer, BodiedNode {
 
+	private ScriptType type;
 	private Position bodyStart;
 	private Position bodyEnd;
 	private List<FunctionDecNode> functions;
@@ -31,7 +32,7 @@ public class ScriptNode extends MemberNode implements MemberContainer, BodiedNod
 	private List<VariableDecNode> vars;
 
 
-	public ScriptNode(Position start) {
+	public ScriptNode(ScriptType type, Position start) {
 		super(SCRIPT_DEC, start);
 		functions = new ArrayList<FunctionDecNode>();
 		vars = new ArrayList<VariableDecNode>();
@@ -108,6 +109,11 @@ public class ScriptNode extends MemberNode implements MemberContainer, BodiedNod
 	@Override
 	public IconData getIcon() {
 		return new IconData(IconFactory.SCRIPT_ICON, false);
+	}
+
+
+	public ScriptType getScriptType() {
+		return type;
 	}
 
 

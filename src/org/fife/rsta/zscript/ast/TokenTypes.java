@@ -45,8 +45,9 @@ public interface TokenTypes {
 	public static final int DATA_TYPE_FLOAT			= DATA_TYPE|4;
 	public static final int DATA_TYPE_INT			= DATA_TYPE|5;
 	public static final int DATA_TYPE_ITEM			= DATA_TYPE|6;
-	public static final int DATA_TYPE_NPC			= DATA_TYPE|7;
-	public static final int DATA_TYPE_LWEAPON		= DATA_TYPE|8;
+	public static final int DATA_TYPE_ITEMDATA		= DATA_TYPE|7;
+	public static final int DATA_TYPE_NPC			= DATA_TYPE|8;
+	public static final int DATA_TYPE_LWEAPON		= DATA_TYPE|9;
 
 	/* Literals */
 	public static final int LITERAL_INT				= LITERAL|1;
