@@ -559,7 +559,7 @@ public class DemoRootPane extends JRootPane implements SyntaxConstants,
 		}
 
 		public String getVersion() {
-			String version = "1.0-beta";
+			String version = "2.6.0-SNAPSHOT";
 			String buildDate = ZScriptLanguageSupport.getBuildDate();
 			if (buildDate!=null) {
 				version += " build " + buildDate;
