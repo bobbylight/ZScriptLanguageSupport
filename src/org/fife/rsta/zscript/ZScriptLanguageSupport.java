@@ -121,6 +121,7 @@ public class ZScriptLanguageSupport extends AbstractLanguageSupport {
 	}
 
 
+	@Override
 	public void install(RSyntaxTextArea textArea) {
 
 		ZScriptCompletionProvider provider = new ZScriptCompletionProvider();
@@ -177,6 +178,7 @@ public class ZScriptLanguageSupport extends AbstractLanguageSupport {
 	}
 
 
+	@Override
 	public void uninstall(RSyntaxTextArea textArea) {
 
 		uninstallImpl(textArea);
@@ -221,6 +223,7 @@ public class ZScriptLanguageSupport extends AbstractLanguageSupport {
 		 *
 		 * @param e The event.
 		 */
+		@Override
 		public void propertyChange(PropertyChangeEvent e) {
 
 			String name = e.getPropertyName();
@@ -277,6 +280,7 @@ public class ZScriptLanguageSupport extends AbstractLanguageSupport {
 			t.setRepeats(false);
 		}
 
+		@Override
 		public void actionPerformed(ActionEvent e) {
 
 			ZScriptParser parser = getParser(textArea);
@@ -311,6 +315,7 @@ public class ZScriptLanguageSupport extends AbstractLanguageSupport {
 
 		}
 
+		@Override
 		public void caretUpdate(CaretEvent e) {
 			t.restart();
 		}

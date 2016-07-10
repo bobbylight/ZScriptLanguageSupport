@@ -44,6 +44,7 @@ public class SourceParamChoicesProvider implements ParameterChoicesProvider {
 	}
 
 
+	@Override
 	public List<Completion> getParameterChoices(JTextComponent tc, Parameter param) {
 
 		String type = param.getType();

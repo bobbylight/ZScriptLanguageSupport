@@ -74,27 +74,35 @@ public class VariablesInScopeGrabber implements ZScriptAstVisitor {
 	}
 
 
+	@Override
 	public void postVisit(CodeBlock block) {}
 
 
+	@Override
 	public void postVisit(DoWhileNode doWhileNode) {}
 
 
+	@Override
 	public void postVisit(ElseNode elseNode) {}
 
 
+	@Override
 	public void postVisit(ForNode forNode) {}
 
 
+	@Override
 	public void postVisit(FunctionDecNode functionDec) {}
 
 
+	@Override
 	public void postVisit(IfNode ifNode) {}
 
 
+	@Override
 	public void postVisit(ImportNode importNode) {}
 
 
+	@Override
 	public void postVisit(RootNode root) {
 		// Add these last, so they don't shadow function-scoped vars, etc.
 		addFunctionsFromFuncContainer(root);
@@ -102,6 +110,7 @@ public class VariablesInScopeGrabber implements ZScriptAstVisitor {
 	}
 
 
+	@Override
 	public void postVisit(ScriptNode script) {
 		// Add these last, so they don't shadow function-scoped vars, etc.
 		if (script.bodyContainsOffset(offs)) {
@@ -111,37 +120,45 @@ public class VariablesInScopeGrabber implements ZScriptAstVisitor {
 	}
 
 
+	@Override
 	public void postVisit(VariableDecNode varDec) {}
 
 
+	@Override
 	public void postVisit(WhileNode whileNode) {}
 
 
+	@Override
 	public boolean visit(CodeBlock block) {
 		return false;
 	}
 
 
+	@Override
 	public boolean visit(DoWhileNode doWhileNode) {
 		return false;
 	}
 
 
+	@Override
 	public boolean visit(ElseNode elseNode) {
 		return false;
 	}
 
 
+	@Override
 	public boolean visit(ForNode forNode) {
 		return false;
 	}
 
 
+	@Override
 	public boolean visit(IfNode ifNode) {
 		return false;
 	}
 
 
+	@Override
 	public boolean visit(FunctionDecNode functionDec) {
 
 		if (functionDec.bodyContainsOffset(offs)) {
@@ -181,26 +198,31 @@ public class VariablesInScopeGrabber implements ZScriptAstVisitor {
 	}
 
 
+	@Override
 	public boolean visit(ImportNode importNode) {
 		return false;
 	}
 
 
+	@Override
 	public boolean visit(RootNode root) {
 		return true;
 	}
 
 
+	@Override
 	public boolean visit(ScriptNode script) {
 		return true;
 	}
 
 
+	@Override
 	public boolean visit(VariableDecNode varDec) {
 		return false;
 	}
 
 
+	@Override
 	public boolean visit(WhileNode whileNode) {
 		return false;
 	}

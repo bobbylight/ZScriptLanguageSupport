@@ -139,6 +139,7 @@ private void pushOntoStack(Token t) {
 			}
 		}
 		return new Position() {
+			@Override
 			public int getOffset() {
 				return offs;
 			}

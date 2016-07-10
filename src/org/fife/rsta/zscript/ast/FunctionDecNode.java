@@ -34,6 +34,7 @@ public class FunctionDecNode extends MemberNode implements CodeBlockParent {
 	}
 
 
+	@Override
 	public void accept(ZScriptAstVisitor visitor) {
 
 		boolean visitChildren = visitor.visit(this);
@@ -52,6 +53,7 @@ public class FunctionDecNode extends MemberNode implements CodeBlockParent {
 	}
 
 
+	@Override
 	public boolean bodyContainsOffset(int offs) {
 		return codeBlock!=null && codeBlock.containsOffset(offs);
 	}
@@ -83,21 +85,25 @@ public class FunctionDecNode extends MemberNode implements CodeBlockParent {
 	}
 
 
+	@Override
 	public int getBodyEndOffset() {
 		return codeBlock!=null ? codeBlock.getEndOffset() : Integer.MAX_VALUE;
 	}
 
 
+	@Override
 	public int getBodyStartOffset() {
 		return codeBlock!=null ? codeBlock.getStartOffset() : 0;
 	}
 
 
+	@Override
 	public CodeBlock getCodeBlock() {
 		return codeBlock;
 	}
 
 
+	@Override
 	public BodiedNode getDeepestBodiedNodeContaining(int offs) {
 		if (bodyContainsOffset(offs)) { // Should always be true
 			for (int i=0; i<codeBlock.getCodeBlockCount(); i++) {
@@ -118,6 +124,7 @@ public class FunctionDecNode extends MemberNode implements CodeBlockParent {
 	}
 
 
+	@Override
 	public void setCodeBlock(CodeBlock block) {
 		this.codeBlock = block;
 	}

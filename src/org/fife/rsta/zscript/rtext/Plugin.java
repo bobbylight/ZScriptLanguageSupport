@@ -127,6 +127,7 @@ public class Plugin extends GUIPlugin {
 	 *
 	 * @return The options dialog panel.
 	 */
+	@Override
 	public PluginOptionsDialogPanel getOptionsDialogPanel() {
 		return new ZScriptOptionPanel(this);
 	}
@@ -144,11 +145,13 @@ public class Plugin extends GUIPlugin {
 	}
 
 
+	@Override
 	public String getPluginAuthor() {
 		return "Robert Futrell";
 	}
 
 
+	@Override
 	public Icon getPluginIcon() {
 		if (icon==null) {
 			URL url = getClass().getResource(ICON);
@@ -158,6 +161,7 @@ public class Plugin extends GUIPlugin {
 	}
 
 
+	@Override
 	public String getPluginName() {
 		return Messages.getString("Plugin.Name");
 	}
@@ -168,6 +172,7 @@ public class Plugin extends GUIPlugin {
 	 *
 	 * @return The version number.
 	 */
+	@Override
 	public String getPluginVersion() {
 		if (version==null) {
 			version = PLUGIN_VERSION;
@@ -191,6 +196,7 @@ public class Plugin extends GUIPlugin {
 	}
 
 
+	@Override
 	public void install(AbstractPluggableGUIApplication app) {
 
 		RText rtext = (RText)app;
@@ -221,10 +227,13 @@ public class Plugin extends GUIPlugin {
 		popup.pack();
 		// Only needed for pre-1.6 support
 		popup.addPopupMenuListener(new PopupMenuListener() {
+			@Override
 			public void popupMenuCanceled(PopupMenuEvent e) {
 			}
+			@Override
 			public void popupMenuWillBecomeInvisible(PopupMenuEvent e) {
 			}
+			@Override
 			public void popupMenuWillBecomeVisible(PopupMenuEvent e) {
 				item.setSelected(isDockableWindowVisible());
 			}
@@ -308,6 +317,7 @@ public class Plugin extends GUIPlugin {
 	}
 
 
+	@Override
 	public void savePreferences() {
 
 		// General GUI plugin options
@@ -367,6 +377,7 @@ public class Plugin extends GUIPlugin {
 	}
 
 
+	@Override
 	public boolean uninstall() {
 		// TODO Auto-generated method stub
 		return false;

@@ -42,6 +42,7 @@ public class DemoApp extends JFrame {
 		DemoRootPane.registerZScript();
 
 		SwingUtilities.invokeLater(new Runnable() {
+			@Override
 			public void run() {
 				try {
 					UIManager.setLookAndFeel(UIManager.

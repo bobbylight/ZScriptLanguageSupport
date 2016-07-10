@@ -22,6 +22,7 @@ public class ImportNode extends AbstractNode {
 	}
 
 
+	@Override
 	public void accept(ZScriptAstVisitor visitor) {
 		visitor.visit(this);
 	}

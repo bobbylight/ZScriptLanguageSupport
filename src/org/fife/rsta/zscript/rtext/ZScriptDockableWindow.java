@@ -98,6 +98,7 @@ public class ZScriptDockableWindow extends AbstractParserNoticeWindow
 	/**
 	 * Callback for text areas being added to or removed from RText.
 	 */
+	@Override
 	public void propertyChange(PropertyChangeEvent e) {
 
 		String prop = e.getPropertyName();

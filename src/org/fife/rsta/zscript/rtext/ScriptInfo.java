@@ -34,6 +34,7 @@ class ScriptInfo implements Comparable<ScriptInfo> {
 	}
 
 
+	@Override
 	public int compareTo(ScriptInfo script2) {
 		if (script2!=null) {
 			// Note that id is probably a more logical thing to compare, but

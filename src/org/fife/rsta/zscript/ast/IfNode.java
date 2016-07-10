@@ -22,6 +22,7 @@ public class IfNode extends AbstractCodeBlockStatementNode {
 	}
 
 
+	@Override
 	public void accept(ZScriptAstVisitor visitor) {
 
 		boolean visitChildren = visitor.visit(this);

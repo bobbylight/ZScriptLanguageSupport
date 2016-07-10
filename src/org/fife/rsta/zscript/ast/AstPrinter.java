@@ -44,75 +44,91 @@ public class AstPrinter implements ZScriptAstVisitor {
 	}
 
 
+	@Override
 	public void postVisit(CodeBlock block) {}
 
 
+	@Override
 	public void postVisit(DoWhileNode doWhileNode) {
 		decreaseIndent();
 		System.out.println(indentLevel + "} while ();");
 	}
 
 
+	@Override
 	public void postVisit(ElseNode elseNode) {
 		blockStatementEnd();
 	}
 
 
+	@Override
 	public void postVisit(ForNode forNode) {
 		blockStatementEnd();
 	}
 
 
+	@Override
 	public void postVisit(IfNode ifNode) {
 		blockStatementEnd();
 	}
 
 
+	@Override
 	public void postVisit(FunctionDecNode functionDec) {
 		blockStatementEnd();
 	}
 
 
+	@Override
 	public void postVisit(ImportNode importNode) {}
 
 
+	@Override
 	public void postVisit(RootNode root) {}
 
 
+	@Override
 	public void postVisit(ScriptNode script) {
 		blockStatementEnd();
 	}
 
 
+	@Override
 	public void postVisit(VariableDecNode varDec) {}
 
 
+	@Override
 	public void postVisit(WhileNode whileNode) {
 		blockStatementEnd();
 	}
 
 
+	@Override
 	public boolean visit(CodeBlock block) {
 		return true;
 	}
 
 
+	@Override
 	public boolean visit(DoWhileNode doWhileNode) {
 		return blockStatementBegin(doWhileNode.toString());
 	}
 
 
+	@Override
 	public boolean visit(ElseNode elseNode) {
 		blockStatementEnd();
 		return blockStatementBegin(elseNode.toString()); 
 	}
 
 
+	@Override
 	public boolean visit(ForNode forNode) {
 		return blockStatementBegin(forNode.toString());
 	}
 
 
+	@Override
 	public boolean visit(FunctionDecNode functionDec) {
 
 		if (firstMember) {
@@ -139,22 +155,26 @@ public class AstPrinter implements ZScriptAstVisitor {
 	}
 
 
+	@Override
 	public boolean visit(IfNode ifNode) {
 		return blockStatementBegin(ifNode.toString());
 	}
 
 
+	@Override
 	public boolean visit(ImportNode importNode) {
 		System.out.println("import \"" + importNode.getImport() + "\"");
 		return true;
 	}
 
 
+	@Override
 	public boolean visit(RootNode root) {
 		return true;
 	}
 
 
+	@Override
 	public boolean visit(ScriptNode script) {
 
 		if (firstMember) {
@@ -173,6 +193,7 @@ public class AstPrinter implements ZScriptAstVisitor {
 	}
 
 
+	@Override
 	public boolean visit(VariableDecNode varDec) {
 
 		if (firstMember) {
@@ -193,6 +214,7 @@ public class AstPrinter implements ZScriptAstVisitor {
 	}
 
 
+	@Override
 	public boolean visit(WhileNode whileNode) {
 		return blockStatementBegin(whileNode.toString());
 	}

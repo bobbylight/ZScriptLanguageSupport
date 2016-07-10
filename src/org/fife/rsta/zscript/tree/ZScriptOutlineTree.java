@@ -257,6 +257,7 @@ public class ZScriptOutlineTree extends AbstractSourceTree {
 		 * Called whenever the text area's syntax style changes, as well as
 		 * when it is re-parsed.
 		 */
+		@Override
 		public void propertyChange(PropertyChangeEvent e) {
 
 			String name = e.getPropertyName();
@@ -276,6 +277,7 @@ public class ZScriptOutlineTree extends AbstractSourceTree {
 		 * Selects the corresponding element in the text editor when a user
 		 * clicks on a node in this tree.
 		 */
+		@Override
 		public void valueChanged(TreeSelectionEvent e) {
 			if (getGotoSelectedElementOnClick()) {
 				//gotoSelectedElement();
@@ -314,31 +316,42 @@ public class ZScriptOutlineTree extends AbstractSourceTree {
 			return variableContainers.peek();
 		}
 
+		@Override
 		public void postVisit(CodeBlock block) {}
 
+		@Override
 		public void postVisit(DoWhileNode doWhileNode) {}
 
+		@Override
 		public void postVisit(ElseNode elseNode) {}
 
+		@Override
 		public void postVisit(ForNode forNode) {}
 
+		@Override
 		public void postVisit(IfNode ifNode) {}
 
+		@Override
 		public void postVisit(FunctionDecNode functionDec) {
 			popAndVerify("variable", variableContainers, functionDec);
 		}
 
+		@Override
 		public void postVisit(ImportNode importNode) {}
 
+		@Override
 		public void postVisit(RootNode root) {}
 
+		@Override
 		public void postVisit(ScriptNode script) {
 			popAndVerify("function", functionContainers, script);
 			popAndVerify("variable", variableContainers, script);
 		}
 
+		@Override
 		public void postVisit(VariableDecNode varDec) {}
 
+		@Override
 		public void postVisit(WhileNode whileNode) {}
 
 		private void popAndVerify(String type, Stack<ZScriptTreeNode> stack, Object top) {
@@ -348,22 +361,27 @@ public class ZScriptOutlineTree extends AbstractSourceTree {
 			}
 		}
 
+		@Override
 		public boolean visit(CodeBlock block) {
 			return true;
 		}
 
+		@Override
 		public boolean visit(DoWhileNode doWhileNode) {
 			return false;
 		}
 
+		@Override
 		public boolean visit(ElseNode elseNode) {
 			return false;
 		}
 
+		@Override
 		public boolean visit(ForNode forNode) {
 			return false;
 		}
 
+		@Override
 		public boolean visit(FunctionDecNode functionDec) {
 			ZScriptTreeNode funcNode = new ZScriptTreeNode(functionDec);
 			funcNode.setSortPriority(SORT_PRIORITY_FUNCTION);
@@ -372,10 +390,12 @@ public class ZScriptOutlineTree extends AbstractSourceTree {
 			return true;
 		}
 
+		@Override
 		public boolean visit(IfNode ifNode) {
 			return false;
 		}
 
+		@Override
 		public boolean visit(ImportNode importNode) {
 			if (!getShowMajorElementsOnly()) {
 				importRoot.add(new ZScriptTreeNode(importNode));
@@ -383,6 +403,7 @@ public class ZScriptOutlineTree extends AbstractSourceTree {
 			return false;
 		}
 
+		@Override
 		public boolean visit(RootNode root) {
 			if (!getShowMajorElementsOnly()) {
 				importRoot = new ZScriptTreeNode("Imports",
@@ -395,6 +416,7 @@ public class ZScriptOutlineTree extends AbstractSourceTree {
 			return true;
 		}
 
+		@Override
 		public boolean visit(ScriptNode script) {
 			ZScriptTreeNode scriptNode = new ZScriptTreeNode(script);
 			scriptNode.setSortPriority(SORT_PRIORITY_SCRIPT);
@@ -404,6 +426,7 @@ public class ZScriptOutlineTree extends AbstractSourceTree {
 			return true;
 		}
 
+		@Override
 		public boolean visit(VariableDecNode varDec) {
 			ZScriptTreeNode varNode = new ZScriptTreeNode(varDec);
 			varNode.setSortPriority(SORT_PRIORITY_VARIABLE);
@@ -411,6 +434,7 @@ public class ZScriptOutlineTree extends AbstractSourceTree {
 			return false;
 		}
 
+		@Override
 		public boolean visit(WhileNode whileNode) {
 			return false;
 		}

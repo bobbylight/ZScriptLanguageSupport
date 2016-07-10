@@ -142,6 +142,7 @@ public class DemoRootPane extends JRootPane implements SyntaxConstants,
 		setContentPane(cp);
 
 		SwingUtilities.invokeLater(new Runnable() {
+			@Override
 			public void run() {
 				rhsSplitPane.setDividerLocation(0.70);
 				sp.setDividerLocation(0.25);
@@ -151,6 +152,7 @@ public class DemoRootPane extends JRootPane implements SyntaxConstants,
 
 		textArea.addPropertyChangeListener(RSyntaxTextArea.PARSER_NOTICES_PROPERTY,
 			new PropertyChangeListener() {
+				@Override
 				public void propertyChange(PropertyChangeEvent e) {
 					List<ParserNotice> notices = textArea.getParserNotices();
 					refreshErrorTable(notices);
@@ -280,6 +282,7 @@ public class DemoRootPane extends JRootPane implements SyntaxConstants,
 	/**
 	 * {@inheritDoc}
 	 */
+	@Override
 	public String getSelectedText() {
 		return textArea.getSelectedText();
 	}
@@ -295,6 +298,7 @@ public class DemoRootPane extends JRootPane implements SyntaxConstants,
 	}
 
 
+	@Override
 	public void searchEvent(SearchEvent e) {
 
 		SearchEvent.Type type = e.getType();
@@ -349,6 +353,7 @@ public class DemoRootPane extends JRootPane implements SyntaxConstants,
 	 *
 	 * @param e The event.
 	 */
+	@Override
 	public void hyperlinkUpdate(HyperlinkEvent e) {
 		if (e.getEventType()==HyperlinkEvent.EventType.ACTIVATED) {
 			URL url = e.getURL();
@@ -549,6 +554,7 @@ public class DemoRootPane extends JRootPane implements SyntaxConstants,
 			putValue(NAME, "About ZScript Editor Demo...");
 		}
 
+		@Override
 		public void actionPerformed(ActionEvent e) {
 			JOptionPane.showMessageDialog(DemoRootPane.this,
 					"<html><b>ZScript Editor Support for RSyntaxTextArea</b>" +
@@ -576,6 +582,7 @@ public class DemoRootPane extends JRootPane implements SyntaxConstants,
 			putValue(NAME, "Automatically show completions after typing \"->\"");
 		}
 
+		@Override
 		public void actionPerformed(ActionEvent e) {
 			LanguageSupport ls = LanguageSupportFactory.get().getSupportFor("text/zscript");
 			ZScriptLanguageSupport zsls = (ZScriptLanguageSupport)ls;
@@ -591,6 +598,7 @@ public class DemoRootPane extends JRootPane implements SyntaxConstants,
 			putValue(NAME, "Code Folding");
 		}
 
+		@Override
 		public void actionPerformed(ActionEvent e) {
 			textArea.setCodeFoldingEnabled(!textArea.isCodeFoldingEnabled());
 		}
@@ -605,6 +613,7 @@ public class DemoRootPane extends JRootPane implements SyntaxConstants,
 			putValue(MNEMONIC_KEY, new Integer('x'));
 		}
 
+		@Override
 		public void actionPerformed(ActionEvent e) {
 			if (!saveIfDirty()) {
 				return;
@@ -623,6 +632,7 @@ public class DemoRootPane extends JRootPane implements SyntaxConstants,
 			putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke(ks));
 		}
 
+		@Override
 		public void actionPerformed(ActionEvent e) {
 			if (replaceDialog!=null && replaceDialog.isVisible()) {
 				replaceDialog.setVisible(false);
@@ -651,6 +661,7 @@ public class DemoRootPane extends JRootPane implements SyntaxConstants,
 			putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke(ks));
 		}
 
+		@Override
 		public void actionPerformed(ActionEvent e) {
 
 			int c = textArea.getToolkit().getMenuShortcutKeyMask();
@@ -689,6 +700,7 @@ public class DemoRootPane extends JRootPane implements SyntaxConstants,
 			putValue(SMALL_ICON, new ImageIcon(getClass().getResource("open.gif")));
 		}
 
+		@Override
 		public void actionPerformed(ActionEvent e) {
 			if (webDemoCheck()) {
 				return;
@@ -713,6 +725,7 @@ public class DemoRootPane extends JRootPane implements SyntaxConstants,
 			putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke(ks));
 		}
 
+		@Override
 		public void actionPerformed(ActionEvent e) {
 			if (findDialog!=null && findDialog.isVisible()) {
 				findDialog.setVisible(false);
@@ -742,6 +755,7 @@ public class DemoRootPane extends JRootPane implements SyntaxConstants,
 			putValue(SMALL_ICON, new ImageIcon(getClass().getResource("save.gif")));
 		}
 
+		@Override
 		public void actionPerformed(ActionEvent e) {
 			if (!webDemoCheck()) {
 				saveImpl(null);
@@ -758,6 +772,7 @@ public class DemoRootPane extends JRootPane implements SyntaxConstants,
 			putValue(SMALL_ICON, new ImageIcon(getClass().getResource("saveas.gif")));
 		}
 
+		@Override
 		public void actionPerformed(ActionEvent e) {
 
 			if (webDemoCheck()) {
@@ -800,6 +815,7 @@ public class DemoRootPane extends JRootPane implements SyntaxConstants,
 			putValue(NAME, "Tab Lines");
 		}
 
+		@Override
 		public void actionPerformed(ActionEvent e) {
 			selected = !selected;
 			textArea.setPaintTabLines(selected);
@@ -817,6 +833,7 @@ public class DemoRootPane extends JRootPane implements SyntaxConstants,
 			this.xml = xml;
 		}
 
+		@Override
 		public void actionPerformed(ActionEvent e) {
 			InputStream in = getClass().getResourceAsStream(
 					"/org/fife/ui/rsyntaxtextarea/themes/" + xml);
@@ -837,6 +854,7 @@ public class DemoRootPane extends JRootPane implements SyntaxConstants,
 			putValue(NAME, "Line Numbers");
 		}
 
+		@Override
 		public void actionPerformed(ActionEvent e) {
 			scrollPane.setLineNumbersEnabled(!scrollPane.getLineNumbersEnabled());
 		}
@@ -850,6 +868,7 @@ public class DemoRootPane extends JRootPane implements SyntaxConstants,
 			putValue(NAME, "Word Wrap");
 		}
 
+		@Override
 		public void actionPerformed(ActionEvent e) {
 			textArea.setLineWrap(!textArea.getLineWrap());
 		}

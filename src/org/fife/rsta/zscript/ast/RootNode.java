@@ -32,6 +32,7 @@ public class RootNode extends AbstractNode implements MemberContainer {
 	}
 
 
+	@Override
 	public void accept(ZScriptAstVisitor visitor) {
 
 		boolean visitChildren = visitor.visit(this);
@@ -54,6 +55,7 @@ public class RootNode extends AbstractNode implements MemberContainer {
 	}
 
 
+	@Override
 	public void addFunctionDec(FunctionDecNode function) {
 		functions.add(function);
 		allMembers.add(function);
@@ -71,6 +73,7 @@ public class RootNode extends AbstractNode implements MemberContainer {
 	}
 
 
+	@Override
 	public ShadowedVarInfo addVariableDec(VariableDecNode variable) {
 		VariableDecNode prev = getVariableDecByName(variable.getName());
 		vars.add(variable);
@@ -84,11 +87,13 @@ public class RootNode extends AbstractNode implements MemberContainer {
 	}
 
 
+	@Override
 	public FunctionDecNode getFunction(int index) {
 		return functions.get(index);
 	}
 
 
+	@Override
 	public int getFunctionCount() {
 		return functions.size();
 	}
@@ -120,16 +125,19 @@ public class RootNode extends AbstractNode implements MemberContainer {
 	}
 
 
+	@Override
 	public int getVariableCount() {
 		return vars.size();
 	}
 
 
+	@Override
 	public VariableDecNode getVariableDec(int index) {
 		return vars.get(index);
 	}
 
 
+	@Override
 	public VariableDecNode getVariableDecByName(String name) {
 		for (int i=0; i<getVariableCount(); i++) {
 			VariableDecNode var = getVariableDec(i);

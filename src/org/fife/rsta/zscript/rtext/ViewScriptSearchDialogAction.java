@@ -39,6 +39,7 @@ class ViewScriptSearchDialogAction extends StandardAction {
 	}
 
 
+	@Override
 	public void actionPerformed(ActionEvent e) {
 		plugin.showScriptSearchDialog();
 	}

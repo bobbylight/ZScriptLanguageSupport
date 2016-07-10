@@ -86,6 +86,7 @@ public class DecoratableIcon implements Icon {
 	/**
 	 * {@inheritDoc}
 	 */
+	@Override
 	public int getIconHeight() {
 		return mainIcon.getIconHeight();
 	}
@@ -94,6 +95,7 @@ public class DecoratableIcon implements Icon {
 	/**
 	 * {@inheritDoc}
 	 */
+	@Override
 	public int getIconWidth() {
 		return width;
 	}
@@ -102,6 +104,7 @@ public class DecoratableIcon implements Icon {
 	/**
 	 * {@inheritDoc}
 	 */
+	@Override
 	public void paintIcon(Component c, Graphics g, int x, int y) {
 		mainIcon.paintIcon(c, g, x, y);
 		if (decorations!=null) {

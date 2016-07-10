@@ -39,6 +39,7 @@ class ViewDockedWindowAction extends StandardAction {
 	}
 
 
+	@Override
 	public void actionPerformed(ActionEvent e) {
 		plugin.setDockableWindowVisible(!plugin.isDockableWindowVisible());
 	}

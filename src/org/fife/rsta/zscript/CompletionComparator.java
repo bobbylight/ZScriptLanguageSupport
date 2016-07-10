@@ -49,6 +49,7 @@ public class CompletionComparator implements Comparator<Completion> {
 	 * @param c2 The second <code>Completion</code>  Guaranteed to not be
 	 *        <code>null</code>.
 	 */
+	@Override
 	public int compare(Completion c1, Completion c2) {
 		String s1 = c1==null ? "" : stringer.getCompareValue(c1);
 		String s2 = c2==null ? "" : stringer.getCompareValue(c2);
@@ -74,6 +75,7 @@ public class CompletionComparator implements Comparator<Completion> {
 	public static class InputTextCompletionStringer
 			implements CompletionStringer {
 
+		@Override
 		public String getCompareValue(Completion c) {
 			return c.getInputText();
 		}

@@ -21,16 +21,19 @@ abstract class AbstractCodeBlockStatementNode extends AbstractNode
 	}
 
 
+	@Override
 	public boolean bodyContainsOffset(int offs) {
 		return codeBlock!=null && codeBlock.containsOffset(offs);
 	}
 
 
+	@Override
 	public int getBodyEndOffset() {
 		return codeBlock!=null ? codeBlock.getEndOffset() : Integer.MAX_VALUE;
 	}
 
 
+	@Override
 	public int getBodyStartOffset() {
 		return codeBlock!=null ? codeBlock.getStartOffset() : 0;
 	}
@@ -39,6 +42,7 @@ abstract class AbstractCodeBlockStatementNode extends AbstractNode
 	/**
 	 * @return The child code block, or <code>null</code> for none.
 	 */
+	@Override
 	public CodeBlock getCodeBlock() {
 		return codeBlock;
 	}
@@ -49,6 +53,7 @@ abstract class AbstractCodeBlockStatementNode extends AbstractNode
 	}
 
 
+	@Override
 	public BodiedNode getDeepestBodiedNodeContaining(int offs) {
 		if (bodyContainsOffset(offs)) { // Should always be true
 			for (int i=0; i<codeBlock.getCodeBlockCount(); i++) {
@@ -63,6 +68,7 @@ abstract class AbstractCodeBlockStatementNode extends AbstractNode
 	}
 
 
+	@Override
 	public CodeBlock getParentCodeBlock() {
 		return parentBlock;
 	}
@@ -80,11 +86,13 @@ abstract class AbstractCodeBlockStatementNode extends AbstractNode
 	}
 
 
+	@Override
 	public void setCodeBlock(CodeBlock codeBlock) {
 		this.codeBlock = codeBlock;
 	}
 
 
+	@Override
 	public void setParentCodeBlock(CodeBlock parent) {
 		parentBlock = parent;
 	}

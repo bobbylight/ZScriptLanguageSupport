@@ -166,6 +166,7 @@ return new OpenBuiltInStuffLinkGeneratorResult(textArea, main.getOffset(), searc
 	/**
 	 * {@inheritDoc}
 	 */
+	@Override
 	public LinkGeneratorResult isLinkAtOffset(RSyntaxTextArea textArea, int offs) {
 
 		Token t = textArea.modelToToken(offs);
@@ -279,6 +280,7 @@ return new OpenBuiltInStuffLinkGeneratorResult(textArea, main.getOffset(), searc
 			this.searchFor = searchFor;
 		}
 
+		@Override
 		public HyperlinkEvent execute() {
 			InputStream in = getClass().getResourceAsStream(res);
 			BufferedReader r = new BufferedReader(new InputStreamReader(in));
@@ -297,6 +299,7 @@ return new OpenBuiltInStuffLinkGeneratorResult(textArea, main.getOffset(), searc
 			return null;
 		}
 
+		@Override
 		public int getSourceOffset() {
 			return sourceOffs;
 		}
@@ -325,6 +328,7 @@ return new OpenBuiltInStuffLinkGeneratorResult(textArea, main.getOffset(), searc
 //			this.token = token;
 		}
 
+		@Override
 		public HyperlinkEvent execute() {
 // TODO: Determine whether we can open a *.zh file (std_*.zh, string.zh), or have
 // to fall back onto .txt description (zscript.txt).
@@ -347,6 +351,7 @@ return new OpenBuiltInStuffLinkGeneratorResult(textArea, main.getOffset(), searc
 			return null;
 		}
 
+		@Override
 		public int getSourceOffset() {
 			return sourceOffs;
 		}

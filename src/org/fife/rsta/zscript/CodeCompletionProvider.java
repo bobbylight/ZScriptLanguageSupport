@@ -165,6 +165,7 @@ public class CodeCompletionProvider extends AbstractCompletionProvider {
 	}
 
 
+	@Override
 	public String getAlreadyEnteredText(JTextComponent comp) {
 
 		RSyntaxDocument doc = (RSyntaxDocument)comp.getDocument();
@@ -288,6 +289,7 @@ OUTER:
 	}
 
 
+	@Override
 	public List<Completion> getCompletionsAt(JTextComponent tc, Point p) {
 
 		int offset = tc.viewToModel(p);
@@ -367,6 +369,7 @@ return null;
 
 	private Completion getMatchingCompletion(List<? extends Completion> sourceList, String name) {
 		CompletionComparator comparator = new CompletionComparator(new CompletionComparator.CompletionStringer() {
+			@Override
 			public String getCompareValue(Completion c) {
 				String name = c.getInputText();
 				if (name.endsWith("[]")) {
@@ -454,6 +457,7 @@ return null;
 	}
 
 
+	@Override
 	public List<ParameterizedCompletion> getParameterizedCompletions(JTextComponent tc) {
 		return null;
 	}

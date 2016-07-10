@@ -532,6 +532,7 @@ class ScriptSearchDialog extends EscapableDialog {
 
 		private int lastSelectedIndex = -1;
 
+		@Override
 		public void actionPerformed(ActionEvent e) {
 
 			String command = e.getActionCommand();
@@ -542,6 +543,7 @@ class ScriptSearchDialog extends EscapableDialog {
 
 		}
 
+		@Override
 		public void changedUpdate(DocumentEvent e) {
 		}
 
@@ -551,6 +553,7 @@ class ScriptSearchDialog extends EscapableDialog {
 			}
 		}
 
+		@Override
 		public void hyperlinkUpdate(HyperlinkEvent e) {
 			if (e.getEventType()==HyperlinkEvent.EventType.ACTIVATED) {
 				URL url = e.getURL();
@@ -564,14 +567,17 @@ class ScriptSearchDialog extends EscapableDialog {
 			}
 		}
 
+		@Override
 		public void insertUpdate(DocumentEvent e) {
 			handleDocumentEvent(e);
 		}
 
+		@Override
 		public void removeUpdate(DocumentEvent e) {
 			handleDocumentEvent(e);
 		}
 
+		@Override
 		public void valueChanged(ListSelectionEvent e) {
 			// Minimize chances of multiple fast HTTP requests if they scroll
 			// quickly with the mouse (holding down arrow keys still a problem).
@@ -729,6 +735,7 @@ class ScriptSearchDialog extends EscapableDialog {
 		private void updateRating(final ScriptInfo script, final int rating) {
 			//System.out.println(script + ": " + rating);
 			SwingUtilities.invokeLater(new Runnable() {
+				@Override
 				public void run() {
 					script.setRating(rating);
 					for (int row=0; row<model.getRowCount(); row++) {

@@ -59,6 +59,7 @@ public class ZScriptParser extends AbstractParser {
 	}
 
 
+	@Override
 	public ParseResult parse(RSyntaxDocument doc, String style) {
 		ZScriptAst old = ast;
 		AstFactory parser2 = new AstFactory(doc, this, null);

@@ -39,6 +39,7 @@ public class ScriptNode extends MemberNode implements MemberContainer, BodiedNod
 	}
 
 
+	@Override
 	public void accept(ZScriptAstVisitor visitor) {
 
 		boolean visitChildren = visitor.visit(this);
@@ -55,11 +56,13 @@ public class ScriptNode extends MemberNode implements MemberContainer, BodiedNod
 	}
 
 
+	@Override
 	public void addFunctionDec(FunctionDecNode function) {
 		functions.add(function);
 	}
 
 
+	@Override
 	public ShadowedVarInfo addVariableDec(VariableDecNode variable) {
 		VariableDecNode prev = getVariableDecByName(variable.getName());
 		vars.add(variable);
@@ -67,21 +70,25 @@ public class ScriptNode extends MemberNode implements MemberContainer, BodiedNod
 	}
 
 
+	@Override
 	public boolean bodyContainsOffset(int offs) {
 		return offs>=getBodyStartOffset() && offs<getBodyEndOffset();
 	}
 
 
+	@Override
 	public int getBodyEndOffset() {
 		return bodyEnd==null ? Integer.MAX_VALUE : bodyEnd.getOffset();
 	}
 
 
+	@Override
 	public int getBodyStartOffset() {
 		return bodyStart.getOffset();
 	}
 
 
+	@Override
 	public BodiedNode getDeepestBodiedNodeContaining(int offs) {
 		if (bodyContainsOffset(offs)) { // Should always be true
 			for (int i=0; i<getFunctionCount(); i++) {
@@ -96,11 +103,13 @@ public class ScriptNode extends MemberNode implements MemberContainer, BodiedNod
 	}
 
 
+	@Override
 	public FunctionDecNode getFunction(int index) {
 		return functions.get(index);
 	}
 
 
+	@Override
 	public int getFunctionCount() {
 		return functions.size();
 	}
@@ -117,16 +126,19 @@ public class ScriptNode extends MemberNode implements MemberContainer, BodiedNod
 	}
 
 
+	@Override
 	public int getVariableCount() {
 		return vars.size();
 	}
 
 
+	@Override
 	public VariableDecNode getVariableDec(int index) {
 		return vars.get(index);
 	}
 
 
+	@Override
 	public VariableDecNode getVariableDecByName(String name) {
 		for (int i=0; i<getVariableCount(); i++) {
 			VariableDecNode var = getVariableDec(i);

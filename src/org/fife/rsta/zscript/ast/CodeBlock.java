@@ -44,6 +44,7 @@ public class CodeBlock extends AbstractNode implements VariableContainer,
 	}
 
 
+	@Override
 	public void accept(ZScriptAstVisitor visitor) {
 
 		boolean visitChildren = visitor.visit(this);
@@ -59,12 +60,14 @@ public class CodeBlock extends AbstractNode implements VariableContainer,
 	}
 
 
+	@Override
 	public void addStatement(StatementNode statement) {
 		statements.add(statement);
 		statement.setParentCodeBlock(this);
 	}
 
 
+	@Override
 	public ShadowedVarInfo addVariableDec(VariableDecNode variable) {
 
 		ShadowedVarInfo info = null;
@@ -154,26 +157,31 @@ public class CodeBlock extends AbstractNode implements VariableContainer,
 	}
 
 
+	@Override
 	public StatementNode getStatement(int index) {
 		return statements.get(index);
 	}
 
 
+	@Override
 	public int getStatementCount() {
 		return statements.size();
 	}
 
 
+	@Override
 	public int getVariableCount() {
 		return vars.size();
 	}
 
 
+	@Override
 	public VariableDecNode getVariableDec(int index) {
 		return vars.get(index);
 	}
 
 
+	@Override
 	public VariableDecNode getVariableDecByName(String name) {
 		for (int i=0; i<getVariableCount(); i++) {
 			VariableDecNode var = getVariableDec(i);

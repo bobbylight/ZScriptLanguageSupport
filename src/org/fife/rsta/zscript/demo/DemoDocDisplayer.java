@@ -30,6 +30,7 @@ import org.fife.ui.rtextarea.SearchEngine;
 class DemoDocDisplayer implements DocDisplayer {
 
 
+	@Override
 	public void display(String title, BufferedReader r, String toFocus) {
 
 		RSyntaxTextArea textArea = new RSyntaxTextArea(40, 80);

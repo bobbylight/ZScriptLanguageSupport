@@ -28,19 +28,23 @@ public abstract class AbstractNode implements Node {
 	}
 
 
+	@Override
 	public int getEndOffset() {
 		return end==null ? Integer.MAX_VALUE : end.getOffset();
 	}
 
 
+	@Override
 	public abstract IconData getIcon();
 
 
+	@Override
 	public int getStartOffset() {
 		return start.getOffset();
 	}
 
 
+	@Override
 	public int getNodeType() {
 		return type;
 	}
@@ -62,6 +66,7 @@ public abstract class AbstractNode implements Node {
 	}
 
 
+	@Override
 	public abstract String toString(boolean colored);
 
 

@@ -43,6 +43,7 @@ public class VariableDecNode extends MemberNode implements StatementNode {
 	}
 
 
+	@Override
 	public void accept(ZScriptAstVisitor visitor) {
 		visitor.visit(this);
 	}
@@ -68,6 +69,7 @@ public class VariableDecNode extends MemberNode implements StatementNode {
 	}
 
 
+	@Override
 	public CodeBlock getParentCodeBlock() {
 		return parentBlock;
 	}
@@ -94,6 +96,7 @@ public class VariableDecNode extends MemberNode implements StatementNode {
 	}
 
 
+	@Override
 	public void setParentCodeBlock(CodeBlock parent) {
 		parentBlock = parent;
 	}
