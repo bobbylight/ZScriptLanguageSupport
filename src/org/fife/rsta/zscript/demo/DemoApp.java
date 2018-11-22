@@ -41,18 +41,15 @@ public class DemoApp extends JFrame {
 
 		DemoRootPane.registerZScript();
 
-		SwingUtilities.invokeLater(new Runnable() {
-			@Override
-			public void run() {
-				try {
-					UIManager.setLookAndFeel(UIManager.
-											getSystemLookAndFeelClassName());
-				} catch (Exception e) {
-					e.printStackTrace(); // Never happens
-				}
-				Toolkit.getDefaultToolkit().setDynamicLayout(true);
-				new DemoApp().setVisible(true);
+		SwingUtilities.invokeLater(() -> {
+			try {
+				UIManager.setLookAndFeel(UIManager.
+										getSystemLookAndFeelClassName());
+			} catch (Exception e) {
+				e.printStackTrace(); // Never happens
 			}
+			Toolkit.getDefaultToolkit().setDynamicLayout(true);
+			new DemoApp().setVisible(true);
 		});
 	}
 

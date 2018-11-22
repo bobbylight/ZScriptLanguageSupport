@@ -141,13 +141,10 @@ public class DemoRootPane extends JRootPane implements SyntaxConstants,
 		setJMenuBar(createMenuBar());
 		setContentPane(cp);
 
-		SwingUtilities.invokeLater(new Runnable() {
-			@Override
-			public void run() {
-				rhsSplitPane.setDividerLocation(0.70);
-				sp.setDividerLocation(0.25);
-				textArea.requestFocusInWindow();
-			}
+		SwingUtilities.invokeLater(() -> {
+			rhsSplitPane.setDividerLocation(0.70);
+			sp.setDividerLocation(0.25);
+			textArea.requestFocusInWindow();
 		});
 
 		textArea.addPropertyChangeListener(RSyntaxTextArea.PARSER_NOTICES_PROPERTY,
@@ -565,7 +562,7 @@ public class DemoRootPane extends JRootPane implements SyntaxConstants,
 		}
 
 		public String getVersion() {
-			String version = "2.6.0-SNAPSHOT";
+			String version = "3.0.0-SNAPSHOT";
 			String buildDate = ZScriptLanguageSupport.getBuildDate();
 			if (buildDate!=null) {
 				version += " build " + buildDate;

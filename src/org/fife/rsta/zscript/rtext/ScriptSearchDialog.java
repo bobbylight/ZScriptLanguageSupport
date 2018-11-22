@@ -734,21 +734,18 @@ class ScriptSearchDialog extends EscapableDialog {
 
 		private void updateRating(final ScriptInfo script, final int rating) {
 			//System.out.println(script + ": " + rating);
-			SwingUtilities.invokeLater(new Runnable() {
-				@Override
-				public void run() {
-					script.setRating(rating);
-					for (int row=0; row<model.getRowCount(); row++) {
-						ScriptInfo s2 = (ScriptInfo)model.getValueAt(row, 0);
-						if (s2.equals(script)) {
-							// Note JTable drops its selection when
-							// DefaultTableModel.setValueAt() is called
-							int selection = table.getSelectedRow();
-							model.setValueAt(rating, row, 1);
-							table.getSelectionModel().setSelectionInterval(
-									selection, selection);
-							break;
-						}
+			SwingUtilities.invokeLater(() -> {
+				script.setRating(rating);
+				for (int row=0; row<model.getRowCount(); row++) {
+					ScriptInfo s2 = (ScriptInfo)model.getValueAt(row, 0);
+					if (s2.equals(script)) {
+						// Note JTable drops its selection when
+						// DefaultTableModel.setValueAt() is called
+						int selection = table.getSelectedRow();
+						model.setValueAt(rating, row, 1);
+						table.getSelectionModel().setSelectionInterval(
+								selection, selection);
+						break;
 					}
 				}
 			});

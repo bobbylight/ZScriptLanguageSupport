@@ -191,7 +191,7 @@ if (lastSpace==-1) {
 
 		InputStream in = p.getClass().getResourceAsStream("/data/zscript.txt");
 		BufferedReader r = new BufferedReader(new InputStreamReader(in));
-		String line = null;
+		String line;
 
 		try {
 
