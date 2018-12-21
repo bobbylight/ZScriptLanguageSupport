@@ -1,6 +1,8 @@
-bin
-ant-classes
-dist
-rtext-dist
-*.java~
-
+.idea
+out/
+Thumbs.db
+.gradle
+build
+.settings/
+.project
+.classpath

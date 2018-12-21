@@ -1,0 +1,33 @@
+group 'com.fifesoft'
+// NOTE: Local Java 8:  /Library/Java/JavaVirtualMachines/jdk1.8.0_25.jdk/Contents/Home
+
+allprojects {
+
+    repositories {
+        mavenCentral()
+        maven {
+            url 'https://oss.sonatype.org/content/repositories/snapshots'
+        }
+    }
+
+    wrapper {
+        gradleVersion = '5.0'
+    }
+}
+
+subprojects {
+
+    apply plugin: 'java'
+
+    dependencies {
+        testCompile 'junit:junit:4.12'
+    }
+
+    compileJava {
+        sourceCompatibility javaVersion
+        targetCompatibility javaVersion
+        options.debug = true
+        options.debugOptions.debugLevel = 'source,vars,lines'
+        options.compilerArgs << '-Xlint:deprecation' << '-Xlint:unchecked'
+    }
+}

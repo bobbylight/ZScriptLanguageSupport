@@ -1,0 +1,3 @@
+rootProject.name = 'zscript'
+
+include 'zscript-lang-support', 'zscript-rtext-plugin'

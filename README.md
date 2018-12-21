@@ -20,46 +20,65 @@ that depends on it.  It takes full advantage of `RSyntaxTextArea`'s code
 completion and parsing API's, and serves as an excellent example of integrating
 RSTA into an application with a custom or DSL.
 
+
+# Submodules
+There are two submodules:
+
+## zscript-language-support
+A language support plugin for ZScript for `RSyntaxTextArea`.  This is probably
+the submodule you care about.
+
+It includes a small demo application that does the following:
+
+* Opens some ZScript code that contains some errors in a window.  Errors are
+  squiggle-underlined
+* Code completion is available for the source code, both stdlib functions and
+  locally-defined functions, variables, etc.
+* A tree view of the source code allows you to jump around the source easily
+* Ctrl+Shift+O also allows you to navigate by source code constructs
+
+## zscript-rtext-plugin
+A plugin for the `RText` editor, that adds the ZScript code completion to it.
+
+
 # Building
 
-This project depends on `RSyntaxTextArea` and its sister projects, but
-while those projects have moved to [Gradle](https://gradle.org/) for building,
-this project still uses [Ant](http://ant.apache.org/).  Thus you will need both
-of these tools to build this project.
+This project depends on `RSyntaxTextArea` and its sister projects and uses
+[Gradle](https://gradle.org/) for building.  JDK 11 or newer is also required,
+as is [launch4j](https://sourceforge.net/projects/launch4j/files/launch4j-3/3.12/)
+if you want to build the wrapper Windows executable.
 
-First, clone this project's repository, as well as those for all dependencies:
+To clone this repository, build the Windows demo application, and
+run it:
 
-    mkdir zscript
-    cd zscript
-    git clone https://github.com/bobbylight/RSyntaxTextArea.git
-    git clone https://github.com/bobbylight/AutoComplete.git
-    git clone https://github.com/bobbylight/RSTAUI.git
-    git clone https://github.com/bobbylight/SpellChecker.git
-    git clone https://github.com/bobbylight/ZScriptLanguageSupport.git
+```bash
+git clone https://github.com/bobbylight/ZScriptLanguageSupport.git
+cd ZScriptLanguageSupport
+./gradlew clean build
+cd zscript-language-support
+../gradlew installDist buildWindowsDemo
+./build/install/zscript-demo/zscript-demo.exe
+```
 
-Next, build all dependencies:
+To do the same thing on OS X or Linux:
 
-    cd ./RSyntaxTextArea
-    ./gradlew build
-    cd ../AutoComplete
-    ./gradlew build
-    cd ../RSTAUI
-    ./gradlew build
-    cd ../SpellChecker
-    ./gradlew build
+```bash
+git clone https://github.com/bobbylight/ZScriptLanguageSupport.git
+cd ZScriptLanguageSupport
+./gradlew clean build
+cd zscript-language-support
+../gradlew installDist
+java -jar build/install/zscript-demo/zscript-demo.jar
+```
 
-Finally, build and run this project's demo application:
+## OS-Specifics
+For Windows, the `buildWindowsDemo` task generates a small wrapper
+`zscript-demo.exe` executable via `launch4j`.  That executable simply
+delegates to running `zscript-demo.jar`.
 
-    cd ../ZScriptLanguageSupport
-    ant make-demo-win
-    java -jar ./dist/zscript_language_support_demo.jar
-
-The Ant targets you care about are:
-
-* `make-demo-win` (default) - Builds the Windows demo
-* `make-demo-mac` - Builds the demo for Macs (.app bundle)
-* `make-rtext-plugin` - Creates the plugin jar for `RText`. You can just
-   drop this into an RText install's `plugins/` folder to use it
+For all other operating systems, you must run the jar directly.  Future
+work includes wrapping the demo in an `.app` bundle on OSX once again
+(it used to be, but Java 11 made it tricky to do that).
 
 # Sister Projects
 
@@ -71,5 +90,4 @@ The Ant targets you care about are:
 # Getting Help
 
 * Add an issue on GitHub
-* Ask in the [project forum](http://fifesoft.com/forum/)
 * Check this [PureZC thread](http://www.purezc.net/forums/index.php?showtopic=55636)

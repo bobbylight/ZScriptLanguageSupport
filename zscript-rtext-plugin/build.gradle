@@ -1,0 +1,5 @@
+archivesBaseName = 'zscript-rtext-plugin'
+
+dependencies {
+    compile project(':zscript-lang-support')
+}
