@@ -3,3 +3,15 @@ archivesBaseName = 'zscript-rtext-plugin'
 dependencies {
     compile project(':zscript-lang-support')
 }
+
+jar {
+    manifest {
+        attributes(
+                'Fife-Plugin-Class': 'org.fife.rsta.zscript.rtext.Plugin',
+                'Fife-Plugin-Load-Priority': 'low',
+                'Class-Path': configurations.runtimeClasspath.collect {
+                    return it.name
+                }.join(' ')
+        )
+    }
+}

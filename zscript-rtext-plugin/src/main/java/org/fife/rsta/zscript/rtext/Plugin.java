@@ -214,7 +214,7 @@ public class Plugin extends GUIPlugin {
 		String sbpPrefix = "sbp.customHandler.";/*SourceBrowserPlugin.CUSTOM_HANDLER_PREFIX*/
 		System.setProperty(
 				sbpPrefix + SYNTAX_STYLE_ZSCRIPT,
-				"rtext.ZScriptSourceBrowserTreeConstructor");
+				"org.fife.rsta.zscript.rtext.ZScriptSourceBrowserTreeConstructor");
 
 		// Add an item to the "View" menu to toggle console visibility
 		JMenu menu = mb.getMenuByName(RTextMenuBar.MENU_DOCKED_WINDOWS);

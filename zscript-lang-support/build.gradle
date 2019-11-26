@@ -5,25 +5,18 @@ import static org.gradle.api.JavaVersion.*
 // We require building with JDK 11 or later.  We turn off doclint since our
 // generated *TokenMakers have horrible documentation (see https://github.com/jflex-de/jflex/issues/182)
 assert current().isJava11Compatible()
-allprojects {
-	tasks.withType(Javadoc) {
-		options.addStringOption('Xdoclint:none', '-quiet')
-	}
-}
 
 archivesBaseName = 'zscript'
 
 dependencies {
-    compile('com.fifesoft.rtext:fife.common:3.0.0-SNAPSHOT') { changing = true }
+    compile('com.fifesoft.rtext:fife.common:3.0.3-SNAPSHOT') { changing = true }
     compile files('../lib/RText.jar')
 
-    compile('com.fifesoft:rsyntaxtextarea:3.0.0-SNAPSHOT') { changing = true }
-    compile('com.fifesoft:autocomplete:3.0.0-SNAPSHOT') { changing = true }
-    compile('com.fifesoft:rstaui:3.0.0-SNAPSHOT') { changing = true }
-    compile('com.fifesoft:spellchecker:3.0.0-SNAPSHOT') { changing = true }
-    compile('com.fifesoft:languagesupport:3.0.0-SNAPSHOT') { changing = true }
-
-    testCompile 'junit:junit:4.12'
+    compile('com.fifesoft:rsyntaxtextarea:3.0.5-SNAPSHOT') { changing = true }
+    compile('com.fifesoft:autocomplete:3.0.3-SNAPSHOT') { changing = true }
+    compile('com.fifesoft:rstaui:3.0.3-SNAPSHOT') { changing = true }
+    compile('com.fifesoft:spellchecker:3.0.3-SNAPSHOT') { changing = true }
+    compile('com.fifesoft:languagesupport:3.0.2-SNAPSHOT') { changing = true }
 }
 
 jar {

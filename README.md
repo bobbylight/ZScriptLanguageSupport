@@ -55,7 +55,7 @@ run it:
 git clone https://github.com/bobbylight/ZScriptLanguageSupport.git
 cd ZScriptLanguageSupport
 ./gradlew clean build
-cd zscript-language-support
+cd zscript-lang-support
 ../gradlew installDist buildWindowsDemo
 ./build/install/zscript-demo/zscript-demo.exe
 ```
