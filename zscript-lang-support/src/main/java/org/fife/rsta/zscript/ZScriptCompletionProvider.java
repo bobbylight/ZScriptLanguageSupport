@@ -75,7 +75,7 @@ public class ZScriptCompletionProvider extends LanguageAwareCompletionProvider {
 
 
 	/**
-	 * Set short hand completion cache (template and comment completions)
+	 * Set short hand completion cache (template and comment completions).
 	 */
 	public void setShorthandCompletionCache(ShorthandCompletionCache cache) {
 

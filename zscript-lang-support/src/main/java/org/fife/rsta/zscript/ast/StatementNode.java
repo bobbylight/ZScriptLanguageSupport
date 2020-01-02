@@ -17,7 +17,7 @@ package org.fife.rsta.zscript.ast;
  *               |  {@link WhileNode}
  *               |  StatementWithoutTrailingSubstatement
  * </pre>
- * 
+ *
  * @author Robert Futrell
  * @version 1.0
  * @see CodeBlock

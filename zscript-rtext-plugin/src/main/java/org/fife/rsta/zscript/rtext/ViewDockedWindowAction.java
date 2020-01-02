@@ -33,7 +33,7 @@ class ViewDockedWindowAction extends AppAction<RText> {
 	 * @param owner The parent RText instance.
 	 * @param plugin The plugin.
 	 */
-	public ViewDockedWindowAction(RText owner, Plugin plugin) {
+	ViewDockedWindowAction(RText owner, Plugin plugin) {
 		super(owner, Messages.getBundle(), "Action.ViewDockedWindow");
 		this.plugin = plugin;
 	}

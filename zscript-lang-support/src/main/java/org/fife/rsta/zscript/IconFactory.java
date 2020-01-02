@@ -20,7 +20,7 @@ import javax.swing.ImageIcon;
  * @author Robert Futrell
  * @version 1.0
  */
-public class IconFactory {
+public final class IconFactory {
 
 	public static final String SOURCE_FILE_ICON			= "sourceFileIcon";
 	public static final String IMPORT_ROOT_ICON			= "importRootIcon";

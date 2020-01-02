@@ -108,7 +108,7 @@ public class ZScriptLanguageSupport extends AbstractLanguageSupport {
 	 *
 	 * @param textArea The text area.
 	 * @return The ZScript parser.  This will be <code>null</code> if the text
-	 *         area does not have this <tt>ZSCriptLanguageSupport</tt>
+	 *         area does not have this <tt>ZScriptLanguageSupport</tt>
 	 *         installed.
 	 */
 	public ZScriptParser getParser(RSyntaxTextArea textArea) {
@@ -208,10 +208,10 @@ public class ZScriptLanguageSupport extends AbstractLanguageSupport {
 	 */
 	private static class Info implements PropertyChangeListener {
 
-		public ZScriptCompletionProvider provider;
-		public ZScriptScopeListener scopeListener;
+		private ZScriptCompletionProvider provider;
+		private ZScriptScopeListener scopeListener;
 
-		public Info(RSyntaxTextArea textArea, ZScriptCompletionProvider provider,
+		Info(RSyntaxTextArea textArea, ZScriptCompletionProvider provider,
 					ZScriptParser parser, ZScriptScopeListener scopeListener) {
 			this.provider = provider;
 			this.scopeListener = scopeListener;
@@ -245,7 +245,7 @@ public class ZScriptLanguageSupport extends AbstractLanguageSupport {
 
 		private RSyntaxTextArea textArea;
 
-		public ZScriptAutoCompletion(ZScriptCompletionProvider provider,
+		ZScriptAutoCompletion(ZScriptCompletionProvider provider,
 				RSyntaxTextArea textArea) {
 			super(provider);
 			this.textArea = textArea;
@@ -273,7 +273,7 @@ public class ZScriptLanguageSupport extends AbstractLanguageSupport {
 		private RSyntaxTextArea textArea;
 		private Timer t;
 
-		public ZScriptScopeListener(RSyntaxTextArea textArea) {
+		ZScriptScopeListener(RSyntaxTextArea textArea) {
 			this.textArea = textArea;
 			textArea.addCaretListener(this);
 			t = new Timer(650, this);

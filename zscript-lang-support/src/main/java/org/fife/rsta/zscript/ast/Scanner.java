@@ -33,7 +33,7 @@ public class Scanner {
 	private ZScriptScanner s;
 
 	/**
-	 * Stack of tokens that have been "pushed back."
+	 * Stack of tokens that have been "pushed back".
 	 */
 	private Stack<Token> stack;
 
@@ -259,7 +259,7 @@ private void pushOntoStack(Token t) {
 	 * @throws IOException If an IO error occurs.
 	 */
 	public void eatThroughNext(int tokenType, boolean eatLast) throws IOException {
-		Token t = null;
+		Token t;
 		while ((t=yylex())!=null && t.getType()!=tokenType);
 		if (t!=null && !eatLast) {
 			yyPushback(t);
@@ -277,7 +277,7 @@ private void pushOntoStack(Token t) {
 	 * @see #eatThroughNextSkippingBlocksAndStuffInParens(int, int)
 	 */
 	public void eatThroughNextSkippingBlocks(int tokenType) throws IOException {
-		Token t = null;
+		Token t;
 		int blockDepth = 0;
 		while ((t=yylex())!=null) {
 			int type = t.getType();
@@ -313,7 +313,7 @@ private void pushOntoStack(Token t) {
 	 */
 	public Token eatThroughNextSkippingBlocks(int tokenType1,
 									int tokenType2) throws IOException {
-		Token t = null;
+		Token t;
 		int blockDepth = 0;
 		while ((t=yylex())!=null) {
 			int type = t.getType();
@@ -371,7 +371,7 @@ private void pushOntoStack(Token t) {
 
 	private Token eatThroughNextSkippingBlocksAndStuffInParensImpl(int tokenType1,
 			int tokenType2, int initialParenDepth) throws IOException {
-		Token t = null;
+		Token t;
 		int blockDepth = 0;
 		int parenDepth = initialParenDepth;
 
@@ -406,7 +406,7 @@ private void pushOntoStack(Token t) {
 
 
 	public void eatUntilNext(int type1, int type2) throws IOException {
-		Token t = null;
+		Token t;
 		while ((t=yylex())!=null) {
 			int type = t.getType();
 			if (type==type1 || type==type2) {
@@ -418,7 +418,7 @@ private void pushOntoStack(Token t) {
 
 
 	public void eatUntilNext(int type1, int type2, int type3) throws IOException {
-		Token t = null;
+		Token t;
 		while ((t=yylex())!=null) {
 			int type = t.getType();
 			if (type==type1 || type==type2 || type==type3) {
@@ -548,7 +548,7 @@ private int currentResetStartOffset;
 	 */
 	public Token yylex() throws IOException {
 
-		Token t = null;
+		Token t;
 		if (stack.isEmpty()) {
 			t = s!=null ? s.yylex() : null;
 		}

@@ -39,7 +39,6 @@ import org.fife.ui.rsyntaxtextarea.parser.ParserNotice;
 public class ZScriptDockableWindow extends AbstractParserNoticeWindow
 		implements PropertyChangeListener {
 
-	private JTable table;
 	private ZScriptErrorTableModel model;
 	private boolean installed;
 	private Map<ParserNotice.Level, Icon> noticeIcons;
@@ -51,7 +50,7 @@ public class ZScriptDockableWindow extends AbstractParserNoticeWindow
 
 		model = new ZScriptErrorTableModel(Messages.getString(
 				"Plugin.NoticeDescription"));
-		table = createTable(model);
+		JTable table = createTable(model);
 		RScrollPane sp = new DockableWindowScrollPane(table);
 		setLayout(new BorderLayout());
 		add(sp);
@@ -171,7 +170,7 @@ public class ZScriptDockableWindow extends AbstractParserNoticeWindow
 	 */
 	private class ZScriptErrorTableModel extends ParserNoticeTableModel {
 
-		public ZScriptErrorTableModel(String lastColHeader) {
+		ZScriptErrorTableModel(String lastColHeader) {
 			super(lastColHeader);
 		}
 

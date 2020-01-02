@@ -30,7 +30,7 @@ public class EnclosingScriptNodeGrabber implements ZScriptAstVisitor {
 
 	private ScriptNode scriptNode;
 	private int offs;
-	
+
 	public EnclosingScriptNodeGrabber(int offs) {
 		this.offs = offs;
 	}
@@ -48,31 +48,38 @@ public class EnclosingScriptNodeGrabber implements ZScriptAstVisitor {
 
 
 	@Override
-	public void postVisit(CodeBlock block) {}
+	public void postVisit(CodeBlock block) {
+	}
 
 
 	@Override
-	public void postVisit(DoWhileNode doWhileNode) {}
+	public void postVisit(DoWhileNode doWhileNode) {
+	}
 
 
 	@Override
-	public void postVisit(ElseNode elseNode) {}
+	public void postVisit(ElseNode elseNode) {
+	}
 
 
 	@Override
-	public void postVisit(ForNode forNode) {}
+	public void postVisit(ForNode forNode) {
+	}
 
 
 	@Override
-	public void postVisit(FunctionDecNode functionDec) {}
+	public void postVisit(FunctionDecNode functionDec) {
+	}
 
 
 	@Override
-	public void postVisit(IfNode ifNode) {}
+	public void postVisit(IfNode ifNode) {
+	}
 
 
 	@Override
-	public void postVisit(ImportNode importNode) {}
+	public void postVisit(ImportNode importNode) {
+	}
 
 
 	@Override
@@ -86,11 +93,13 @@ public class EnclosingScriptNodeGrabber implements ZScriptAstVisitor {
 
 
 	@Override
-	public void postVisit(VariableDecNode varDec) {}
+	public void postVisit(VariableDecNode varDec) {
+	}
 
 
 	@Override
-	public void postVisit(WhileNode whileNode) {}
+	public void postVisit(WhileNode whileNode) {
+	}
 
 
 	@Override

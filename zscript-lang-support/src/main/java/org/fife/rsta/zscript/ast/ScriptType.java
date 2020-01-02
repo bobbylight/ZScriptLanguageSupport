@@ -9,7 +9,7 @@ package org.fife.rsta.zscript.ast;
 
 /**
  * The type-qualifier of a script.
- * 
+ *
  * @author Robert Futrell
  * @version 1.0
  */

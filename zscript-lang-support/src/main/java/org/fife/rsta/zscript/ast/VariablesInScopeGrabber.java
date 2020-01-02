@@ -21,7 +21,7 @@ public class VariablesInScopeGrabber implements ZScriptAstVisitor {
 	private List<VariableDecNode> varList;
 	private List<FunctionDecNode> functionList;
 	private int offs;
-	
+
 	private static final boolean DEBUG = false;
 
 
@@ -75,31 +75,38 @@ public class VariablesInScopeGrabber implements ZScriptAstVisitor {
 
 
 	@Override
-	public void postVisit(CodeBlock block) {}
+	public void postVisit(CodeBlock block) {
+	}
 
 
 	@Override
-	public void postVisit(DoWhileNode doWhileNode) {}
+	public void postVisit(DoWhileNode doWhileNode) {
+	}
 
 
 	@Override
-	public void postVisit(ElseNode elseNode) {}
+	public void postVisit(ElseNode elseNode) {
+	}
 
 
 	@Override
-	public void postVisit(ForNode forNode) {}
+	public void postVisit(ForNode forNode) {
+	}
 
 
 	@Override
-	public void postVisit(FunctionDecNode functionDec) {}
+	public void postVisit(FunctionDecNode functionDec) {
+	}
 
 
 	@Override
-	public void postVisit(IfNode ifNode) {}
+	public void postVisit(IfNode ifNode) {
+	}
 
 
 	@Override
-	public void postVisit(ImportNode importNode) {}
+	public void postVisit(ImportNode importNode) {
+	}
 
 
 	@Override
@@ -121,11 +128,13 @@ public class VariablesInScopeGrabber implements ZScriptAstVisitor {
 
 
 	@Override
-	public void postVisit(VariableDecNode varDec) {}
+	public void postVisit(VariableDecNode varDec) {
+	}
 
 
 	@Override
-	public void postVisit(WhileNode whileNode) {}
+	public void postVisit(WhileNode whileNode) {
+	}
 
 
 	@Override
@@ -167,7 +176,7 @@ public class VariablesInScopeGrabber implements ZScriptAstVisitor {
 			cb = cb.getDeepestCodeBlockContaining(offs);
 			if (DEBUG) {
 				System.out.println("DEBUG: In function: " + functionDec);
-				System.out.println("DEBUG: ... deepst CB: " + cb);
+				System.out.println("DEBUG: ... deepest CB: " + cb);
 				System.out.println("DEBUG: ... ... offs: " + offs + ", cb range: " + cb.getRange());
 			}
 

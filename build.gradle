@@ -1,5 +1,11 @@
+plugins {
+    id 'com.github.spotbugs' version '2.0.1'
+}
+
 group 'com.fifesoft'
 // NOTE: Local Java 8:  /Library/Java/JavaVirtualMachines/jdk1.8.0_25.jdk/Contents/Home
+
+assert JavaVersion.current().isJava11Compatible()
 
 allprojects {
 
@@ -18,9 +24,28 @@ allprojects {
 subprojects {
 
     apply plugin: 'java'
+    apply plugin: 'checkstyle'
+    apply plugin: 'com.github.spotbugs'
 
     dependencies {
-        testCompile 'junit:junit:4.12'
+        testImplementation 'junit:junit:4.12'
+    }
+
+    checkstyle {
+        toolVersion = '8.27'
+        configDirectory = file("$rootProject.projectDir/config/checkstyle")
+    }
+
+    spotbugs {
+        // Relative to subprojects
+        includeFilter = file('../config/spotbugs-exclude.xml')
+    }
+
+    tasks.withType(com.github.spotbugs.SpotBugsTask) {
+        reports {
+            xml.enabled = false
+            html.enabled = true
+        }
     }
 
     compileJava {

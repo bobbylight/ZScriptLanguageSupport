@@ -22,7 +22,7 @@ import org.fife.rsta.zscript.IconFactory.IconData;
  * BlockStatement     -&gt; VariableDecNode
  *                    |  {@link StatementNode}
  * </pre>
- * 
+ *
  * @author Robert Futrell
  * @version 1.0
  */

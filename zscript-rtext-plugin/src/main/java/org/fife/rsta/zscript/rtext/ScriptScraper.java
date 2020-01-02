@@ -128,7 +128,7 @@ class ScriptScraper {
 		Pattern ratingP = Pattern.compile(SITE + "Images/rating(\\d)\\.png");
 		Pattern nameP = Pattern.compile("<span itemprop=\"name\">([^<]+)</span>");
 		Pattern dateCreatedP = Pattern.compile("dateCreated\">([^<]+)</span>");
-		Pattern authorP = null;
+		Pattern authorP;
 		if (loggedIn) {
 			// If logged in, we can get the user name and ID to link to their profile page
 			authorP = Pattern.compile("showuser=(\\d+)' title='View Profile'><span itemprop=\"name\">([^<]+)</span>");
@@ -221,7 +221,7 @@ class ScriptScraper {
 	 */
 	public void loadScriptContent(ScriptInfo info) {
 
-		String content = null;
+		String content;
 
 		String address = info.getScriptAddress();
 		try {
@@ -237,7 +237,7 @@ class ScriptScraper {
 		Pattern p = Pattern.compile(pattern, Pattern.DOTALL);
 		Matcher m = p.matcher(content);
 		if (!m.find()) {
-			info.setContent("// " + Messages.getString("SearchScriptDialog.SourceNotFound") + 
+			info.setContent("// " + Messages.getString("SearchScriptDialog.SourceNotFound") +
 					"\n// (Content regex not found: " + pattern + ")");
 			return;
 		}
@@ -265,7 +265,7 @@ class ScriptScraper {
 	public static int fetchRating(ScriptInfo script) {
 
 		String address = script.getScriptAddress();
-		String content = null;
+		String content;
 		try {
 			content = getPageContent(address);
 		} catch (IOException ioe) {

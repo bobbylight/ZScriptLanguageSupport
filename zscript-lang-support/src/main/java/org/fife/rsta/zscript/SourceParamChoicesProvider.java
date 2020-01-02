@@ -36,7 +36,7 @@ public class SourceParamChoicesProvider implements ParameterChoicesProvider {
 
 	private CompletionProvider provider;
 
-	private static final Map<String, List<Completion>> constantValueMap;
+	private static final Map<String, List<Completion>> CONSTANT_VALUE_MAP;
 
 
 	public SourceParamChoicesProvider(CompletionProvider provider) {
@@ -78,7 +78,7 @@ public class SourceParamChoicesProvider implements ParameterChoicesProvider {
 			}
 		}
 
-		List<Completion> constants = constantValueMap.get(type);
+		List<Completion> constants = CONSTANT_VALUE_MAP.get(type);
 		if (constants!=null) {
 			choices.addAll(constants);
 		}
@@ -106,18 +106,17 @@ public class SourceParamChoicesProvider implements ParameterChoicesProvider {
 	 */
 	static {
 
-		constantValueMap = new HashMap<>();
+		CONSTANT_VALUE_MAP = new HashMap<>();
 
 		List<Completion> completions = new ArrayList<>();
-		Completion ZERO = createConstantCompletion("0");
-		completions.add(ZERO);
-		constantValueMap.put("int", completions);
-		constantValueMap.put("float", completions);
+		completions.add(createConstantCompletion("0"));
+		CONSTANT_VALUE_MAP.put("int", completions);
+		CONSTANT_VALUE_MAP.put("float", completions);
 
 		completions = new ArrayList<>();
-		completions.add(createConstantCompletion("false")); 
+		completions.add(createConstantCompletion("false"));
 		completions.add(createConstantCompletion("true"));
-		constantValueMap.put("bool", completions);
+		CONSTANT_VALUE_MAP.put("bool", completions);
 
 	}
 

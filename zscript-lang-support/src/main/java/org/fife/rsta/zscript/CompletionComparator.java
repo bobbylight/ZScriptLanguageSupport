@@ -61,9 +61,9 @@ public class CompletionComparator implements Comparator<Completion> {
 	 * An interface that stringifies <code>Completion</code>s for instances
 	 * of {@link CompletionComparator}.
 	 */
-	public static interface CompletionStringer {
+	public interface CompletionStringer {
 
-		public String getCompareValue(Completion c);
+		String getCompareValue(Completion c);
 
 	}
 

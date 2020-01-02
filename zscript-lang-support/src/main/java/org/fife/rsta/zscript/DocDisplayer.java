@@ -31,7 +31,7 @@ public interface DocDisplayer {
 	 */
 	// TODO: "toFocus" should really be a callback so we can have sophisticated
 	// logic to identify what to jump to.
-	public void display(String title, BufferedReader r, String toFocus);
+	void display(String title, BufferedReader r, String toFocus);
 
 
 }

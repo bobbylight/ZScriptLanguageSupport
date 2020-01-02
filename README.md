@@ -22,23 +22,27 @@ RSTA into an application with a custom or DSL.
 
 
 # Submodules
-There are two submodules:
+There are three submodules:
 
-## zscript-language-support
+## zscript-lang-support
 A language support plugin for ZScript for `RSyntaxTextArea`.  This is probably
-the submodule you care about.
+the submodule you care about.  This adds the following features for editing
+zscript code to `RSyntaxTextArea`:
 
-It includes a small demo application that does the following:
-
-* Opens some ZScript code that contains some errors in a window.  Errors are
-  squiggle-underlined
+* Syntax highlighting and code folding
+* Syntax errors are squiggle-underlined
 * Code completion is available for the source code, both stdlib functions and
   locally-defined functions, variables, etc.
 * A tree view of the source code allows you to jump around the source easily
-* Ctrl+Shift+O also allows you to navigate by source code constructs
+* `Ctrl+Shift+O` also allows you to navigate by source code constructs
+
+## zscript-lang-support-demo
+This is a small demo application showing off the features in `zscript-language-support`.
+A native build for Windows is included; one for OS X will come soon.
 
 ## zscript-rtext-plugin
-A plugin for the `RText` editor, that adds the ZScript code completion to it.
+A plugin for the `RText` editor, that adds the ZScript functionality above to that
+application specifically.
 
 
 # Building
@@ -54,10 +58,8 @@ run it:
 ```bash
 git clone https://github.com/bobbylight/ZScriptLanguageSupport.git
 cd ZScriptLanguageSupport
-./gradlew clean build
-cd zscript-lang-support
-../gradlew installDist buildWindowsDemo
-./build/install/zscript-demo/zscript-demo.exe
+./gradlew clean build buildWindowsDemo --warning-mode all
+./zscript-lang-support-demo/build/install/zscript-demo/zscript-demo.exe
 ```
 
 To do the same thing on OS X or Linux:
@@ -65,10 +67,8 @@ To do the same thing on OS X or Linux:
 ```bash
 git clone https://github.com/bobbylight/ZScriptLanguageSupport.git
 cd ZScriptLanguageSupport
-./gradlew clean build
-cd zscript-language-support
-../gradlew installDist
-java -jar build/install/zscript-demo/zscript-demo.jar
+./gradlew clean build installDist --warning-mode all
+java -jar zscript-language-support-demo/build/install/zscript-demo/zscript-demo.jar
 ```
 
 ## OS-Specifics

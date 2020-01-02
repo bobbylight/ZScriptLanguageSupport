@@ -17,7 +17,7 @@ import org.fife.rtext.RTextEditorPane;
 
 /**
  * Constructs the source browser tree for ZScript files.
- * 
+ *
  * @author Robert Futrell
  * @version 1.0
  */

@@ -29,7 +29,15 @@ import org.fife.ui.rsyntaxtextarea.RSyntaxUtilities;
  * @author Robert Futrell
  * @version 1.0
  */
-class CodeCompletionLoader {
+final class CodeCompletionLoader {
+
+
+    /**
+     * Private constructor to prevent instantiation.
+     */
+    private CodeCompletionLoader() {
+        // Do nothing (comment for Sonar)
+    }
 
 
 	private static String getDescription(BufferedReader r) throws IOException {
@@ -144,7 +152,7 @@ class CodeCompletionLoader {
 		String returnType = temp.substring(0, lastSpace);
 		String name = temp.substring(lastSpace + 1);
 
-		BasicCompletion c = null;
+		BasicCompletion c;
 		if (lparen>-1 && rparen>lparen) { // parens => function
 			FunctionCompletion fc = new ZScriptMethodCompletion(p, name, returnType);
 			fc.setParams(params);
@@ -168,22 +176,22 @@ class CodeCompletionLoader {
 
 
 	private static String getNextSignature(BufferedReader r) throws IOException {
-		String sig = null;
+		StringBuilder sig = null;
 		String line;
 		while ((line=r.readLine())!=null) {
 			line = line.trim();
 			if (line.length()>0 && line.charAt(0)!=' ') {
-				sig = line;
-				if (sig.indexOf('(')>-1) { // Some function signatures span multiple lines
-					while (!sig.endsWith(")")) {
-						sig += r.readLine().replaceAll("  +", " ");
+				sig = new StringBuilder(line);
+				if (sig.toString().indexOf('(')>-1) { // Some function signatures span multiple lines
+					while (!sig.toString().endsWith(")")) {
+						sig.append(r.readLine().replaceAll("  +", " "));
 					}
 				}
 				break;
 			}
 		}
-		sig = sig.replaceAll("\t+", "");
-		return sig;
+		sig = new StringBuilder(sig.toString().replaceAll("\t+", ""));
+		return sig.toString();
 	}
 
 

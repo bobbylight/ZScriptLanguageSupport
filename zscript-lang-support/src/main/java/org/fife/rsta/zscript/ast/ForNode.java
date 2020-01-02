@@ -18,7 +18,7 @@ import org.fife.rsta.zscript.IconFactory.IconData;
  * <pre>
  * ForNode  -&gt; "for" "(" Expression? ";" Expression? ";" Expression? ")" StatementNode
  * </pre>
- * 
+ *
  * @author Robert Futrell
  * @version 1.0
  */

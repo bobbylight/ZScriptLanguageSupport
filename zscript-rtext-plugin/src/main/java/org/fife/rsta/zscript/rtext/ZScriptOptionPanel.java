@@ -44,7 +44,7 @@ import org.fife.ui.app.PluginOptionsDialogPanel;
  * @author Robert Futrell
  * @version 1.0
  */
-class ZScriptOptionPanel extends PluginOptionsDialogPanel {
+class ZScriptOptionPanel extends PluginOptionsDialogPanel<Plugin> {
 
 	private Listener listener;
 	private JCheckBox enabledCB;
@@ -64,11 +64,12 @@ class ZScriptOptionPanel extends PluginOptionsDialogPanel {
 
 	// NOTE: We're cheating here, we know the name of the main RSTALanguageSupport
 	// plugin's properties.  It's worth it to re-use some of its properties.
-	private static final String MSG = "org.fife.rtext.plugins.langsupport.Plugin";
-	private static final ResourceBundle parentMsg = ResourceBundle.getBundle(MSG);
+	private static final String PARENT_MSG_BUNDLE
+		= "org.fife.rtext.plugins.langsupport.Plugin";
+	private static final ResourceBundle PARENT_MSG = ResourceBundle.getBundle(PARENT_MSG_BUNDLE);
 
 
-	public ZScriptOptionPanel(Plugin plugin) {
+	ZScriptOptionPanel(Plugin plugin) {
 
 		super(plugin);
 		setName(Messages.getString("OptionPanel.Name"));
@@ -86,7 +87,7 @@ class ZScriptOptionPanel extends PluginOptionsDialogPanel {
 		cp.add(Box.createVerticalStrut(5));
 		cp.add(createFoldingPanel());
 		cp.add(Box.createVerticalStrut(5));
-		rdButton = new JButton(parentMsg.getString("Options.General.RestoreDefaults"));
+		rdButton = new JButton(PARENT_MSG.getString("Options.General.RestoreDefaults"));
 		rdButton.addActionListener(listener);
 		addLeftAligned(cp, rdButton, 5);
 
@@ -109,7 +110,7 @@ class ZScriptOptionPanel extends PluginOptionsDialogPanel {
 
 		Box box = Box.createVerticalBox();
 		box.setBorder(new OptionPanelBorder(
-				parentMsg.getString("Options.General.AutoActivation")));
+				PARENT_MSG.getString("Options.General.AutoActivation")));
 
 		autoActivateCB = createCB("Options.General.EnableAutoActivation");
 		addLeftAligned(box, autoActivateCB, 5);
@@ -125,7 +126,7 @@ class ZScriptOptionPanel extends PluginOptionsDialogPanel {
 
 		SpringLayout sl = new SpringLayout();
 		JPanel temp = new JPanel(sl);
-		aaDelayLabel = new JLabel(parentMsg.getString("Options.General.AutoActivationDelay"));
+		aaDelayLabel = new JLabel(PARENT_MSG.getString("Options.General.AutoActivationDelay"));
 		aaDelayField = new JTextField(10);
 		AbstractDocument doc = (AbstractDocument)aaDelayField.getDocument();
 		doc.setDocumentFilter(new NumberDocumentFilter());
@@ -165,7 +166,7 @@ class ZScriptOptionPanel extends PluginOptionsDialogPanel {
 			text = Messages.getString("Options.ZScript." + key);
 		}
 		else { // Assume one of the "General" options.
-			text = parentMsg.getString(key);
+			text = PARENT_MSG.getString(key);
 		}
 
 		JCheckBox cb = new JCheckBox(text);
@@ -183,7 +184,7 @@ class ZScriptOptionPanel extends PluginOptionsDialogPanel {
 	private Container createFoldingPanel() {
 
 		Box box = Box.createVerticalBox();
-		box.setBorder(new OptionPanelBorder(parentMsg.
+		box.setBorder(new OptionPanelBorder(PARENT_MSG.
 				getString("Options.General.Section.Folding")));
 
 		foldingCB = createCB("Options.General.EnableCodeFolding");
@@ -203,7 +204,7 @@ class ZScriptOptionPanel extends PluginOptionsDialogPanel {
 		ComponentOrientation o = ComponentOrientation.getOrientation(getLocale());
 
 		Box box = Box.createVerticalBox();
-		box.setBorder(new OptionPanelBorder(parentMsg.
+		box.setBorder(new OptionPanelBorder(PARENT_MSG.
 				getString("Options.General.Section.General")));
 
 		enabledCB = createCB("Options.General.EnableCodeCompletion");

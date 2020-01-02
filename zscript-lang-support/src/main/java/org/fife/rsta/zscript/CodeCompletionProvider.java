@@ -221,8 +221,8 @@ OUTER:
 		boolean endsWithArrow = sections.length==1;
 
 		// First, check if it's a global variable thing
-		final String[] GLOBALS = { "Link", "Screen", "Game" };
-        for (String global : GLOBALS) {
+		final String[] globals = { "Link", "Screen", "Game" };
+        for (String global : globals) {
             if (global.equals(first)) {
                 if (sections.length > 2) {
                     System.err.println("No members of '" + global + "' have members themselves (or do they?)");
@@ -481,7 +481,8 @@ return null;
 	/**
 	 * Does a crude search for variables up to the caret position.
 	 *
-	 * @param comp The text area.
+	 * @param text The text, up to the caret position.
+     * @param dot The caret position.
 	 * @return The completions for variables, or <code>null</code> if there
 	 *         were none.
 	 */
@@ -557,8 +558,8 @@ return null;
 	}
 
 
-public List<Completion> getGlobalVariableMembers(String global) {
-	return globalVariableMembers.get(global);
-}
+    private List<Completion> getGlobalVariableMembers(String global) {
+        return globalVariableMembers.get(global);
+    }
 
 }

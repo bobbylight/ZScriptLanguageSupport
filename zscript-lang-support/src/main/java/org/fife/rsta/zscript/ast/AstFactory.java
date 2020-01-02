@@ -33,7 +33,7 @@ import org.fife.ui.rsyntaxtextarea.parser.ParserNotice.Level;
  * VariableDec       -> "const"? PrimitiveType IDENTIFIER ( "=" VarValue )? ";"
  * VarValue          -> ( INT | FLOAT | BOOL | STRING )
  * </pre>
- *  
+ *
  * @author Robert Futrell
  * @version 1.0
  */
@@ -153,7 +153,7 @@ public class AstFactory implements TokenTypes {
 
 				elseNode.setConditional(true);
 				// TODO: Share this code with parseIf()
-				
+
 				scanner.yylexNonNull(SEPARATOR_LPAREN, "'(' expected");
 
 				// Expression
@@ -196,8 +196,8 @@ public class AstFactory implements TokenTypes {
 		// initialize multiple variables on a single line (or can you?)
 		ForNode forNode = new ForNode(scanner.createOffset(forToken.getOffset()));
 		block.addStatement(forNode);
-		VariableDecNode forNodeVarDec = null;
-		Token counter = null;
+		VariableDecNode forNodeVarDec;
+		Token counter;
 
 		scanner.yylexNonNull(SEPARATOR_LPAREN, "'(' expected");
 
@@ -210,8 +210,7 @@ public class AstFactory implements TokenTypes {
 				if (forNodeVarDec==null) {
 					result.addNotice(counter, "Undefined variable");
 				}
-				forNodeVarDec = null; // Previously defined, don't save in ForNode
-				scanner.eatThroughNextSkippingBlocksAndStuffInParens(SEPARATOR_SEMICOLON, -1);
+                scanner.eatThroughNextSkippingBlocksAndStuffInParens(SEPARATOR_SEMICOLON, -1);
 				break;
 			default:
 				if (next.isBasicType()) {
@@ -448,7 +447,7 @@ public class AstFactory implements TokenTypes {
 
 	private void parseRoot(RootNode root) throws IOException {
 
-		Token token = null;
+		Token token;
 
 		// Grab all imports (usually all grouped at the top)
 		while ((token=scanner.yylex())!=null && token.isType(CD_IMPORT)) {
@@ -509,7 +508,7 @@ public class AstFactory implements TokenTypes {
 
 	private void parseScript(RootNode root, ScriptNode script) throws IOException {
 
-		Token token = null;
+		Token token;
 		while ((token=scanner.yylexNonNull("Unexpected end of input")).getType()!=SEPARATOR_LBRACE) {
 			result.addNotice(token, "Unexpected token, expected '{'");
 		}
@@ -566,10 +565,10 @@ public class AstFactory implements TokenTypes {
 
 	/**
 	 * Not yet complete.
-	 * 
-	 * @param block
-	 * @param t
-	 * @throws IOException
+	 *
+	 * @param block The code block being parsed.
+	 * @param t The current token.
+	 * @throws IOException If an IO error occurs.
 	 */
 	private void parseStatement(CodeBlock block, Token t) throws IOException {
 
@@ -629,8 +628,8 @@ public class AstFactory implements TokenTypes {
 	 * These are statements we don't currently parse.  The only reason to do so
 	 * would be for syntax checking purposes.
 	 *
-	 * @param parent
-	 * @throws IOException
+	 * @param parent The parent code block.
+	 * @throws IOException If an IO error occurs.
 	 */
 	private void parseUnhandledStatement(CodeBlock parent) throws IOException {
 

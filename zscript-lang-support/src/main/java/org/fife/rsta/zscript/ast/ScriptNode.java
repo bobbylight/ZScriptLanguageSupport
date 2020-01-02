@@ -27,7 +27,7 @@ public class ScriptNode extends MemberNode implements MemberContainer, BodiedNod
 	private Position bodyStart;
 	private Position bodyEnd;
 	private List<FunctionDecNode> functions;
-	
+
 	/** Note that script-scoped vars are deprecated in 2.5. */
 	private List<VariableDecNode> vars;
 

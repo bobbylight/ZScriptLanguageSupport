@@ -33,7 +33,7 @@ class ViewScriptSearchDialogAction extends AppAction<RText> {
 	 * @param owner The parent RText instance.
 	 * @param plugin The plugin.
 	 */
-	public ViewScriptSearchDialogAction(RText owner, Plugin plugin) {
+	ViewScriptSearchDialogAction(RText owner, Plugin plugin) {
 		super(owner, Messages.getBundle(), "Action.ViewScriptSearchDialog");
 		this.plugin = plugin;
 	}

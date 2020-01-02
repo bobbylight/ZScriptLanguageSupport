@@ -19,7 +19,7 @@ import javax.swing.table.DefaultTableCellRenderer;
  */
 class IconTableCellRenderer extends DefaultTableCellRenderer {
 
-	private static final Border b = BorderFactory.createEmptyBorder(0, 5, 0, 5);
+	private static final Border BORDER = BorderFactory.createEmptyBorder(0, 5, 0, 5);
 
 
 	@Override
@@ -29,7 +29,7 @@ class IconTableCellRenderer extends DefaultTableCellRenderer {
 				row, col);
 		setText(null);
 		setIcon((Icon)value);
-		setBorder(b);
+		setBorder(BORDER);
 		return this;
 	}
 

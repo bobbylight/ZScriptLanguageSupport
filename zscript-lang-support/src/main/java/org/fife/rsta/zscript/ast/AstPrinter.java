@@ -45,7 +45,8 @@ public class AstPrinter implements ZScriptAstVisitor {
 
 
 	@Override
-	public void postVisit(CodeBlock block) {}
+	public void postVisit(CodeBlock block) {
+	}
 
 
 	@Override
@@ -80,11 +81,13 @@ public class AstPrinter implements ZScriptAstVisitor {
 
 
 	@Override
-	public void postVisit(ImportNode importNode) {}
+	public void postVisit(ImportNode importNode) {
+	}
 
 
 	@Override
-	public void postVisit(RootNode root) {}
+	public void postVisit(RootNode root) {
+	}
 
 
 	@Override
@@ -94,7 +97,8 @@ public class AstPrinter implements ZScriptAstVisitor {
 
 
 	@Override
-	public void postVisit(VariableDecNode varDec) {}
+	public void postVisit(VariableDecNode varDec) {
+	}
 
 
 	@Override
@@ -118,7 +122,7 @@ public class AstPrinter implements ZScriptAstVisitor {
 	@Override
 	public boolean visit(ElseNode elseNode) {
 		blockStatementEnd();
-		return blockStatementBegin(elseNode.toString()); 
+		return blockStatementBegin(elseNode.toString());
 	}
 
 
@@ -182,10 +186,7 @@ public class AstPrinter implements ZScriptAstVisitor {
 			firstMember = false;
 		}
 
-		StringBuilder sb = new StringBuilder(script.getType());
-		sb.append(" script ").append(script.getName()).append(" {");
-
-		System.out.println(indentLevel + sb.toString());
+        System.out.println(indentLevel + script.getType() + " script " + script.getName() + " {");
 		increaseIndent();
 
 		return true;

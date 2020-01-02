@@ -25,9 +25,9 @@ import org.fife.rsta.zscript.IconFactory.IconData;
  * VariableInitializer -&gt; Expression | ArrayInitializer
  * ArrayInitializer    -&gt; "{" VariableInitializer ( "," VariableInitializer )* "}"
  * </pre>
- * 
+ *
  * TODO: Keep and evaluate VariableInitializer (at least if it's an ArrayInitializer).
- * 
+ *
  * @author Robert Futrell
  * @version 1.0
  *

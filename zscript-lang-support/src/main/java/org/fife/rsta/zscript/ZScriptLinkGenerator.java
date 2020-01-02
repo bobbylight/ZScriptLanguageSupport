@@ -33,7 +33,7 @@ import org.fife.ui.rsyntaxtextarea.TokenTypes;
  * Identifies tokens in the document that should become clickable links via
  * Ctrl/Cmd+clicks by the mouse.  When the user clicks on one of these links,
  * they are taken to the declaration of that member (variable, etc.).<p>
- * 
+ *
  * Currently this only identifies local
  * variables.  In the future it could also identify scripts, as well as provide
  * links from global variables such as Link, Script, etc., into their
@@ -151,9 +151,9 @@ String searchFor = null;//main.getLexeme();
 if (isGlobalVariable(parent.getLexeme())) {
 	searchFor = "namespace " + parent.getLexeme();
 }
-else if ("lweapon".equalsIgnoreCase(searchFor) || "eweapon".equalsIgnoreCase(searchFor)) {
-	//searchFor = null;//"Weapon Functions and Variables";
-}
+//else if ("lweapon".equalsIgnoreCase(searchFor) || "eweapon".equalsIgnoreCase(searchFor)) {
+//	//searchFor = null;//"Weapon Functions and Variables";
+//}
 return new OpenBuiltInStuffLinkGeneratorResult(textArea, main.getOffset(), searchFor);
 	}
 
@@ -186,7 +186,7 @@ return new OpenBuiltInStuffLinkGeneratorResult(textArea, main.getOffset(), searc
 				return handleDereferenceLink(parent, main, textArea, offs);
 			}
 
-			// Then just check for a local variable 
+			// Then just check for a local variable
 			String varName = main.getLexeme();
 			ZScriptParser parser = zls.getParser(textArea);
 			ZScriptAst ast = parser.getAst();
@@ -272,7 +272,7 @@ return new OpenBuiltInStuffLinkGeneratorResult(textArea, main.getOffset(), searc
 		private String res;
 		private String searchFor;
 
-		public OpenBuiltInStuffLinkGeneratorResult(RSyntaxTextArea textArea,
+		OpenBuiltInStuffLinkGeneratorResult(RSyntaxTextArea textArea,
 				int sourceOffs, String searchFor) {
 			this.textArea = textArea;
 			this.sourceOffs = sourceOffs;
@@ -284,7 +284,7 @@ return new OpenBuiltInStuffLinkGeneratorResult(textArea, main.getOffset(), searc
 		public HyperlinkEvent execute() {
 			InputStream in = getClass().getResourceAsStream(res);
 			BufferedReader r = new BufferedReader(new InputStreamReader(in));
-			
+
 			LanguageSupport ls = LanguageSupportFactory.get().getSupportFor("text/zscript");
 			ZScriptLanguageSupport zsls = (ZScriptLanguageSupport)ls;
 			DocDisplayer docDisplayer = zsls.getDocDisplayer();
@@ -320,7 +320,7 @@ return new OpenBuiltInStuffLinkGeneratorResult(textArea, main.getOffset(), searc
 //		private String res;
 //		private String token;
 
-		public OpenResourceLinkGeneratorResult(RSyntaxTextArea textArea,
+		OpenResourceLinkGeneratorResult(RSyntaxTextArea textArea,
 				int sourceOffs, String res, String token) {
 //			this.textArea = textArea;
 //			this.sourceOffs = sourceOffs;

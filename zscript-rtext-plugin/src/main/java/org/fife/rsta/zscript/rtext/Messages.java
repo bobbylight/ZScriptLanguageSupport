@@ -18,15 +18,23 @@ import java.util.ResourceBundle;
  * @author Robert Futrell
  * @version 1.0
  */
-class Messages {
+final class Messages {
 
-	private static final String MSG = "rtext.ZScriptPlugin";
+	private static final String MSG_BUNDLE = "rtext.ZScriptPlugin";
 
-	private static final ResourceBundle msg = ResourceBundle.getBundle(MSG);
+	private static final ResourceBundle MSG = ResourceBundle.getBundle(MSG_BUNDLE);
+
+
+	/**
+	 * Private constructor to prevent instantiation.
+	 */
+	private Messages() {
+		// Do nothing (comment for Sonar)
+	}
 
 
 	public static ResourceBundle getBundle() {
-		return msg;
+		return MSG;
 	}
 
 
@@ -42,7 +50,7 @@ class Messages {
 
 
 	public static String getString(String key) {
-		return msg.getString(key);
+		return MSG.getString(key);
 	}
 
 

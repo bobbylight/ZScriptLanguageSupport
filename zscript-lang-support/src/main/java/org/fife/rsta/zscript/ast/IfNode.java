@@ -8,7 +8,7 @@ import org.fife.rsta.zscript.IconFactory.IconData;
 
 
 /**
- * 
+ *
  * @author Robert Futrell
  * @version 1.0
  */

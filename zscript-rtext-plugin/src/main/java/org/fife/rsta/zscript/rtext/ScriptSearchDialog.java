@@ -85,7 +85,7 @@ class ScriptSearchDialog extends EscapableDialog {
 	private ScriptLoaderThread scriptLoader;
 
 
-	public ScriptSearchDialog(RText rtext) {
+	ScriptSearchDialog(RText rtext) {
 
 		super(rtext);
 		//this.rtext = rtext;
@@ -196,8 +196,7 @@ class ScriptSearchDialog extends EscapableDialog {
 			@Override
 			public boolean getScrollableTracksViewportHeight() {
 				Component parent = getParent();
-				return parent instanceof JViewport ?
-					parent.getHeight()>getPreferredSize().height : false;
+				return parent instanceof JViewport && parent.getHeight() > getPreferredSize().height;
 			}
 			@Override
 			public boolean isCellEditable(int row, int column) {
@@ -339,7 +338,6 @@ class ScriptSearchDialog extends EscapableDialog {
 	 * loader field, just for "completeness."
 	 *
 	 * @param info The script whose content was loaded.
-	 * @param content The content of the script.
 	 */
 	private synchronized void scriptContentLoaded(ScriptInfo info) {
 		scriptTextArea.setText(info.getContent());
@@ -463,13 +461,13 @@ class ScriptSearchDialog extends EscapableDialog {
 	 * Java 7.
 	 */
 	@SuppressWarnings("rawtypes")
-	private class FilterableTableModel extends DefaultTableModel {
+	private static class FilterableTableModel extends DefaultTableModel {
 
 		private String filter;
 		private List<Integer> filterColumns;
 		private List allRows;
-	
-		public FilterableTableModel(Vector<String> colNames, int rowCount) {
+
+		FilterableTableModel(Vector<String> colNames, int rowCount) {
 			super(colNames, rowCount);
 			allRows = new ArrayList<>();
 			filterColumns = new ArrayList<>();
@@ -563,7 +561,9 @@ class ScriptSearchDialog extends EscapableDialog {
 					JOptionPane.showMessageDialog(ScriptSearchDialog.this, msg,
 							title, JOptionPane.ERROR_MESSAGE);
 				}
-				UIUtil.browse(url.toString());
+				else {
+                    UIUtil.browse(url.toString());
+                }
 			}
 		}
 
@@ -602,7 +602,7 @@ class ScriptSearchDialog extends EscapableDialog {
 
 		private Icon[] icons;
 
-		public RatingCellRenderer() {
+		RatingCellRenderer() {
 			loadIcons();
 		}
 
@@ -655,7 +655,7 @@ class ScriptSearchDialog extends EscapableDialog {
 
 		private ScriptScraper scraper;
 
-		public ScriptListLoaderThread(ScriptScraper scraper) {
+		ScriptListLoaderThread(ScriptScraper scraper) {
 			this.scraper = scraper;
 		}
 
@@ -687,7 +687,7 @@ class ScriptSearchDialog extends EscapableDialog {
 	/**
 	 * Loads the content of a single script.
 	 */
-	private class ScriptLoaderThread extends GUIWorkerThread {
+	private final class ScriptLoaderThread extends GUIWorkerThread {
 
 		private ScriptInfo scriptToLoad;
 
@@ -709,7 +709,7 @@ class ScriptSearchDialog extends EscapableDialog {
 	}
 
 
-	private class ScriptRatingFetcher extends Thread {
+	private final class ScriptRatingFetcher extends Thread {
 
 		private List<ScriptInfo> scripts;
 

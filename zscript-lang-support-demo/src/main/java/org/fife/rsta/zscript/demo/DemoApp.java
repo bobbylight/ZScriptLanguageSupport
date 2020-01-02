@@ -19,12 +19,12 @@ import javax.swing.*;
  * @author Robert Futrell
  * @version 1.0
  */
-public class DemoApp extends JFrame {
+public final class DemoApp extends JFrame {
 
 	private static final String ICON = "/org/fife/rsta/zscript/img/link.png";
 
 
-	public DemoApp() {
+	private DemoApp() {
 		setRootPane(new DemoRootPane());
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		setTitle("ZScript Editor Demo");

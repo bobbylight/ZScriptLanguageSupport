@@ -72,7 +72,7 @@ public class Plugin extends GUIPlugin {
 	private ScriptSearchDialog scriptSearchDialog;
 
 
-	public Plugin(AbstractPluggableGUIApplication app) {
+	public Plugin(AbstractPluggableGUIApplication<?> app) {
 
 		this.rtext = (RText)app;
 		ZScriptPrefs prefs = loadPrefs();
@@ -128,7 +128,7 @@ public class Plugin extends GUIPlugin {
 	 * @return The options dialog panel.
 	 */
 	@Override
-	public PluginOptionsDialogPanel getOptionsDialogPanel() {
+	public PluginOptionsDialogPanel<Plugin> getOptionsDialogPanel() {
 		return new ZScriptOptionPanel(this);
 	}
 

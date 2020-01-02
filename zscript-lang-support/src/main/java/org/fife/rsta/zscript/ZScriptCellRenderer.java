@@ -31,7 +31,7 @@ class ZScriptCellRenderer extends CompletionCellRenderer {
 	/**
 	 * Constructor.
 	 */
-	public ZScriptCellRenderer() {
+	ZScriptCellRenderer() {
 		emptyIcon = new EmptyIcon(16); // Should be done first
 	}
 

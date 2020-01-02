@@ -12,14 +12,13 @@ import java.awt.Window;
 import java.awt.event.ActionEvent;
 import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
-import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.URL;
+import java.nio.charset.StandardCharsets;
 import java.security.AccessControlException;
 import java.util.List;
 
@@ -124,7 +123,7 @@ public class DemoRootPane extends JRootPane implements SyntaxConstants,
 		errorTableModel = new ErrorTableModel(columnNames, 0);
 		errorTable = new ErrorTable(errorTableModel, textArea);
 		JScrollPane errorTableScrollPane = new JScrollPane(errorTable);
-		
+
 		final JSplitPane rhsSplitPane = new JSplitPane(JSplitPane.VERTICAL_SPLIT,
 				topRightPanel, errorTableScrollPane);
 		rhsSplitPane.setUI(new CleanSplitPaneUI());
@@ -240,7 +239,7 @@ public class DemoRootPane extends JRootPane implements SyntaxConstants,
 	 * @return The text area.
 	 */
 	private RSyntaxTextArea createTextArea() {
-		RSyntaxTextArea textArea = null;
+		RSyntaxTextArea textArea;
 		try {
 			textArea = new TextEditorPane();
 		} catch (AccessControlException ace) { // Web demo, no file system access
@@ -297,7 +296,7 @@ public class DemoRootPane extends JRootPane implements SyntaxConstants,
 
 		SearchEvent.Type type = e.getType();
 		SearchContext context = e.getSearchContext();
-		SearchResult result = null;
+		SearchResult result;
 
 		switch (type) {
 			case MARK_ALL:
@@ -351,7 +350,7 @@ public class DemoRootPane extends JRootPane implements SyntaxConstants,
 	public void hyperlinkUpdate(HyperlinkEvent e) {
 		if (e.getEventType()==HyperlinkEvent.EventType.ACTIVATED) {
 			URL url = e.getURL();
-			if (url!=null) { // CodeEditorHyperlinkListener doesn't use URLs. 
+			if (url!=null) { // CodeEditorHyperlinkListener doesn't use URLs.
 				JOptionPane.showMessageDialog(this,
 									"URL clicked:\n" + url.toString());
 			}
@@ -381,10 +380,10 @@ public class DemoRootPane extends JRootPane implements SyntaxConstants,
 
 		FileLocation loc = FileLocation.create(file);
 		try {
-			((TextEditorPane)textArea).load(loc, null);
+			((TextEditorPane)textArea).load(loc);
 			refreshTitle();
 		} catch (IOException ioe) {
-			String message = "Error load file " + loc.getFileName() + ":\n" +
+			String message = "Error loading file " + loc.getFileName() + ":\n" +
 					ioe.getMessage();
 			String title = "Could not load file";
 			JOptionPane.showMessageDialog(this, message, title,
@@ -516,10 +515,10 @@ public class DemoRootPane extends JRootPane implements SyntaxConstants,
 	 * @param resource The resource to load.
 	 */
 	private void setText(String resource) {
-		BufferedReader r = null;
+		BufferedReader r;
 		try {
 			r = new BufferedReader(new InputStreamReader(
-					getClass().getResourceAsStream(resource), "UTF-8"));
+					getClass().getResourceAsStream(resource), StandardCharsets.UTF_8));
 			textArea.read(r, null);
 			r.close();
 			textArea.setCaretPosition(0);
@@ -544,7 +543,7 @@ public class DemoRootPane extends JRootPane implements SyntaxConstants,
 
 	private class AboutAction extends AbstractAction {
 
-		public AboutAction() {
+		AboutAction() {
 			putValue(NAME, "About ZScript Editor Demo...");
 		}
 
@@ -570,9 +569,9 @@ public class DemoRootPane extends JRootPane implements SyntaxConstants,
 	}
 
 
-	private class AutoActivationAction extends AbstractAction {
+	private static class AutoActivationAction extends AbstractAction {
 
-		public AutoActivationAction() {
+		AutoActivationAction() {
 			putValue(NAME, "Automatically show completions after typing \"->\"");
 		}
 
@@ -588,7 +587,7 @@ public class DemoRootPane extends JRootPane implements SyntaxConstants,
 
 	private class CodeFoldingAction extends AbstractAction {
 
-		public CodeFoldingAction() {
+		CodeFoldingAction() {
 			putValue(NAME, "Code Folding");
 		}
 
@@ -602,7 +601,7 @@ public class DemoRootPane extends JRootPane implements SyntaxConstants,
 
 	private class ExitAction extends AbstractAction {
 
-		public ExitAction() {
+		ExitAction() {
 			putValue(NAME, "Exit");
 			putValue(MNEMONIC_KEY, (int)'x');
 		}
@@ -620,7 +619,7 @@ public class DemoRootPane extends JRootPane implements SyntaxConstants,
 
 	private class FindAction extends AbstractAction {
 
-		public FindAction() {
+		FindAction() {
 			putValue(NAME, "Find...");
 			String ks = isOSX() ? "meta F" : "ctrl F";
 			putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke(ks));
@@ -649,7 +648,7 @@ public class DemoRootPane extends JRootPane implements SyntaxConstants,
 
 	private class GoToMemberDelegateAction extends AbstractAction {
 
-		public GoToMemberDelegateAction() {
+		GoToMemberDelegateAction() {
 			putValue(NAME, "Go to Member...");
 			String ks = isOSX() ? "meta shift O" : "ctrl shift O";
 			putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke(ks));
@@ -687,7 +686,7 @@ public class DemoRootPane extends JRootPane implements SyntaxConstants,
 
 	private class OpenAction extends AbstractAction {
 
-		public OpenAction() {
+		OpenAction() {
 			putValue(NAME, "Open File...");
 			String ks = isOSX() ? "meta O" : "ctrl O";
 			putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke(ks));
@@ -713,7 +712,7 @@ public class DemoRootPane extends JRootPane implements SyntaxConstants,
 
 	private class ReplaceAction extends AbstractAction {
 
-		public ReplaceAction() {
+		ReplaceAction() {
 			putValue(NAME, "Replace...");
 			String ks = isOSX() ? "meta H" : "ctrl H";
 			putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke(ks));
@@ -742,7 +741,7 @@ public class DemoRootPane extends JRootPane implements SyntaxConstants,
 
 	private class SaveAction extends AbstractAction {
 
-		public SaveAction() {
+		SaveAction() {
 			putValue(NAME, "Save");
 			String ks = isOSX() ? "meta S" : "ctrl S";
 			putValue(ACCELERATOR_KEY, KeyStroke.getKeyStroke(ks));
@@ -761,7 +760,7 @@ public class DemoRootPane extends JRootPane implements SyntaxConstants,
 
 	private class SaveAsAction extends AbstractAction {
 
-		public SaveAsAction() {
+		SaveAsAction() {
 			putValue(NAME, "Save As...");
 			putValue(SMALL_ICON, new ImageIcon(getClass().getResource("saveas.gif")));
 		}
@@ -805,7 +804,7 @@ public class DemoRootPane extends JRootPane implements SyntaxConstants,
 
 		private boolean selected;
 
-		public TabLinesAction() {
+		TabLinesAction() {
 			putValue(NAME, "Tab Lines");
 		}
 
@@ -822,7 +821,7 @@ public class DemoRootPane extends JRootPane implements SyntaxConstants,
 
 		private String xml;
 
-		public ThemeAction(String name, String xml) {
+		ThemeAction(String name, String xml) {
 			putValue(NAME, name);
 			this.xml = xml;
 		}
@@ -844,7 +843,7 @@ public class DemoRootPane extends JRootPane implements SyntaxConstants,
 
 	private class ViewLineNumbersAction extends AbstractAction {
 
-		public ViewLineNumbersAction() {
+		ViewLineNumbersAction() {
 			putValue(NAME, "Line Numbers");
 		}
 
@@ -858,7 +857,7 @@ public class DemoRootPane extends JRootPane implements SyntaxConstants,
 
 	private class WordWrapAction extends AbstractAction {
 
-		public WordWrapAction() {
+		WordWrapAction() {
 			putValue(NAME, "Word Wrap");
 		}
 

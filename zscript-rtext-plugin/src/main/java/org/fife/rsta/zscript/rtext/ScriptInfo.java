@@ -29,7 +29,7 @@ class ScriptInfo implements Comparable<ScriptInfo> {
 	private String content;
 
 
-	public ScriptInfo(ScriptScraper parent) {
+	ScriptInfo(ScriptScraper parent) {
 		this.parent = parent;
 	}
 

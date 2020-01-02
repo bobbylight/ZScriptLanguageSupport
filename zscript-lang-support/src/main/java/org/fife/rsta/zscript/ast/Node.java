@@ -11,20 +11,20 @@ import org.fife.rsta.zscript.IconFactory.IconData;
 
 public interface Node {
 
-	public static final int ROOT = 0;
-	public static final int IMPORT = 1;
-	public static final int SCRIPT_DEC = 2;
-	public static final int FUNCTION_DEC = 3;
-	public static final int VARIABLE_DEC = 4;
-	public static final int CODE_BLOCK = 5;
+	int ROOT = 0;
+	int IMPORT = 1;
+	int SCRIPT_DEC = 2;
+	int FUNCTION_DEC = 3;
+	int VARIABLE_DEC = 4;
+	int CODE_BLOCK = 5;
 
-	public static final int STATEMENT = 1<<8;
-	public static final int STATEMENT_LOCAL_VAR	= STATEMENT|1;
-	public static final int STATEMENT_FOR		= STATEMENT|2;
-	public static final int STATEMENT_IF		= STATEMENT|3;
-	public static final int STATEMENT_ELSE		= STATEMENT|4;
-	public static final int STATEMENT_WHILE		= STATEMENT|5;
-	public static final int STATEMENT_DO_WHILE	= STATEMENT|6;
+	int STATEMENT = 1<<8;
+	int STATEMENT_LOCAL_VAR	= STATEMENT|1;
+	int STATEMENT_FOR		= STATEMENT|2;
+	int STATEMENT_IF		= STATEMENT|3;
+	int STATEMENT_ELSE		= STATEMENT|4;
+	int STATEMENT_WHILE		= STATEMENT|5;
+	int STATEMENT_DO_WHILE	= STATEMENT|6;
 
 
 	void accept(ZScriptAstVisitor visitor);

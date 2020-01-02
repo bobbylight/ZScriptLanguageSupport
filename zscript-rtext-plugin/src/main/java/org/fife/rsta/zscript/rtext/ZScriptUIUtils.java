@@ -20,25 +20,25 @@ import java.util.regex.Pattern;
  * @author Robert Futrell
  * @version 1.0
  */
-class ZScriptUIUtils {
+final class ZScriptUIUtils {
 
 	/**
 	 * A mapping from HTML entity to the character it represents.
 	 */
-	private static final Map<String, String> replacementMap;
+	private static final Map<String, String> REPLACEMENT_MAP;
 
 	// Regexes for manipulating HTML, argh!!
 	private static final Pattern HTML_ESCAPE = Pattern.compile("&([^;]+);");
 
 	static {
-		replacementMap = new HashMap<>();
-		replacementMap.put("nbsp", " ");
-		replacementMap.put("amp",  "&");
-		replacementMap.put("lt",   "<");
-		replacementMap.put("gt",   ">");
-		replacementMap.put("quot", "\"");
-		replacementMap.put("euro", "\u20ac");
-		replacementMap.put("copy", "\u00a9");
+		REPLACEMENT_MAP = new HashMap<>();
+		REPLACEMENT_MAP.put("nbsp", " ");
+		REPLACEMENT_MAP.put("amp",  "&");
+		REPLACEMENT_MAP.put("lt",   "<");
+		REPLACEMENT_MAP.put("gt",   ">");
+		REPLACEMENT_MAP.put("quot", "\"");
+		REPLACEMENT_MAP.put("euro", "\u20ac");
+		REPLACEMENT_MAP.put("copy", "\u00a9");
 	}
 
 
@@ -92,7 +92,7 @@ class ZScriptUIUtils {
 		Matcher m = HTML_ESCAPE.matcher(html);
 		while (m.find()) {
 			String escape = m.group(1);
-			String replacement = null;
+			String replacement;
 			if (escape.charAt(0)=='#') {
 				try {
 					int value = Integer.parseInt(escape.substring(1));
@@ -102,7 +102,7 @@ class ZScriptUIUtils {
 				}
 			}
 			else {
-				replacement = replacementMap.get(escape);
+				replacement = REPLACEMENT_MAP.get(escape);
 				if (replacement==null) { // ???
 					replacement = m.group(0);
 				}

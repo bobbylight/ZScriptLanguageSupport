@@ -16,7 +16,7 @@ abstract class AbstractCodeBlockStatementNode extends AbstractNode
 	private CodeBlock codeBlock;
 
 
-	public AbstractCodeBlockStatementNode(int type, Position start) {
+	AbstractCodeBlockStatementNode(int type, Position start) {
 		super(type, start);
 	}
 

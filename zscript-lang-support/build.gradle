@@ -1,96 +1,23 @@
-apply plugin: 'distribution'
+plugins {
+    id 'java-library'
+}
 
-import static org.gradle.api.JavaVersion.*
-
-// We require building with JDK 11 or later.  We turn off doclint since our
-// generated *TokenMakers have horrible documentation (see https://github.com/jflex-de/jflex/issues/182)
-assert current().isJava11Compatible()
-
-archivesBaseName = 'zscript'
+archivesBaseName = 'zscript-lang-support'
 
 dependencies {
-    compile('com.fifesoft.rtext:fife.common:3.0.3-SNAPSHOT') { changing = true }
-    compile files('../lib/RText.jar')
-
-    compile('com.fifesoft:rsyntaxtextarea:3.0.5-SNAPSHOT') { changing = true }
-    compile('com.fifesoft:autocomplete:3.0.3-SNAPSHOT') { changing = true }
-    compile('com.fifesoft:rstaui:3.0.3-SNAPSHOT') { changing = true }
-    compile('com.fifesoft:spellchecker:3.0.3-SNAPSHOT') { changing = true }
-    compile('com.fifesoft:languagesupport:3.0.2-SNAPSHOT') { changing = true }
+    api 'com.fifesoft:rsyntaxtextarea:3.0.6'
+    api 'com.fifesoft:autocomplete:3.0.4'
+    api 'com.fifesoft:rstaui:3.0.3'
+    api 'com.fifesoft:spellchecker:3.0.3'
+    api 'com.fifesoft:languagesupport:3.0.1'
 }
 
 jar {
     manifest {
         attributes(
-                'Main-Class': 'org.fife.rsta.zscript.demo.DemoApp',
-                'Class-Path': configurations.runtime.collect {
+                'Class-Path': configurations.runtimeClasspath.collect {
                     return it.name
                 }.join(' ')
         )
     }
 }
-
-distributions {
-    main {
-
-        baseName = 'zscript-demo'
-        contents {
-            exclude([ '**/*-sources.jar', '**/*-javadoc.jar' ])
-            from { [ 'build/libs', configurations.runtime ] }
-            eachFile { details ->
-                def path = details.path
-                if (path.contains('zscript-') && path.endsWith('.jar')) {
-                    details.path = 'zscript-demo.jar'
-                }
-            }
-        }
-    }
-    src {
-        baseName = 'zscript-demo'
-    }
-}
-
-def getJreDependencyList = { installDistDir ->
-
-    // Store the output instead of printing to the console
-    def stdout = new ByteArrayOutputStream()
-
-    exec {
-        workingDir installDistDir
-        commandLine "${jdkRoot}/bin/jdeps", '--list-deps', 'zscript-demo.jar'
-        standardOutput = stdout
-    }
-
-    def retVal =  String.join(',', stdout.toString().split('[ \t\r\n]+'))
-    if (retVal[0] == ',') {
-        retVal = retVal.substring(1)
-    }
-    return retVal
-}
-
-task generateJre {
-    doLast {
-
-        def installDistDir = 'build/install/zscript-demo'
-
-        def moduleList = getJreDependencyList(installDistDir)
-        println "Generating JRE with modules: ${moduleList}"
-
-        exec {
-            workingDir installDistDir
-            commandLine "${jdkRoot}/bin/jlink", '--module-path', "\"${jdkRoot}/jmods\"", '--add-modules',
-                    moduleList, '--output', embeddedJreFolderName, '--strip-debug', '--compress', '2',
-                    '--no-header-files', '--no-man-pages'
-        }
-    }
-}
-generateJre.dependsOn('installDist')
-
-task buildWindowsDemo {
-    doLast {
-        exec {
-            commandLine launch4jExe, 'launch4j.xml'
-        }
-    }
-}
-buildWindowsDemo.dependsOn('generateJre')

@@ -44,7 +44,7 @@ import org.fife.ui.rsyntaxtextarea.RSyntaxUtilities;
 /**
  * A tree view showing the outline of ZScript source, similar to the "Outline"
  * view in the Eclipse JDT.
- * 
+ *
  * @author Robert Futrell
  * @version 1.0
  */
@@ -298,7 +298,7 @@ public class ZScriptOutlineTree extends AbstractSourceTree {
 		private Stack<ZScriptTreeNode> functionContainers;
 		private Stack<ZScriptTreeNode> variableContainers;
 
-		public NodeGenerator(ZScriptTreeNode treeRoot) {
+		NodeGenerator(ZScriptTreeNode treeRoot) {
 			this.treeRoot = treeRoot;
 			functionContainers = new Stack<>();
 			variableContainers = new Stack<>();
@@ -317,19 +317,24 @@ public class ZScriptOutlineTree extends AbstractSourceTree {
 		}
 
 		@Override
-		public void postVisit(CodeBlock block) {}
+		public void postVisit(CodeBlock block) {
+		}
 
 		@Override
-		public void postVisit(DoWhileNode doWhileNode) {}
+		public void postVisit(DoWhileNode doWhileNode) {
+		}
 
 		@Override
-		public void postVisit(ElseNode elseNode) {}
+		public void postVisit(ElseNode elseNode) {
+		}
 
 		@Override
-		public void postVisit(ForNode forNode) {}
+		public void postVisit(ForNode forNode) {
+		}
 
 		@Override
-		public void postVisit(IfNode ifNode) {}
+		public void postVisit(IfNode ifNode) {
+		}
 
 		@Override
 		public void postVisit(FunctionDecNode functionDec) {
@@ -337,10 +342,12 @@ public class ZScriptOutlineTree extends AbstractSourceTree {
 		}
 
 		@Override
-		public void postVisit(ImportNode importNode) {}
+		public void postVisit(ImportNode importNode) {
+		}
 
 		@Override
-		public void postVisit(RootNode root) {}
+		public void postVisit(RootNode root) {
+		}
 
 		@Override
 		public void postVisit(ScriptNode script) {
@@ -349,10 +356,12 @@ public class ZScriptOutlineTree extends AbstractSourceTree {
 		}
 
 		@Override
-		public void postVisit(VariableDecNode varDec) {}
+		public void postVisit(VariableDecNode varDec) {
+		}
 
 		@Override
-		public void postVisit(WhileNode whileNode) {}
+		public void postVisit(WhileNode whileNode) {
+		}
 
 		private void popAndVerify(String type, Stack<ZScriptTreeNode> stack, Object top) {
 			ZScriptTreeNode node = stack.pop();

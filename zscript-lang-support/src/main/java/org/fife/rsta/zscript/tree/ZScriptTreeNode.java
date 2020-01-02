@@ -33,18 +33,18 @@ class ZScriptTreeNode extends SourceTreeNode {
 	protected static final int PRIORITY_VAR_CONST = 1;
 
 
-	protected ZScriptTreeNode(AbstractNode node) {
+	ZScriptTreeNode(AbstractNode node) {
 		this(node, false);
 	}
 
 
-	protected ZScriptTreeNode(AbstractNode node, boolean sorted) {
+	private ZScriptTreeNode(AbstractNode node, boolean sorted) {
 		super(node, sorted);
 		this.node = node;
 	}
 
 
-	public ZScriptTreeNode(String text, String iconName, boolean sorted) {
+	ZScriptTreeNode(String text, String iconName, boolean sorted) {
 		super(text, sorted);
 		if (iconName!=null) {
 			icon = IconFactory.get().getIcon(iconName);
