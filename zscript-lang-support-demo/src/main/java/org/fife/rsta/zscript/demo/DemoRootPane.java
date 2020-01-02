@@ -87,11 +87,9 @@ import org.fife.ui.rtextarea.SearchResult;
 public class DemoRootPane extends JRootPane implements SyntaxConstants,
 				HyperlinkListener, SearchListener {
 
-	private JScrollPane treeSP;
 	private RTextScrollPane scrollPane;
 	private RSyntaxTextArea textArea;
 	private boolean webDemo;
-	private JTable errorTable;
 	private ErrorTableModel errorTableModel;
 	private FileChooser chooser;
 
@@ -117,11 +115,11 @@ public class DemoRootPane extends JRootPane implements SyntaxConstants,
 		// Dummy tree keeps JViewport's "background" looking right initially
 		ZScriptOutlineTree tree = new ZScriptOutlineTree();
 		tree.listenTo(textArea);
-		treeSP = new JScrollPane(tree);
+		JScrollPane treeSP = new JScrollPane(tree);
 
 		String[] columnNames = { "", "Line", "Error" };
 		errorTableModel = new ErrorTableModel(columnNames, 0);
-		errorTable = new ErrorTable(errorTableModel, textArea);
+		JTable errorTable = new ErrorTable(errorTableModel, textArea);
 		JScrollPane errorTableScrollPane = new JScrollPane(errorTable);
 
 		final JSplitPane rhsSplitPane = new JSplitPane(JSplitPane.VERTICAL_SPLIT,
@@ -131,7 +129,7 @@ public class DemoRootPane extends JRootPane implements SyntaxConstants,
 		rhsSplitPane.setResizeWeight(1);
 
 		final JSplitPane sp = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT,
-				treeSP, rhsSplitPane);
+			treeSP, rhsSplitPane);
 		sp.setUI(new CleanSplitPaneUI());
 		sp.setContinuousLayout(true);
 		sp.setResizeWeight(0);
