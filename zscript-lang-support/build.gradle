@@ -5,11 +5,11 @@ plugins {
 archivesBaseName = 'zscript-lang-support'
 
 dependencies {
-    api 'com.fifesoft:rsyntaxtextarea:3.0.6'
-    api 'com.fifesoft:autocomplete:3.0.4'
-    api 'com.fifesoft:rstaui:3.0.3'
-    api 'com.fifesoft:spellchecker:3.0.3'
-    api 'com.fifesoft:languagesupport:3.0.1'
+    api 'com.fifesoft:rsyntaxtextarea:3.0.8'
+    api 'com.fifesoft:autocomplete:3.0.5'
+    api 'com.fifesoft:rstaui:3.0.4'
+    api 'com.fifesoft:spellchecker:3.0.4'
+    api 'com.fifesoft:languagesupport:3.0.2'
 }
 
 jar {

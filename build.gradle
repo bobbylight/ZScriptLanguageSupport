@@ -17,7 +17,7 @@ allprojects {
     }
 
     wrapper {
-        gradleVersion = '6.0.1'
+        gradleVersion = '6.1'
     }
 }
 
@@ -32,7 +32,7 @@ subprojects {
     }
 
     checkstyle {
-        toolVersion = '8.27'
+        toolVersion = '8.28'
         configDirectory = file("$rootProject.projectDir/config/checkstyle")
     }
 
