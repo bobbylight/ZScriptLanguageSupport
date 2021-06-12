@@ -1,3 +1,5 @@
+import org.apache.tools.ant.taskdefs.condition.Os
+
 apply plugin: 'distribution'
 
 archivesBaseName = 'zscript-demo'
@@ -51,7 +53,12 @@ def getJreDependencyList = { installDistDir ->
 
     exec {
         workingDir installDistDir
-        commandLine "${jdkRoot}/bin/jdeps", '--list-deps', 'zscript-demo.jar'
+        if (Os.isFamily(Os.FAMILY_WINDOWS)) {
+            commandLine "${jdkRoot}/bin/jdeps", '--ignore-missing-deps', '--list-deps', 'zscript-demo.jar'
+        }
+        else {
+            commandLine '/bin/bash', '-c', "${jdkRoot}/bin/jdeps --ignore-missing-deps --list-deps zscript-demo.jar"
+        }
         standardOutput = stdout
     }
 

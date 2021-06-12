@@ -20,7 +20,7 @@ import org.fife.ui.autocomplete.CompletionProvider;
 import org.fife.ui.autocomplete.FunctionCompletion;
 import org.fife.ui.autocomplete.VariableCompletion;
 import org.fife.ui.autocomplete.ParameterizedCompletion.Parameter;
-import org.fife.ui.rsyntaxtextarea.RSyntaxUtilities;
+import org.fife.ui.rsyntaxtextarea.HtmlUtil;
 
 
 /**
@@ -57,7 +57,7 @@ final class CodeCompletionLoader {
 		if (temp.startsWith("<html>")) {
 			return temp.substring("<html>".length());
 		}
-		return RSyntaxUtilities.escapeForHtml(temp, "<br>", false);
+		return HtmlUtil.escapeForHtml(temp, "<br>", false);
 	}
 
 
