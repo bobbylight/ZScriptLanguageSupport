@@ -48,7 +48,7 @@ application specifically.
 # Building
 
 This project depends on `RSyntaxTextArea` and its sister projects and uses
-[Gradle](https://gradle.org/) for building.  JDK 11 or newer is also required,
+[Gradle](https://gradle.org/) for building.  JDK 14 or newer is also required,
 as is [launch4j](https://sourceforge.net/projects/launch4j/files/launch4j-3/3.12/)
 if you want to build the wrapper Windows executable.
 
@@ -78,7 +78,7 @@ delegates to running `zscript-demo.jar`.
 
 For all other operating systems, you must run the jar directly.  Future
 work includes wrapping the demo in an `.app` bundle on OSX once again
-(it used to be, but Java 11 made it tricky to do that).
+(it used to be, but Java 14 made it tricky to do that).
 
 # Sister Projects
 
