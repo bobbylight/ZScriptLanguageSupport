@@ -8,6 +8,7 @@ import org.fife.rsta.zscript.IconFactory.IconData;
 
 
 /**
+ * An "if" statement.
  *
  * @author Robert Futrell
  * @version 1.0

@@ -2,7 +2,7 @@ archivesBaseName = 'zscript-rtext-plugin'
 
 dependencies {
     implementation project(':zscript-lang-support')
-    implementation('com.fifesoft.rtext:fife.common:3.0.3-SNAPSHOT') { changing = true }
+    implementation('com.fifesoft.rtext:fife.common:3.1.1')
     implementation files('../lib/RText.jar')
 }
 

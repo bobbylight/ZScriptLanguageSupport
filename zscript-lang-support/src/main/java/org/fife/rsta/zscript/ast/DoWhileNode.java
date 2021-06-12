@@ -6,6 +6,7 @@ import org.fife.rsta.zscript.IconFactory.IconData;
 
 
 /**
+ * A do/while block.
  *
  * @author Robert Futrell
  * @version 1.0

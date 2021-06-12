@@ -6,6 +6,7 @@ import org.fife.rsta.zscript.IconFactory.IconData;
 
 
 /**
+ * A "while" statement.
  *
  * @author Robert Futrell
  * @version 1.0

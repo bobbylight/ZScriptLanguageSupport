@@ -1,11 +1,11 @@
 plugins {
-    id 'com.github.spotbugs' version '2.0.1'
+    id 'com.github.spotbugs' version '4.7.1'
 }
 
 group 'com.fifesoft'
-// NOTE: Local Java 8:  /Library/Java/JavaVirtualMachines/jdk1.8.0_25.jdk/Contents/Home
+// NOTE: Local Java 8:  /Library/Java/JavaVirtualMachines/jdk1.8.0_191.jdk/Contents/Home
 
-assert JavaVersion.current().isJava11Compatible()
+assert JavaVersion.current().isJava12Compatible()
 
 allprojects {
 
@@ -17,7 +17,7 @@ allprojects {
     }
 
     wrapper {
-        gradleVersion = '6.1'
+        gradleVersion = '7.0.2'
     }
 }
 
@@ -28,11 +28,11 @@ subprojects {
     apply plugin: 'com.github.spotbugs'
 
     dependencies {
-        testImplementation 'junit:junit:4.12'
+        testImplementation 'junit:junit:4.13.2'
     }
 
     checkstyle {
-        toolVersion = '8.28'
+        toolVersion = '8.43'
         configDirectory = file("$rootProject.projectDir/config/checkstyle")
     }
 
@@ -41,16 +41,30 @@ subprojects {
         includeFilter = file('../config/spotbugs-exclude.xml')
     }
 
-    tasks.withType(com.github.spotbugs.SpotBugsTask) {
+    spotbugsMain {
         reports {
-            xml.enabled = false
-            html.enabled = true
+            html {
+                enabled = true
+            }
+            xml {
+                enabled = false
+            }
+        }
+    }
+    spotbugsTest {
+        reports {
+            html {
+                enabled = true
+            }
+            xml {
+                enabled = false
+            }
         }
     }
 
     compileJava {
-        sourceCompatibility javaVersion
-        targetCompatibility javaVersion
+        sourceCompatibility javaVersion.toString()
+        targetCompatibility javaVersion.toString()
         options.debug = true
         options.debugOptions.debugLevel = 'source,vars,lines'
         options.compilerArgs << '-Xlint:deprecation' << '-Xlint:unchecked'
